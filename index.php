@@ -3,8 +3,8 @@
 Plugin Name: Advanced Settings
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Description: Advanced settings for WordPress.
-Author: Arthur Ronconi
-Author URI: https://devarthur.com/
+Author: Helmut Wandl
+Author URI: https://ehtmlu.com/
 Version: 2.4.0
 Requires at least: 5.0.0
 Requires PHP: 5.3

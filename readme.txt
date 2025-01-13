@@ -1,6 +1,6 @@
 === Advanced Settings ===
 Plugin Name: Advanced Settings
-Author: webarthur
+Author: eHtmlu
 Contributors: webarthur, eHtmlu
 Author URI: https://devarthur.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
@@ -91,7 +91,7 @@ This is an essential plugin for your WordPress websites.
 
 Visit: [devarthur.com](https://devarthur.com/)
 
-Contribute on github: [github.com/webarthur/advanced-settings](https://github.com/webarthur/advanced-settings)
+Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/eHtmlu/advanced-settings)
 
 "Simplicity is the ultimate sophistication" -- Da Vinci
 
