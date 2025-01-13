@@ -4,7 +4,7 @@ Author: eHtmlu
 Contributors: eHtmlu, webarthur
 Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
-Tags: settings, performance, speed, admin, settings, options
+Tags: settings, options, performance, speed, admin
 Requires at least: 5.0.0
 Tested up to: 6.7
 Stable tag: 2.5.0
