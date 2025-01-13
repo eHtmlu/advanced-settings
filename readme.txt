@@ -6,8 +6,8 @@ Author URI: https://devarthur.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, performance, speed, admin, post type, menu, page, image, setting, images, google, analytics, compress, html, thumbnail, auto save, seo, keywords, favicon, feedburner, compact, comments, remove comments, hide comments, author, resize at upload, auto post thumbnails, filters, widget, option
 Requires at least: 5.0.0
-Tested up to: 6.4.2
-Stable tag: 2.4.0
+Tested up to: 6.4.3
+Stable tag: 2.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,13 +19,8 @@ This is an essential plugin for your WordPress websites.
 
 = New Features =
 
-* New admin page: Scripts
-* New admin page: Styles
-* Remove *type="text/javascript"* attribute from &lt;script&gt; tag
-* Track and list enqueued scripts/styles
-* Merge and include removed scripts/styles
-* Load merged removed scripts in footer
-* Load merged removed styles
+* Disable author pages
+* Prevent installation of new default WordPress themes during core updates
 
 = Post types =
 
@@ -65,11 +60,12 @@ This is an essential plugin for your WordPress websites.
 * Disable widget system
 * Disable comment system
 * Disable Posts Auto Saving
+* Disable author pages
 * Automatically generate the Post Thumbnail (from the first image in post)
 * Set JPEG quality
 * Resize image at upload to max size
+* Prevent installation of new default WordPress themes during core updates
 * Display total number of executed SQL queries and page loading time
-* Fix post type pagination
 
 = Scripts =
 
@@ -109,6 +105,13 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 
 
 == Changelog ==
+
+= 2.5.0 =
+* Add new feature: Disable author pages
+* Add new feature: Prevent installation of new default WordPress themes during core updates
+
+= 2.4.0 =
+* Updated code for WordPress version 6.4.2
 
 = 2.3.4 =
 * Updated code for WordPress version 5.5.3

@@ -70,6 +70,13 @@
 							<?php _e('Disable Posts Auto Saving') ?>
 						</label>
 
+						<br />
+
+						<label for="disable_author_pages">
+							<input name="disable_author_pages" type="checkbox" id="disable_author_pages" value="1" <?php advset_check_if('disable_author_pages') ?> />
+							<?php _e('Disable Author Pages') ?>
+						</label>
+
 					</fieldset>
 				</td>
 			</tr>
@@ -126,6 +133,8 @@
 			<tr valign="top">
 				<th scope="row"><?php _e('System'); ?></th>
 				<td>
+					<fieldset>
+
 					<?php /*if( !defined('EMPTY_TRASH_DAYS') ) { ?>
 					<label for="empty_trash">
 						<?php _e('Posts stay in the trash for ') ?>
@@ -135,6 +144,13 @@
 
 					<br />
 					<? } else echo EMPTY_TRASH_DAYS;*/ ?>
+
+					<label for="core_upgrade_skip_new_bundled">
+						<input name="core_upgrade_skip_new_bundled" type="checkbox" id="core_upgrade_skip_new_bundled" value="1" <?php advset_check_if('core_upgrade_skip_new_bundled') ?> />
+						<?php _e('Prevent installation of new default WordPress themes during core updates') ?>
+					</label>
+
+					<br />
 
 					<label for="show_query_num">
 						<input name="show_query_num" type="checkbox" id="show_query_num" value="1" <?php advset_check_if('show_query_num') ?> />
@@ -147,6 +163,7 @@
 						<?php // _e('Fix post type pagination') ?>
 					</label-->
 
+					</fieldset>
 				</td>
 			</tr>
 

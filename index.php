@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Description: Advanced settings for WordPress.
 Author: Helmut Wandl
 Author URI: https://ehtmlu.com/
-Version: 2.4.0
+Version: 2.5.0
 Requires at least: 5.0.0
 Requires PHP: 5.3
 */
@@ -359,6 +359,25 @@ if( advset_option('remove_comments_system') ) {
 	add_action( 'wp_before_admin_bar_render', '__av_admin_bar_render' );
 }
 
+# Disable author pages
+if ( advset_option('disable_author_pages') ) {
+    function advset_disable_author_pages__template_redirect() {
+        global $wp_query;
+        if ( is_author() ) {
+            $wp_query->set_404();
+            status_header(404);
+        }
+    }
+    add_action( 'template_redirect', 'advset_disable_author_pages__template_redirect' );
+    function advset_disable_author_pages__wp_sitemaps_add_provider( $provider, $name ) {
+        if ( 'users' === $name ) {
+            return false;
+        }
+        return $provider;
+    }
+    add_filter( 'wp_sitemaps_add_provider', 'advset_disable_author_pages__wp_sitemaps_add_provider', 10, 2 );
+}
+
 # Google Analytics
 if( advset_option('analytics') ) {
 	add_action('wp_footer', '____analytics'); // Load custom styles
@@ -370,6 +389,13 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '$ga_code')";
 	}
+}
+
+# core upgrade skip new bundled
+if ( advset_option('core_upgrade_skip_new_bundled') ) {
+    if (!defined('CORE_UPGRADE_SKIP_NEW_BUNDLED')) {
+        define('CORE_UPGRADE_SKIP_NEW_BUNDLED', true);
+    }
 }
 
 # Remove admin menu

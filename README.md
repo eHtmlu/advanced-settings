@@ -26,11 +26,8 @@ $ git clone https://github.com/webarthur/advanced-settings.git
 
 ## New Features
 
-* New admin page: Scripts
-* Remove *type="text/javascript"* attribute from &lt;script&gt; tag
-* Track and list enqueued scripts
-* Merge and include removed scripts
-* Load merged removed scripts in footer
+* Disable author pages
+* Prevent installation of new default WordPress themes during core updates
 
 ## What can this do?
 
@@ -73,6 +70,8 @@ $ git clone https://github.com/webarthur/advanced-settings.git
 - Track and list enqueued scripts
 - Merge and include removed scripts
 - Load merged removed scripts in footer
+- Disable author pages
+- Prevent installation of new default WordPress themes during core updates
 and more to come ...
 
 Visit: https://devarthur.com/
