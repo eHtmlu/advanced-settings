@@ -1,12 +1,12 @@
 === Advanced Settings ===
 Plugin Name: Advanced Settings
 Author: eHtmlu
-Contributors: webarthur, eHtmlu
-Author URI: https://devarthur.com/
+Contributors: eHtmlu, webarthur
+Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
-Tags: settings, performance, speed, admin, post type, menu, page, image, setting, images, google, analytics, compress, html, thumbnail, auto save, seo, keywords, favicon, feedburner, compact, comments, remove comments, hide comments, author, resize at upload, auto post thumbnails, filters, widget, option
+Tags: settings, performance, speed, admin, settings, options
 Requires at least: 5.0.0
-Tested up to: 6.4.3
+Tested up to: 6.7
 Stable tag: 2.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -84,8 +84,6 @@ This is an essential plugin for your WordPress websites.
 = Filters/Hooks =
 
 * Disable wp filters/hooks
-
-Visit: [devarthur.com](https://devarthur.com/)
 
 Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/eHtmlu/advanced-settings)
 
