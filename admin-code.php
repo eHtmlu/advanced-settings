@@ -5,6 +5,17 @@
 	<div id="icon-options-general" class="icon32"><br></div>
 	<h2><?php _e('Advanced Settings &rsaquo; HTML Code'); ?></h2>
 
+	<?php $deprecated = '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>'; ?>
+	<style>
+
+		.deprecated {
+			background: #900;
+			color: #fff;
+			padding: 0 .5rem;
+			border-radius: 3px;
+		}
+
+	</style>
 	<form action="options.php" method="post">
 
 		<input type="hidden" name="advset_group" value="code" />
@@ -53,11 +64,13 @@
 						</label>
 
 						<br />
+						<br />
 						<label for="remove_wlw">
 							<input name="remove_wlw" type="checkbox" id="remove_wlw" value="1" <?php advset_check_if('remove_wlw') ?> />
-							<?php _e('Remove header WLW Manifest meta tag (Windows Live Writer link)') ?>
+							<s><?php _e('Remove header WLW Manifest meta tag (Windows Live Writer link)'); echo '</s>' . $deprecated; ?>
 						</label>
 
+						<br />
 						<br />
 						<label for="remove_rsd">
 							<input name="remove_rsd" type="checkbox" id="remove_rsd" value="1" <?php advset_check_if('remove_rsd') ?> />
