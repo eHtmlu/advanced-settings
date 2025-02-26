@@ -109,12 +109,6 @@ function advset_check_if( $option_name, $echo=true ) {
 	}
 }
 
-function __show_sqlnum() {
-	global $wpdb, $user_ID;
-	if($user_ID==2)
-		echo $wpdb->num_queries;
-}
-
 # ADMIN MENU
 function advset_menu() {
 	add_options_page(__('Post Types'), __('Post Types'), 'manage_options', 'post-types', 'advset_page_posttypes');
