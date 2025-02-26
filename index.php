@@ -40,6 +40,7 @@ if( is_admin() ) {
 	# Add plugin option in Plugins page
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
 
+	// Update the database for plugin versions greater than 2.0 (the change occurred in version 2.1)
 	if( $settings=get_option('powerconfigs') ) {
 		update_option('advset_code', $settings);
 		update_option('advset_system', $settings);
