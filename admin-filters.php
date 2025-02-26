@@ -2,8 +2,6 @@
 
 <div class="wrap">
 
-  <?php advset_powered(); ?>
-
   <div id="icon-options-general" class="icon32"><br></div>
   <h2><?php _e('Filters/Actions') ?> <sub style="color:red">beta</sub></h2>
 

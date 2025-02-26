@@ -15,12 +15,12 @@ $ wp plugin install advanced-settings --activate
 
 ```
 $ cd wp-content/plugins
-$ git clone https://github.com/webarthur/advanced-settings.git
+$ git clone https://github.com/eHtmlu/advanced-settings.git
 ```
 
 **Manual installation:**
 
-1. Download plugin file from https://wordpress.com/pt-br/plugins/advanced-settings
+1. Download plugin file from https://wordpress.org/plugins/advanced-settings/
 2. Decompress to wp-content/plugins folder
 3. Active the plugin on wp-admin
 
@@ -73,7 +73,5 @@ $ git clone https://github.com/webarthur/advanced-settings.git
 - Disable author pages
 - Prevent installation of new default WordPress themes during core updates
 and more to come ...
-
-Visit: https://devarthur.com/
 
 "Simplicity is the ultimate sophistication" -- Da Vinci

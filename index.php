@@ -969,17 +969,3 @@ function advset_register_post_types() {
 
 }
 
-function advset_powered () {
-	echo '	<div style="float:right;width:160px">
-			<style>
-			#advset_powered { text-decoration:none; color:#666; font-size:16px }
-			#advset_powered:hover { text-decoration:underline; color:inherit }
-			</style>
-			<a id="advset_powered" target="_blank" href="https://devarthur.com/">
-				<small>'. __('Powered By:').'</small><br />
-				<strong>devarthur.com</strong>
-			</a>
-		</div>
-';
-}
-

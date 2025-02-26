@@ -2,8 +2,6 @@
 
 <div class="wrap">
 
-	<?php advset_powered(); ?>
-
 	<div id="icon-options-general" class="icon32"><br></div>
 	<h2><?php _e('Advanced Settings &rsaquo; HTML Code'); ?></h2>
 
