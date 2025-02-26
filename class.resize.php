@@ -1,4 +1,8 @@
 <?php
+
+// Exit direct requests
+if (!defined('ABSPATH')) exit;
+
 /*
 * PHP Image Resize Class
 *

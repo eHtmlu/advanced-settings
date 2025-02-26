@@ -10,6 +10,9 @@ Requires at least: 5.0.0
 Requires PHP: 5.3
 */
 
+// Exit direct requests
+if (!defined('ABSPATH')) exit;
+
 define('ADVSET_DIR', dirname(__FILE__));
 
 # THE ADMIN PAGE

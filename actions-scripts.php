@@ -1,5 +1,8 @@
 <?php
 
+// Exit direct requests
+if (!defined('ABSPATH')) exit;
+
 // error_reporting(E_ALL); ini_set('display_errors', 1);
 
 // $tracked = update_option('advset_tracked_scripts', [], true);

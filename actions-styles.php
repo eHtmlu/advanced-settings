@@ -1,5 +1,8 @@
 <?php
 
+// Exit direct requests
+if (!defined('ABSPATH')) exit;
+
 // track_enqueued_styles
 if( !is_admin_area() ):
 
