@@ -1,9 +1,7 @@
 <?php defined('ABSPATH') or exit; ?>
 
 <div class="wrap">
-
-	<div id="icon-options-general" class="icon32"><br></div>
-	<h2><?php _e('Advanced Settings &rsaquo; System'); ?></h2>
+	<?php advset_page_header() ?>
 
 	<?php $deprecated = '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>'; ?>
 	<style>

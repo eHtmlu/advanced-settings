@@ -16,12 +16,17 @@ if (!defined('ABSPATH')) exit;
 define('ADVSET_DIR', dirname(__FILE__));
 
 # THE ADMIN PAGE
-function advset_page_system() { include ADVSET_DIR.'/admin-system.php'; }
-function advset_page_code() { include ADVSET_DIR.'/admin-code.php'; }
-function advset_page_posttypes() { include ADVSET_DIR.'/admin-post-types.php'; }
-function advset_page_scripts() { include ADVSET_DIR.'/admin-scripts.php'; }
-function advset_page_styles() { include ADVSET_DIR.'/admin-styles.php'; }
-function advset_page_filters() { include ADVSET_DIR.'/admin-filters.php'; }
+function advset_page() {
+	switch ($_GET['tab'] ?? null) {
+		case 'admin-code': include ADVSET_DIR.'/admin-code.php'; break;
+		case 'admin-post-types': include ADVSET_DIR.'/admin-post-types.php'; break;
+		case 'admin-scripts': include ADVSET_DIR.'/admin-scripts.php'; break;
+		case 'admin-styles': include ADVSET_DIR.'/admin-styles.php'; break;
+		case 'admin-filters': include ADVSET_DIR.'/admin-filters.php'; break;
+		case 'admin-system':
+		default: include ADVSET_DIR.'/admin-system.php'; break;
+	}
+}
 
 // from https://stevegrunwell.com/blog/quick-tip-is_login_page-function-for-wordpress/
 if ( ! function_exists( 'is_admin_area' ) ) {
@@ -112,18 +117,57 @@ function advset_check_if( $option_name, $echo=true ) {
 
 # ADMIN MENU
 function advset_menu() {
-	add_options_page(__('Post Types'), __('Post Types'), 'manage_options', 'post-types', 'advset_page_posttypes');
-	add_options_page(__('HTML Code'), __('HTML Code'), 'manage_options', 'advanced-settings-code', 'advset_page_code');
-	add_options_page(__('System'), __('System'), 'manage_options', 'advanced-settings-system', 'advset_page_system');
-	add_options_page(__('Scripts'), __('Scripts'), 'manage_options', 'advanced-settings-scripts', 'advset_page_scripts');
-	add_options_page(__('Styles'), __('Styles'), 'manage_options', 'advanced-settings-styles', 'advset_page_styles');
-	add_options_page(__('Filters/Actions'), __('Filters/Actions'), 'manage_options', 'advanced-settings-filters', 'advset_page_filters');
+	add_options_page(__('Advanced …'), __('Advanced …'), 'manage_options', 'advanced-settings', 'advset_page');
+}
+
+# ADMIN PAGE TABS
+function advset_page_header() {
+	$active_tab = $_GET['tab'] ?? '';
+	?>
+	<style>
+		.nav-tab-wrapper.show-expert-settings .toggle-expert-settings-show,
+		.nav-tab-wrapper:not(.show-expert-settings) .toggle-expert-settings-hide,
+		.nav-tab-wrapper:not(.show-expert-settings) .expert-setting {
+			display: none;
+		}
+		.expert-setting,
+		.toggle-expert-settings a {
+			color: #c60;
+		}
+		.nav-tab-wrapper:not(.show-expert-settings) .toggle-expert-settings a {
+			color: #999;
+		}
+		.toggle-expert-settings {
+			float: left;
+			padding: 5px 10px;
+			border-top: 1px solid transparent;
+			line-height: 1.71428571;
+			font-size: 14px;
+			margin-left: .5em;
+		}
+		.toggle-expert-settings a {
+			outline: none;
+			box-shadow: none;
+			text-decoration: none;
+		}
+	</style>
+	<h1><?php _e('Advanced Settings'); ?></h1>
+	<nav class="nav-tab-wrapper<?php echo empty($_COOKIE['advset_show_expert_settings']) ? '' : ' show-expert-settings' ?>">
+		<a href="?page=advanced-settings" class="nav-tab <?php echo $active_tab === '' ? 'nav-tab-active' : ''; ?>"><?php echo __('System') ?></a>
+		<a href="?page=advanced-settings&tab=admin-code" class="nav-tab <?php echo $active_tab === 'admin-code' ? 'nav-tab-active' : ''; ?>"><?php echo __('HTML Code') ?></a>
+		<a href="?page=advanced-settings&tab=admin-scripts" class="expert-setting nav-tab <?php echo $active_tab === 'admin-scripts' ? 'nav-tab-active' : ''; ?>"><?php echo __('Scripts') ?></a>
+		<a href="?page=advanced-settings&tab=admin-styles" class="expert-setting nav-tab <?php echo $active_tab === 'admin-styles' ? 'nav-tab-active' : ''; ?>"><?php echo __('Styles') ?></a>
+		<a href="?page=advanced-settings&tab=admin-post-types" class="expert-setting nav-tab <?php echo $active_tab === 'admin-post-types' ? 'nav-tab-active' : ''; ?>"><?php echo __('Post Types') ?></a>
+		<a href="?page=advanced-settings&tab=admin-filters" class="expert-setting nav-tab <?php echo $active_tab === 'admin-filters' ? 'nav-tab-active' : ''; ?>"><?php echo __('Filters/Actions') ?></a>
+		<div class="toggle-expert-settings"><a href="javascript:;" onclick="const className = 'show-expert-settings', classList = this.closest('nav').classList, setTo = !classList.contains(className); classList.toggle(className, setTo); document.cookie = 'advset_show_expert_settings=' + (setTo ? '1' : '0') + '; path=<?php echo htmlspecialchars(parse_url(admin_url(), PHP_URL_PATH)); ?>; max-age=' + (setTo ? '31536000' : '0'); return false; "><span class="toggle-expert-settings-show">→ show expert settings</span><span class="toggle-expert-settings-hide">← hide expert settings</span></a></div>
+	</nav>
+	<?php
 }
 
 # Add plugin option in Plugins page
 function advset_plugin_action_links( $links, $file ) {
 	if ( $file == plugin_basename( basename(dirname(__FILE__)).'/index.php' ) ) {
-		$links[] = '<a href="options-general.php?page=advanced-settings-system">'.__('Settings').'</a>';
+		$links[] = '<a href="options-general.php?page=advanced-settings">'.__('Settings').'</a>';
 	}
 
 	return $links;

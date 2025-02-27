@@ -92,11 +92,12 @@
 	</script>
 
 	<div class="wrap">
+			<?php advset_page_header() ?>
+			<br />
 
-		<div id="icon-options-general" class="icon32"><br></div>
-		<h2><?php _e('Advanced Settings &rsaquo; Post Types'); ?> <sub style="color:red">beta</sub>
 			<a href="#" onclick="return show_form();" class="add-new-h2">Add New Post Type</a>
-			</h2>
+			<br />
+			<br />
 
 		<div id="post_type_form" style="display:none">
 

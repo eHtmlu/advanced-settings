@@ -1,10 +1,7 @@
 <?php defined('ABSPATH') or exit; ?>
 
 <div class="wrap">
-
-	<div id="icon-options-general" class="icon32"><br></div>
-	<h2><?php _e('Advanced Settings &rsaquo; Styles'); ?></h2>
-
+	<?php advset_page_header() ?>
 	<?php if ($notice = get_option('advset_notice')) { ?>
 		<div class="notice notice-<?php echo $notice['class'] ?> is-dismissible">
 			<p><b><?php echo $notice['size'] ?> <?php _e( $notice['text'] ); ?></b><?php echo $notice['files'] ?></p>
