@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, options, performance, speed, admin
 Requires at least: 5.0.0
 Tested up to: 6.7
-Stable tag: 2.5.0
+Stable tag: 2.6.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,13 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 
 
 == Changelog ==
+
+= 2.6.0 - 2025-02-27 =
+* Changed navigation from multiple menu items to a single menu item with tab navigation
+* Marked a few settings as deprecated
+* Marked a few settings as experimental
+* Added "get in touch" notice
+* Tidied up a bit
 
 = 2.5.0 =
 * Add new feature: Disable author pages
