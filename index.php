@@ -161,7 +161,22 @@ function advset_page_header() {
 		<a href="?page=advanced-settings&tab=admin-filters" class="expert-setting nav-tab <?php echo $active_tab === 'admin-filters' ? 'nav-tab-active' : ''; ?>"><?php echo __('Filters/Actions') ?></a>
 		<div class="toggle-expert-settings"><a href="javascript:;" onclick="const className = 'show-expert-settings', classList = this.closest('nav').classList, setTo = !classList.contains(className); classList.toggle(className, setTo); document.cookie = 'advset_show_expert_settings=' + (setTo ? '1' : '0') + '; path=<?php echo htmlspecialchars(parse_url(admin_url(), PHP_URL_PATH)); ?>; max-age=' + (setTo ? '31536000' : '0'); return false; "><span class="toggle-expert-settings-show">→ show expert settings</span><span class="toggle-expert-settings-hide">← hide expert settings</span></a></div>
 	</nav>
+	<style>
+
+		.deprecated {
+			background: #900;
+			color: #fff;
+			padding: 0 .5rem;
+			display: inline-block;
+			border-radius: 3px;
+		}
+
+	</style>
 	<?php
+}
+
+function advset_page_deprecated() {
+	return '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>';
 }
 
 # Add plugin option in Plugins page

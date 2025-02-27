@@ -9,17 +9,6 @@
 	<?php delete_option('advset_notice') ?>
 	<?php } ?>
 
-	<?php $deprecated = '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>'; ?>
-	<style>
-
-		.deprecated {
-			background: #900;
-			color: #fff;
-			padding: 0 .5rem;
-			border-radius: 3px;
-		}
-
-	</style>
 	<form action="options.php" method="post">
 
 		<input type="hidden" name="advset_group" value="scripts" />
@@ -35,21 +24,21 @@
 
 						<label for="jquery_remove_migrate">
 							<input name="jquery_remove_migrate" type="checkbox" id="jquery_remove_migrate" value="1" <?php advset_check_if('jquery_remove_migrate') ?> />
-							<s><?php _e('Remove unnecessary jQuery migrate script (jquery-migrate.min.js)'); echo '</s> ' . $deprecated; ?>
+							<s><?php _e('Remove unnecessary jQuery migrate script (jquery-migrate.min.js)'); echo '</s> ' . advset_page_deprecated(); ?>
 						</label>
 
 						<br />
 						<br />
 						<label for="jquery_cnd">
 							<input name="jquery_cnd" type="checkbox" id="jquery_cnd" value="1" <?php advset_check_if('jquery_cnd') ?> />
-							<s><?php _e('Include jQuery Google CDN instead local script (version 1.11.0)') ?></s> <?php echo $deprecated . '<br />&nbsp; &nbsp; &nbsp; <em>' . __('For stability reasons, this feature will remain implemented but will be hidden on new installations.') . '</em>'; ?>
+							<s><?php _e('Include jQuery Google CDN instead local script (version 1.11.0)') ?></s> <?php echo advset_page_deprecated() . '<br />&nbsp; &nbsp; &nbsp; <em>' . __('For stability reasons, this feature will remain implemented but will be hidden on new installations.') . '</em>'; ?>
 						</label>
 
 						<br />
 						<br />
 						<label for="remove_script_type">
 							<input name="remove_script_type" type="checkbox" id="remove_script_type" value="1" <?php advset_check_if('remove_script_type') ?> />
-							<s><?php _e('Remove <i>type="text/javascript"</i> attribute from &lt;script&gt; tag') ?></s> <?php echo $deprecated; ?>
+							<s><?php _e('Remove <i>type="text/javascript"</i> attribute from &lt;script&gt; tag') ?></s> <?php echo advset_page_deprecated(); ?>
 						</label>
 
 					</fieldset>

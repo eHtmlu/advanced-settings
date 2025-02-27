@@ -2,18 +2,6 @@
 
 <div class="wrap">
 	<?php advset_page_header() ?>
-
-	<?php $deprecated = '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>'; ?>
-	<style>
-
-		.deprecated {
-			background: #900;
-			color: #fff;
-			padding: 0 .5rem;
-			border-radius: 3px;
-		}
-
-	</style>
 	<form action="options.php" method="post">
 
 		<input type="hidden" name="advset_group" value="system" />
@@ -54,7 +42,7 @@
 					<fieldset>
 						<label for="remove_default_wp_widgets">
 							<input name="remove_default_wp_widgets" type="checkbox" id="remove_default_wp_widgets" value="1" <?php advset_check_if('remove_default_wp_widgets') ?> />
-							<s><?php _e('Unregister default WordPress widgets') ?></s> <?php echo $deprecated; ?>
+							<s><?php _e('Unregister default WordPress widgets') ?></s> <?php echo advset_page_deprecated(); ?>
 						</label>
 
 						<br />
@@ -62,7 +50,7 @@
 
 						<label for="remove_widget_system">
 							<input name="remove_widget_system" type="checkbox" id="remove_widget_system" value="1" <?php advset_check_if('remove_widget_system') ?> />
-							<s><?php _e('Disable widget system') ?></s> <?php echo $deprecated; ?>
+							<s><?php _e('Disable widget system') ?></s> <?php echo advset_page_deprecated(); ?>
 						</label>
 
 						<br />
