@@ -17,7 +17,7 @@ define('ADVSET_DIR', dirname(__FILE__));
 
 # THE ADMIN PAGE
 function advset_page() {
-	switch ($_GET['tab'] ?? null) {
+	switch (isset($_GET['tab']) ? $_GET['tab'] : null) {
 		case 'admin-code': include ADVSET_DIR.'/admin-code.php'; break;
 		case 'admin-post-types': include ADVSET_DIR.'/admin-post-types.php'; break;
 		case 'admin-scripts': include ADVSET_DIR.'/admin-scripts.php'; break;
@@ -124,7 +124,7 @@ function advset_menu() {
 
 # ADMIN PAGE TABS
 function advset_page_header() {
-	$active_tab = $_GET['tab'] ?? '';
+	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : '';
 	?>
 	<style>
 		.nav-tab-wrapper.show-expert-settings .toggle-expert-settings-show,
