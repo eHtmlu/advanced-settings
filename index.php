@@ -23,6 +23,7 @@ function advset_page() {
 		case 'admin-scripts': include ADVSET_DIR.'/admin-scripts.php'; break;
 		case 'admin-styles': include ADVSET_DIR.'/admin-styles.php'; break;
 		case 'admin-filters': include ADVSET_DIR.'/admin-filters.php'; break;
+		case 'admin-get-in-touch': include ADVSET_DIR.'/admin-get-in-touch.php'; break;
 		case 'admin-system':
 		default: include ADVSET_DIR.'/admin-system.php'; break;
 	}
@@ -117,7 +118,8 @@ function advset_check_if( $option_name, $echo=true ) {
 
 # ADMIN MENU
 function advset_menu() {
-	add_options_page(__('Advanced …'), __('Advanced …'), 'manage_options', 'advanced-settings', 'advset_page');
+	$title = '💚 ' . __('Advanced') . ' …';
+	add_options_page($title, $title, 'manage_options', 'advanced-settings', 'advset_page');
 }
 
 # ADMIN PAGE TABS
@@ -133,9 +135,14 @@ function advset_page_header() {
 		.expert-setting,
 		.toggle-expert-settings a {
 			color: #c60;
+			transition: color .3s;
 		}
 		.nav-tab-wrapper:not(.show-expert-settings) .toggle-expert-settings a {
 			color: #999;
+		}
+		.toggle-expert-settings a:hover,
+		.toggle-expert-settings a:focus-visible {
+			color: currentColor !important;
 		}
 		.toggle-expert-settings {
 			float: left;
@@ -150,8 +157,39 @@ function advset_page_header() {
 			box-shadow: none;
 			text-decoration: none;
 		}
+
+		.heart {
+			font-size: 2rem;
+			display: inline-block;
+			animation: heartbeat 1.5s ease-in-out infinite;
+		}
+		@keyframes heartbeat {
+			0% {
+				transform: scale(1);
+			}
+			15% {
+				transform: scale(1.15);
+			}
+			30% {
+				transform: scale(1);
+			}
+			45% {
+				transform: scale(1.1);
+			}
+			60% {
+				transform: scale(1);
+			}
+			100% {
+				transform: scale(1);
+			}
+		}
 	</style>
-	<h1><?php _e('Advanced Settings'); ?></h1>
+	<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; align-items: flex-start; ">
+		<div style="flex-grow: 1; ">
+			<h1><?php _e('Settings'); echo ' &rsaquo; '; _e('Advanced'); ?></h1>
+		</div>
+		<div style="border: #3c3 solid 2px; background: #fff; padding: 1rem; border-radius: .5rem; display: flex; gap: 1rem; font-size: 1rem; line-height: 1.4; "><span class="heart">💚</span><span>This plugin is currently being extensively revised.<br />If you have any questions or wishes, just <a href="?page=advanced-settings&tab=admin-get-in-touch">get in touch</a>.</span></div>
+	</div>
 	<nav class="nav-tab-wrapper<?php echo empty($_COOKIE['advset_show_expert_settings']) ? '' : ' show-expert-settings' ?>">
 		<a href="?page=advanced-settings" class="nav-tab <?php echo $active_tab === '' ? 'nav-tab-active' : ''; ?>"><?php echo __('System') ?></a>
 		<a href="?page=advanced-settings&tab=admin-code" class="nav-tab <?php echo $active_tab === 'admin-code' ? 'nav-tab-active' : ''; ?>"><?php echo __('HTML Code') ?></a>
