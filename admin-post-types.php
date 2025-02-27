@@ -95,6 +95,11 @@
 			<?php advset_page_header() ?>
 			<br />
 
+			<div style="padding: 1rem; background: #fff; border: #f00 solid 2px; border-radius: .5rem; ">
+				<h3 style="margin: 0; ">WARNING</h3>
+				<p style="margin: 0; "><?php _e('Be careful, changing a post type can significantly impact the functionality of the website.') ?></p>
+			</div>
+			<br />
 			<a href="#" onclick="return show_form();" class="add-new-h2">Add New Post Type</a>
 			<br />
 			<br />

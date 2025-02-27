@@ -2,10 +2,13 @@
 
 <div class="wrap">
 	<?php advset_page_header() ?>
+  <br />
 
-  <div>&nbsp;</div>
-
-  <div id="message" class="error"><?php _e('Be careful, removing a filter can destabilize your system. For security reasons, no filter removal has efects over this page.') ?></div>
+  <div style="padding: 1rem; background: #fff; border: #f00 solid 2px; border-radius: .5rem; ">
+    <h3 style="margin: 0; ">WARNING</h3>
+    <p style="margin: 0; "><?php _e('Be careful, removing a filter can destabilize your system. For security reasons, no filter removal has efects over this page.') ?></p>
+  </div>
+  <br />
 
   <?php
   global $wp_filter;
