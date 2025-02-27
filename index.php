@@ -171,12 +171,26 @@ function advset_page_header() {
 			border-radius: 3px;
 		}
 
+		.experimental {
+			background: #39f;
+			color: #fff;
+			padding: 0 .5rem;
+			display: inline-block;
+			border-radius: 3px;
+			font-size: 14px;
+			line-height: 1.4;
+		}
+
 	</style>
 	<?php
 }
 
 function advset_page_deprecated() {
 	return '<br />&nbsp; &nbsp; &nbsp; <strong class="deprecated">' . __('DEPRECATED') . '</strong> <span style="color: #900; ">' . __('This option will be removed in an upcoming version.') . '</span>';
+}
+
+function advset_page_experimental() {
+	return ' <strong class="experimental">' . __('EXPERIMENTAL') . '</strong>';
 }
 
 # Add plugin option in Plugins page

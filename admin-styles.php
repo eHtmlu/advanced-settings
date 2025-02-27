@@ -15,7 +15,7 @@
 
 		<?php settings_fields( 'advanced-settings' ); ?>
 
-		<h2 class="title">Tracking styles</h2>
+		<h2 class="title">Tracking styles &nbsp; <?php echo advset_page_experimental(); ?></h2>
 		<p>
 			<?php _e('Check the "Track enqueued styles" option and browse the website pages and refresh this page to show the captured styles.'); ?>
 		</p>

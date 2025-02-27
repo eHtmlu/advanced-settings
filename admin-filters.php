@@ -3,6 +3,9 @@
 <div class="wrap">
 	<?php advset_page_header() ?>
   <br />
+  <?php echo advset_page_experimental(); ?>
+  <br />
+  <br />
 
   <div style="padding: 1rem; background: #fff; border: #f00 solid 2px; border-radius: .5rem; ">
     <h3 style="margin: 0; ">WARNING</h3>

@@ -46,7 +46,7 @@
 			</tr>
 		</table>
 
-		<h2 class="title">Tracking scripts</h2>
+		<h2 class="title">Tracking scripts &nbsp; <?php echo advset_page_experimental(); ?></h2>
 		<p>
 			<?php _e('Check the "Track enqueued scripts" option and browse the website pages and refresh this page to show the captured scripts.'); ?>
 		</p>
