@@ -15,7 +15,9 @@ Get advanced settings and change all you imagine that are not provided by WordPr
 
 == Description ==
 
-This is an essential plugin for your WordPress websites.
+This plugin offers settings that you might expect to find in the WordPress core.
+
+💚 This plugin is currently being extensively revised. So there will be changes and many more settings will be added too, but the most important thing is that it remains high performing, lightweight and backwards compatible. If you have any questions or wishes, just get in touch via [X](https://x.com/messages/compose?recipient_id=315358901) or simply create a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
 
 = New Features =
 
