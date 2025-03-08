@@ -27,8 +27,8 @@
             <p style="text-align: right; "><small>Thu Feb 27, 2025</small></p>
             <p>Hi, my name is Helmut</p>
             <p>I was recently given the honor of taking over the maintenance and further development of the Advanced Settings plugin, and my goal is to add as much value as possible to the WordPress community with it.</p>
-            <p>Even if the plugin remains lightweight and largely downwards compatible, there will be changes in the coming months. So let's get in touch and let me know what you think.</p>
-            <p>Contact me by <a href="mailto:ehtmlu@gmail.com">email</a> or <a href="https://x.com/messages/compose?recipient_id=315358901" target="_blank">X</a> or simply create a topic on the <a href="https://wordpress.org/support/plugin/advanced-settings/#new-topic-0" target="_blank">plugin support page</a>.</p>
+            <p>So there will be changes, but it will remain powerful, lightweight and largely backwards compatible. So let's get in touch and let me know what you think.</p>
+            <p>Contact me via <a href="mailto:ehtmlu@gmail.com">email</a> or simply create a topic on the <a href="https://wordpress.org/support/plugin/advanced-settings/#new-topic-0" target="_blank">plugin support page</a>.</p>
             <hr />
             <p><small>Many thanks to the former developer <a href="https://devarthur.com/" target="_blank">Arthur Ronconi</a>, who originally created the plugin, for entrusting the plugin to me.</small></p>
         </div>
