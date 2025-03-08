@@ -908,9 +908,8 @@ if( $_POST && (advset_option('max_image_size_w')>0 || advset_option('max_image_s
 
 # remove filters if not in filters admin page
 $remove_filters = get_option( 'advset_remove_filters' );
-if( !isset($_GET['page'])
-	|| $_GET['page']!='advanced-settings-filters' && is_array($remove_filters) ) {
-
+$is_advset_filter_page = isset($_GET['page']) && isset($_GET['tab']) && $_GET['page'] === 'advanced-settings' && $_GET['tab'] === 'admin-filters';
+if($is_advset_filter_page === false && is_array($remove_filters) ) {
 	if( isset($remove_filters) && is_array($remove_filters) )
 		foreach( $remove_filters as $tag=>$array )
 			if( is_array($array) )
