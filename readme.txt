@@ -35,7 +35,7 @@ This plugin offers settings that you might expect to find in the WordPress core.
 
 * Fix incorrect Facebook thumbnails including OG metas
 * Hide top admin menu
-* Automatically add a FavIcon (whenever there is a favicon.ico or favicon.png file in the template folder)
+* Automatically add a FavIcon (whenever there is a favicon.ico, favicon.png or favicon.svg file in the template folder)
 * Add a description meta tag using the blog description (SEO)
 * Add description and keywords meta tags in each posts (SEO)
 * Remove header WordPress generator meta tag
