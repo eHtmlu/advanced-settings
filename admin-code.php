@@ -28,7 +28,7 @@
 						<br />
 						<label for="favicon">
 							<input name="favicon" type="checkbox" id="favicon" value="1" <?php advset_check_if('favicon') ?> />
-							<?php _e('Automatically add a FavIcon') ?> <i style="color:#999">(<?php _e('whenever there is a favicon.ico or favicon.png file in the template folder') ?>)</i></label>
+							<?php _e('Automatically add a FavIcon') ?> <i style="color:#999">(<?php _e('whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme folder') ?>)</i></label>
 						</label>
 
 						<br />

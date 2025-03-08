@@ -309,10 +309,16 @@ if( advset_option('feedburner') ) {
 if( advset_option('favicon') ) {
 
 	function __advsettings_favicon() {
-		if( file_exists(TEMPLATEPATH.'/favicon.ico') )
-			echo '<link rel="shortcut icon" href="'.get_bloginfo('template_url').'/favicon.ico'.'">'."\r\n";
-		elseif( file_exists(TEMPLATEPATH.'/favicon.png') )
-			echo '<link rel="shortcut icon" type="image/png" href="'.get_bloginfo('template_url').'/favicon.png'.'">'."\r\n";
+		foreach ([
+			'ico' => '',
+			'png' => 'image/png',
+			'svg' => 'image/svg+xml',
+		] as $suffix => $mime) {
+			if ( file_exists(TEMPLATEPATH.'/favicon.' . $suffix) ){
+				echo '<link rel="shortcut icon"' . ($mime ? ' type="'.$mime.'"' : '') . ' href="'.get_bloginfo('template_url').'/favicon.'.$suffix.'">'."\r\n";
+				break;
+			}
+		}
 	}
 	add_action( 'wp_head', '__advsettings_favicon' );
 }
