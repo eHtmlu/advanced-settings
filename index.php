@@ -54,8 +54,14 @@ if( is_admin() ) {
 		delete_option('powerconfigs');
 	}
 	// Update the database for plugin versions greater than 2.6 (the change occurred in version 2.7.0)
-	if( $settings=get_option('adv_post_types') ) {
-		update_option('advset_post_types', $settings);
+	if( $post_types_unsanitized=get_option('adv_post_types') ) {
+		// Fix key issue (keys where not sanitized)
+		$post_types_fixed = [];
+		foreach ($post_types_unsanitized as $stored_key => $value) {
+			$post_types_fixed[sanitize_key( $stored_key )] = $value;
+		}
+		// Rename option to make it consistent to other plugin options
+		update_option('advset_post_types', $post_types_fixed);
 		delete_option('adv_post_types');
 	}
 
@@ -1027,13 +1033,7 @@ function advset_register_post_types() {
 	$post_types = (array) get_option( 'advset_post_types', array() );
 
 	if( is_admin() && current_user_can('manage_options') && isset($_GET['delete_posttype']) ) {
-		// We also need to look for unsanitized keys because they were not stored sanitized before plugin version 2.7.0.
-		foreach ($post_types as $stored_key => $value) {
-			$sanitized_key = sanitize_key( $stored_key );
-			if ($sanitized_key === $_GET['delete_posttype']) {
-				unset($post_types[$stored_key]);
-			}
-		}
+		unset($post_types[$_GET['delete_posttype']]);
 		update_option( 'advset_post_types', $post_types );
 	}
 
