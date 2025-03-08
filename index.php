@@ -1027,7 +1027,13 @@ function advset_register_post_types() {
 	$post_types = (array) get_option( 'advset_post_types', array() );
 
 	if( is_admin() && current_user_can('manage_options') && isset($_GET['delete_posttype']) ) {
-		unset($post_types[$_GET['delete_posttype']]);
+		// We also need to look for unsanitized keys because they were not stored sanitized before plugin version 2.7.0.
+		foreach ($post_types as $stored_key => $value) {
+			$sanitized_key = sanitize_key( $stored_key );
+			if ($sanitized_key === $_GET['delete_posttype']) {
+				unset($post_types[$stored_key]);
+			}
+		}
 		update_option( 'advset_post_types', $post_types );
 	}
 
@@ -1050,6 +1056,8 @@ function advset_register_post_types() {
 			#'parent_item_colon' => @$parent_item_colon,
 			#'menu_name' => @$menu_name
 		);
+
+		$typename = sanitize_key( $type );
 
 		$post_types[$type] = array(
 			'labels'              => $labels,

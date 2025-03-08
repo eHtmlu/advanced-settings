@@ -80,6 +80,8 @@
 		str=str.replace(/[óòõôö]/g,'o');
 		str=str.replace(/[úùûü]/g,'u');
 		str=str.replace('ç','c');
+		str=str.replace(/[^a-z0-9_\-]/g,'');
+		str=str.substring(0, 20);
 		return str;
 	};
 	function in_array(needle, haystack) {
@@ -122,9 +124,9 @@
 						<th scope="row"><?php _e('Label'); ?></th>
 						<td>
 							<input id="namefield" name="label" type="text" value="" onblur="
-							input = jQuery('#typefield');
-							if( input.val()=='' )
-								input.val(str2slug(this.value));
+							const input = document.getElementById('typefield');
+							if( input.value === '' )
+								input.value = str2slug(this.value);
 							" />
 
 							<!--p><a href="#">+ show more labels</a></p-->
@@ -135,7 +137,8 @@
 					<tr valign="top">
 						<th scope="row"><?php _e('Type Name'); ?></th>
 						<td>
-							<input id="typefield" name="type" type="text" value="" />
+							<input id="typefield" name="type" type="text" value="" pattern="^[a-z0-9_\-]{1,20}$" required /><br />
+							<i style="color:#999">Post type names must be between 1 and 20 characters in length. Lowercase alphanumeric characters, dashes, and underscores are allowed. </i>
 						</td>
 					</tr>
 
