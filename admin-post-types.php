@@ -6,7 +6,7 @@
 
 	unset( $post_types['attachment'], $post_types['revision'], $post_types['nav_menu_item'] );
 
-	$adv_post_types = (array) get_option( 'adv_post_types', array() );
+	$advset_post_types = (array) get_option( 'advset_post_types', array() );
 
 	?>
 	<script>

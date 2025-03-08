@@ -53,6 +53,11 @@ if( is_admin() ) {
 		update_option('advset_remove_filters', $settings['remove_filters']);
 		delete_option('powerconfigs');
 	}
+	// Update the database for plugin versions greater than 2.6 (the change occurred in version 2.7.0)
+	if( $settings=get_option('adv_post_types') ) {
+		update_option('advset_post_types', $settings);
+		delete_option('adv_post_types');
+	}
 
 	// update settings
 	if( isset($_POST['option_page']) && $_POST['option_page']=='advanced-settings' ) {
@@ -1019,11 +1024,11 @@ function prefix_ajax_advset_filters() {
 add_action( 'init', 'advset_register_post_types' );
 function advset_register_post_types() {
 
-	$post_types = (array) get_option( 'adv_post_types', array() );
+	$post_types = (array) get_option( 'advset_post_types', array() );
 
 	if( is_admin() && current_user_can('manage_options') && isset($_GET['delete_posttype']) ) {
 		unset($post_types[$_GET['delete_posttype']]);
-		update_option( 'adv_post_types', $post_types );
+		update_option( 'advset_post_types', $post_types );
 	}
 
 	if( is_admin() && current_user_can('manage_options') && isset($_POST['advset_action_posttype']) ) {
@@ -1062,7 +1067,7 @@ function advset_register_post_types() {
 			'taxonomies'          => (array) (empty($taxonomies) ? [] : $taxonomies),
 		);
 
-		update_option( 'adv_post_types', $post_types );
+		update_option( 'advset_post_types', $post_types );
 
 	}
 	#print_r($post_types);
