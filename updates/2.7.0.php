@@ -14,3 +14,5 @@ if( $post_types_unsanitized=get_option('adv_post_types') ) {
     delete_option('adv_post_types');
 }
 
+require_once dirname(__DIR__) . '/class.tracksettings.php';
+Advanced_Settings_Track_Settings::get_instance()->send_if_consent_exists();
