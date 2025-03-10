@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, options, performance, speed, admin
 Requires at least: 5.0.0
 Tested up to: 6.7
-Stable tag: 2.7.0
+Stable tag: 2.8.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -100,6 +100,10 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 
 
 == Changelog ==
+
+= 2.8.0 - 2025-03-10 =
+* Add "Config" tab with settings for the plugin itself
+* Performance optimizations
 
 = 2.7.0 - 2025-03-10 =
 * Added support for SVG favicons in "Automatically add a FavIcon" setting
