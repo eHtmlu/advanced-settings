@@ -67,7 +67,7 @@ function advset_check_for_version_migrations() {
         update_option('advset_version', $new_version);
     }
 }
-add_action('plugins_loaded', 'advset_check_for_version_migrations', 1);
+add_action('init', 'advset_check_for_version_migrations', 1);
 
 
 
