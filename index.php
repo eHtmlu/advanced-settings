@@ -36,6 +36,42 @@ if ( ! function_exists( 'is_admin_area' ) ) {
   }
 }
 
+
+
+
+/**
+ * Checks if a version migration is required
+ * 
+ * (optimized for high performance)
+ */
+function advset_check_for_version_migrations() {
+    $current_filemtime = filemtime(__FILE__);
+    $cache = get_option('advset_version_cache', []);
+
+    if ( isset($cache['version'], $cache['filemtime']) && $cache['filemtime'] === $current_filemtime ) {
+        $new_version = $cache['version'];
+    } else {
+        if (!function_exists('get_plugin_data')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        $plugin_data = get_plugin_data(__FILE__);
+        $new_version = $plugin_data['Version'];
+
+        update_option('advset_version_cache', ['version' => $new_version, 'filemtime' => $current_filemtime]);
+    }
+
+    $old_version = get_option('advset_version', '1.0.0');
+
+    if (version_compare($old_version, $new_version, '<')) {
+		require_once __DIR__ . '/updates/init.php';
+        update_option('advset_version', $new_version);
+    }
+}
+add_action('plugins_loaded', 'advset_check_for_version_migrations', 1);
+
+
+
+
 if( is_admin() ) {
 
 	define('ADVSET_URL', 'https://wordpress.org/plugins/advanced-settings/');
@@ -45,25 +81,6 @@ if( is_admin() ) {
 
 	# Add plugin option in Plugins page
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
-
-	// Update the database for plugin versions greater than 2.0 (the change occurred in version 2.1)
-	if( $settings=get_option('powerconfigs') ) {
-		update_option('advset_code', $settings);
-		update_option('advset_system', $settings);
-		update_option('advset_remove_filters', $settings['remove_filters']);
-		delete_option('powerconfigs');
-	}
-	// Update the database for plugin versions greater than 2.6 (the change occurred in version 2.7.0)
-	if( $post_types_unsanitized=get_option('adv_post_types') ) {
-		// Fix key issue (keys where not sanitized)
-		$post_types_fixed = [];
-		foreach ($post_types_unsanitized as $stored_key => $value) {
-			$post_types_fixed[sanitize_key( $stored_key )] = $value;
-		}
-		// Rename option to make it consistent to other plugin options
-		update_option('advset_post_types', $post_types_fixed);
-		delete_option('adv_post_types');
-	}
 
 	// update settings
 	if( isset($_POST['option_page']) && $_POST['option_page']=='advanced-settings' ) {
