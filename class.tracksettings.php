@@ -17,7 +17,7 @@ class Advanced_Settings_Track_Settings {
     public function __construct() {
         add_action('wp_ajax_advset_track_choice', [$this, 'handle_tracking_choice']);
 
-        add_action('admin_init', [$this, 'init_modal']);
+        add_action('admin_enqueue_scripts', [$this, 'init_modal']);
 
         foreach ([
             'advset_scripts',
@@ -26,9 +26,9 @@ class Advanced_Settings_Track_Settings {
             'advset_styles',
             'advset_remove_filters',
             'advset_post_types',
+            'advset_advset',
             'advset_code',
             'advset_system',
-            'advset_tracksettings_choice',
             'advset_tracksettings_asklater',
         ] as $option) {
             add_action('update_option_' . $option, [$this, 'send_if_consent_exists']);
@@ -39,12 +39,12 @@ class Advanced_Settings_Track_Settings {
      * Gets consent value
      */
     public function consent() {
-        return get_option('advset_tracksettings_choice', '0');
+        return advset_option('advset_tracksettings_choice', '0');
     }
 
     public function init_modal() {
         if ($this->should_show_modal()) {
-            add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
+            $this->enqueue_assets();
             add_action('admin_footer', [$this, 'render_modal_template']);
         }
     }
@@ -54,7 +54,7 @@ class Advanced_Settings_Track_Settings {
      */
     private function should_show_modal() {
         if (!current_user_can('install_plugins')) return false;
-        if (false !== get_option('advset_tracksettings_choice', false)) return false;
+        if (false !== advset_option('advset_tracksettings_choice', false)) return false;
         $t = get_option('advset_tracksettings_asklater', 0);
         if (!($t < (time() - (60 * 60)))) return false;
         if ($t > 0) delete_option('advset_tracksettings_asklater');
@@ -64,7 +64,7 @@ class Advanced_Settings_Track_Settings {
     /**
      * Enqueues required scripts and styles
      */
-    public function enqueue_assets($hook) {
+    public function enqueue_assets() {
         wp_enqueue_script(
             'advset-tracking-modal',
             plugins_url('assets/tracksettings-optin-modal.js', __FILE__),
@@ -84,7 +84,7 @@ class Advanced_Settings_Track_Settings {
      */
     public function render_modal_template() {
         $title = __('Help to improve Advanced Settings', 'advset-tracking');
-        $text = sprintf(__("The Advanced Settings plugin is currently being fundamentally revised. If you let us know which features you use, we can take this into account. We only collect yes/no information about what features you use, nothing else.\n\nOtherwise, we won't know what you're using and we might remove a feature you actually need. You can change this setting later at any time under <a href=\"%s\">%s &gt; %s</a>.\n\nDo you agree to let us know which features you use?", 'advset-tracking'), 'options-general.php?page=advanced-settings', __('Settings'), __('Advanced'));
+        $text = sprintf(__("The Advanced Settings plugin is currently being fundamentally revised. If you let us know which features you use, we can take this into account. We only collect yes/no information about what features you use, nothing else.\n\nOtherwise, we won't know what you're using and we might remove a feature you actually need. You can change this setting later at any time under <a href=\"%s\">%s &gt; %s</a>.\n\nDo you agree to let us know which features you use?", 'advset-tracking'), 'options-general.php?page=advanced-settings&tab=admin-advset', __('Settings'), __('Advanced'));
         $lang = substr(get_user_locale(), 0, 2);
         ?>
         <dialog id="advset-tracking-dialog" 
@@ -327,8 +327,10 @@ class Advanced_Settings_Track_Settings {
         }
 
         if (in_array($_POST['choice'], ['agree', 'disagree'])) {
-            $value = ('agree' === $_POST['choice']) ? 1 : 0;
-            update_option('advset_tracksettings_choice', $value, false);
+            $value = ('agree' === $_POST['choice']) ? '1' : '0';
+            $option = get_option('advset_advset', []);
+            $option['advset_tracksettings_choice'] = $value;
+            update_option('advset_advset', $option);
             wp_die();
         }
 
@@ -359,9 +361,9 @@ class Advanced_Settings_Track_Settings {
             'advset_styles',
             'advset_remove_filters',
             'advset_post_types',
+            'advset_advset',
             'advset_code',
             'advset_system',
-            'advset_tracksettings_choice',
             'advset_tracksettings_asklater',
         ] as $option) {
             $data_stored[$option] = get_option($option, null);
@@ -404,6 +406,10 @@ class Advanced_Settings_Track_Settings {
                 return empty($used) ? false : $used;
             },
             'advset_post_types' => $handler_array,
+            'advset_advset' => [
+                'hide_heart_in_menu' => $handler_boolean,
+                'advset_tracksettings_choice' => $handler_boolean,
+            ],
             'advset_code' => [
                 'facebook_og_metas' => $handler_boolean,
                 'remove_menu' => $handler_boolean,
@@ -442,7 +448,6 @@ class Advanced_Settings_Track_Settings {
                 'show_query_num' => $handler_boolean,
                 'add_thumbs' => $handler_boolean,
             ],
-            'advset_tracksettings_choice' => $handler_boolean,
             'advset_tracksettings_asklater' => $handler_boolean,
         ];
         $data_anonymized = [];

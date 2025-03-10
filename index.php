@@ -18,6 +18,7 @@ define('ADVSET_DIR', dirname(__FILE__));
 # THE ADMIN PAGE
 function advset_page() {
 	switch (isset($_GET['tab']) ? $_GET['tab'] : null) {
+		case 'admin-advset': include ADVSET_DIR.'/admin-advset.php'; break;
 		case 'admin-code': include ADVSET_DIR.'/admin-code.php'; break;
 		case 'admin-post-types': include ADVSET_DIR.'/admin-post-types.php'; break;
 		case 'admin-scripts': include ADVSET_DIR.'/admin-scripts.php'; break;
@@ -115,6 +116,9 @@ if( is_admin() ) {
 			if( !empty($_POST[$setup_name]['remove_widget_system']) )
 				$_POST[$setup_name]['remove_default_wp_widgets'] = '1';
 
+			if( isset($_POST[$setup_name]['advset_tracksettings_choice']) && $_POST[$setup_name]['advset_tracksettings_choice'] === '' )
+				unset($_POST[$setup_name]['advset_tracksettings_choice']);
+
 			// save settings
 			register_setting( 'advanced-settings', $setup_name );
 
@@ -129,7 +133,7 @@ function advset_option( $option_name, $default='' ) {
 	global $advset_options;
 
 	if( !isset($advset_options) )
-		$advset_options = get_option('advset_code', array()) + get_option('advset_system', array()) + get_option('advset_scripts', array()) + get_option('advset_styles', array());
+		$advset_options = get_option('advset_advset', array()) + get_option('advset_code', array()) + get_option('advset_system', array()) + get_option('advset_scripts', array()) + get_option('advset_styles', array());
 
 	if( isset($advset_options[$option_name]) )
 		return $advset_options[$option_name];
@@ -150,7 +154,7 @@ function advset_check_if( $option_name, $echo=true ) {
 
 # ADMIN MENU
 function advset_menu() {
-	$title = '💚 ' . __('Advanced') . ' …';
+	$title = (advset_option('hide_heart_in_menu') ? '' : '💚 ') . __('Advanced') . ' …';
 	add_options_page($title, $title, 'manage_options', 'advanced-settings', 'advset_page');
 }
 
@@ -230,6 +234,7 @@ function advset_page_header() {
 		<a href="?page=advanced-settings&tab=admin-post-types" class="expert-setting nav-tab <?php echo $active_tab === 'admin-post-types' ? 'nav-tab-active' : ''; ?>"><?php echo __('Post Types') ?></a>
 		<a href="?page=advanced-settings&tab=admin-filters" class="expert-setting nav-tab <?php echo $active_tab === 'admin-filters' ? 'nav-tab-active' : ''; ?>"><?php echo __('Filters/Actions') ?></a>
 		<div class="toggle-expert-settings"><a href="javascript:;" onclick="const className = 'show-expert-settings', classList = this.closest('nav').classList, setTo = !classList.contains(className); classList.toggle(className, setTo); document.cookie = 'advset_show_expert_settings=' + (setTo ? '1' : '0') + '; path=<?php echo htmlspecialchars(parse_url(admin_url(), PHP_URL_PATH)); ?>; max-age=' + (setTo ? '31536000' : '0'); return false; "><span class="toggle-expert-settings-show">→ show expert settings</span><span class="toggle-expert-settings-hide">← hide expert settings</span></a></div>
+		<a style="float: right; " href="?page=advanced-settings&tab=admin-advset" class="nav-tab <?php echo $active_tab === 'admin-advset' ? 'nav-tab-active' : ''; ?>"><?php echo __('Config') ?></a>
 	</nav>
 	<style>
 
