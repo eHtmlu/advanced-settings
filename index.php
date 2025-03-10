@@ -41,7 +41,7 @@ if ( ! function_exists( 'is_admin_area' ) ) {
 
 
 /**
- * Checks if a version migration is required
+ * Updates verison information in database and checks if a version migration is required
  * 
  * (optimized for high performance)
  */
@@ -59,6 +59,10 @@ function advset_check_for_version_migrations() {
         $new_version = $plugin_data['Version'];
 
         update_option('advset_version_cache', ['version' => $new_version, 'filemtime' => $current_filemtime], true);
+
+		if (get_option('advset_version__first_install', false) === false) {
+			update_option('advset_version__first_install', $new_version);
+		}
     }
 
     $old_version = get_option('advset_version', '1.0.0');
