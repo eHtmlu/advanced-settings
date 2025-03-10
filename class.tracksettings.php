@@ -335,7 +335,7 @@ class Advanced_Settings_Track_Settings {
         }
 
         if ($_POST['choice'] === 'later') {
-            update_option('advset_tracksettings_asklater', time(), false);
+            update_option('advset_tracksettings_asklater', time());
         }
 
         wp_die();

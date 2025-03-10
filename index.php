@@ -58,14 +58,14 @@ function advset_check_for_version_migrations() {
         $plugin_data = get_plugin_data(__FILE__);
         $new_version = $plugin_data['Version'];
 
-        update_option('advset_version_cache', ['version' => $new_version, 'filemtime' => $current_filemtime]);
+        update_option('advset_version_cache', ['version' => $new_version, 'filemtime' => $current_filemtime], true);
     }
 
     $old_version = get_option('advset_version', '1.0.0');
 
     if (version_compare($old_version, $new_version, '<')) {
 		require_once __DIR__ . '/updates/init.php';
-        update_option('advset_version', $new_version);
+        update_option('advset_version', $new_version, true);
     }
 }
 add_action('init', 'advset_check_for_version_migrations', 1);
