@@ -19,11 +19,6 @@ This plugin offers settings that you might expect to find in the WordPress core.
 
 💚 This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
 
-= New Features =
-
-* Disable author pages
-* Prevent installation of new default WordPress themes during core updates
-
 = Post types =
 
 * Manage/create/edit
@@ -105,6 +100,12 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 
 
 == Changelog ==
+
+= 2.7.0 - 2025-03-10 =
+* Added support for SVG favicons in "Automatically add a FavIcon" setting
+* Fixed a few issues
+* Several code optimizations
+* Add tracking consent modal and tracking itself
 
 = 2.6.0 - 2025-02-27 =
 * Changed navigation from multiple menu items to a single menu item with tab navigation
