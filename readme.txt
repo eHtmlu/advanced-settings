@@ -113,36 +113,40 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 * Added "get in touch" notice
 * Tidied up a bit
 
-= 2.5.0 =
+= 2.5.0 - 2025-01-13 =
 * Add new feature: Disable author pages
 * Add new feature: Prevent installation of new default WordPress themes during core updates
 
-= 2.4.0 =
+= 2.4.0 - 2023-12-26 =
 * Updated code for WordPress version 6.4.2
 
-= 2.3.4 =
+= 2.3.4 - 2020-12-02 =
 * Updated code for WordPress version 5.5.3
 
-= 2.3.3 =
+= 2.3.3 - 2017-03-03 =
 * Add styles admin page
 * Filters admin page fix
 * New description
 
-= 2.3.2 =
+= 2.3.2 - 2017-03-02 =
 * Fixes for script actions & hooks
 
-= 2.3.1 =
+= 2.3.1 - 2017-02-25 =
 * Add scripts admin page
 
-= 2.2.1 =
+= 2.2.2 - 2016-07-15 =
+* Remove Trackbacks and Pingbacks from Comment Count
+* Add a Custom Dashboard Logo
+
+= 2.2.1 - 2015-08-31 =
 * Fix delete posttype bug
 * Update plugin links
 * Add Git repository
 
-= 2.2 =
+= 2.2 - 2014-09-09 =
 * Fix migrate bug on update
 
-= 2.1 =
+= 2.1 - 2014-08-29 =
 * Fix update options bug
 * Remove unnecessary jQuery migrate script (jquery-migrate.min.js)
 * Include jQuery Google CDN instead local script (version 1.11.0)
@@ -151,7 +155,7 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 * Remove header shortlink meta tag
 * Fix delete link in post types admin page
 
-= 2.0 =
+= 2.0 - 2014-02-17 =
 * Organized admin menu creating new menu options
 
 = 1.5.3 =
