@@ -38,4 +38,13 @@ return [
         }
     },
 
+    '2.9.0' => function() {
+        if (($option = get_option('advset_advset', false)) !== false) {
+            if (isset($option['hide_heart_in_menu'])) {
+                unset($option['hide_heart_in_menu']);
+                update_option('advset_advset', $option);
+            }
+        }
+    },
+
 ];

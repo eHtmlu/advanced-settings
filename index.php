@@ -158,7 +158,7 @@ function advset_check_if( $option_name, $echo=true ) {
 
 # ADMIN MENU
 function advset_menu() {
-	$title = (advset_option('hide_heart_in_menu') ? '' : '💚 ') . __('Advanced') . ' …';
+	$title = __('Advanced') . ' …';
 	add_options_page($title, $title, 'manage_options', 'advanced-settings', 'advset_page');
 }
 

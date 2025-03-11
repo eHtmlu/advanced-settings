@@ -408,7 +408,6 @@ class Advanced_Settings_Track_Settings {
             'advset_post_types' => $handler_array,
             'advset_advset' => [
                 'show_deprecated_features' => $handler_boolean,
-                'hide_heart_in_menu' => $handler_boolean,
                 'advset_tracksettings_choice' => $handler_boolean,
             ],
             'advset_code' => [
