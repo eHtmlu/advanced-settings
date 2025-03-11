@@ -40,21 +40,23 @@
 				</th>
 				<td>
 					<fieldset>
+						<?php if (advset_option('show_deprecated_features') || advset_option('remove_default_wp_widgets')) { ?>
 						<label for="remove_default_wp_widgets">
 							<input name="remove_default_wp_widgets" type="checkbox" id="remove_default_wp_widgets" value="1" <?php advset_check_if('remove_default_wp_widgets') ?> />
 							<s><?php _e('Unregister default WordPress widgets') ?></s> <?php echo advset_page_deprecated(); ?>
 						</label>
-
 						<br />
 						<br />
+						<?php } ?>
 
+						<?php if (advset_option('show_deprecated_features') || advset_option('remove_widget_system')) { ?>
 						<label for="remove_widget_system">
 							<input name="remove_widget_system" type="checkbox" id="remove_widget_system" value="1" <?php advset_check_if('remove_widget_system') ?> />
 							<s><?php _e('Disable widget system') ?></s> <?php echo advset_page_deprecated(); ?>
 						</label>
-
 						<br />
 						<br />
+						<?php } ?>
 
 						<label for="remove_comments_system">
 							<input name="remove_comments_system" type="checkbox" id="remove_comments_system" value="1" <?php advset_check_if('remove_comments_system') ?> /> <?php _e('Disable comment system') ?>

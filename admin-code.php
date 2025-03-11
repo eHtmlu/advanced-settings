@@ -49,14 +49,16 @@
 							<?php _e('Remove header WordPress generator meta tag') ?>
 						</label>
 
+						<?php if (advset_option('show_deprecated_features') || advset_option('remove_wlw')) { ?>
 						<br />
 						<br />
 						<label for="remove_wlw">
 							<input name="remove_wlw" type="checkbox" id="remove_wlw" value="1" <?php advset_check_if('remove_wlw') ?> />
 							<s><?php _e('Remove header WLW Manifest meta tag (Windows Live Writer link)'); echo '</s>' . advset_page_deprecated(); ?>
 						</label>
-
 						<br />
+						<?php } ?>
+
 						<br />
 						<label for="remove_rsd">
 							<input name="remove_rsd" type="checkbox" id="remove_rsd" value="1" <?php advset_check_if('remove_rsd') ?> />
