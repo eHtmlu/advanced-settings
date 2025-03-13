@@ -22,7 +22,7 @@
 
 						<br />
 						<label for="advset_tracksettings_choice">
-							<?php _e('Agree to let us know which features of the plugin you use?') ?>
+							<?php _e('Do you agree to share your plugin usage with the developers?') ?>
                             <select name="advset_tracksettings_choice" id="advset_tracksettings_choice">
                                 <option></option>
                                 <option value="1"<?php echo advset_option('advset_tracksettings_choice') === '1' ? ' selected' : '' ?>>yes</option>
