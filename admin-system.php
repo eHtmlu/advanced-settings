@@ -201,21 +201,21 @@
 
 					<label for="prevent_auto_core_update_send_email">
 						<input name="prevent_auto_core_update_send_email" type="checkbox" id="prevent_auto_core_update_send_email" value="1" <?php advset_check_if('prevent_auto_core_update_send_email') ?> />
-						<?php _e('Prevent sending email notifications for core updates') ?>
+						<?php _e('Prevent sending email notifications for core updates') ?> <i style="color:#999">(<?php echo sprintf(__('change recipient in %s'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>') ?>)</i>
 					</label>
 
 					<br />
 
 					<label for="prevent_auto_plugin_update_send_email">
 						<input name="prevent_auto_plugin_update_send_email" type="checkbox" id="prevent_auto_plugin_update_send_email" value="1" <?php advset_check_if('prevent_auto_plugin_update_send_email') ?> />
-						<?php _e('Prevent sending email notifications for plugin updates') ?>
+						<?php _e('Prevent sending email notifications for plugin updates') ?> <i style="color:#999">(<?php echo sprintf(__('change recipient in %s'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>') ?>)</i>
 					</label>
 
 					<br />
 
 					<label for="prevent_auto_theme_update_send_email">
 						<input name="prevent_auto_theme_update_send_email" type="checkbox" id="prevent_auto_theme_update_send_email" value="1" <?php advset_check_if('prevent_auto_theme_update_send_email') ?> />
-						<?php _e('Prevent sending email notifications for theme updates') ?>
+						<?php _e('Prevent sending email notifications for theme updates') ?> <i style="color:#999">(<?php echo sprintf(__('change recipient in %s'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>') ?>)</i>
 					</label>
 
 					</fieldset>
