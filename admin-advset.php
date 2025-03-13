@@ -21,6 +21,14 @@
 						</label>
 
 						<br />
+						<label for="show_experimental_expert_features">
+							<input name="show_experimental_expert_features" type="checkbox" id="show_experimental_expert_features" value="1" <?php advset_check_if('show_experimental_expert_features') ?>>
+							<?php _e('Show all experimental expert features') ?> 
+                            <i style="color:#999">(<?php _e('By default, only expert features that are in use are shown.') ?>)</i>
+						</label>
+
+						<br />
+                        <br />
 						<label for="advset_tracksettings_choice">
 							<?php _e('Do you agree to share your plugin usage with the developers?') ?>
                             <select name="advset_tracksettings_choice" id="advset_tracksettings_choice">

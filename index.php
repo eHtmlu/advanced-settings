@@ -30,6 +30,43 @@ function advset_page() {
 	}
 }
 
+function advset_is_tab_in_use($tab) {
+    switch($tab) {
+        case 'scripts':
+            // Check if any script feature is active
+            $scripts_options = get_option('advset_scripts', array());
+            return !empty($scripts_options) && !(count($scripts_options) === 1 && isset($scripts_options['advset_group']));
+        
+        case 'styles':
+            // Check if any style feature is active
+            $styles_options = get_option('advset_styles', array());
+            return !empty($styles_options) && !(count($styles_options) === 1 && isset($styles_options['advset_group']));
+            
+        case 'post-types':
+            // Check if custom post types are defined
+            $post_types = get_option('advset_post_types', array());
+            return !empty($post_types) && !(count($post_types) === 1 && isset($post_types['advset_group']));
+            
+        case 'filters':
+            // Check if filters/actions are configured
+            $remove_filters = get_option('advset_remove_filters', array());
+            // Check for active filters (without advset_group)
+            if (empty($remove_filters)) return false;
+            if (count($remove_filters) === 1 && isset($remove_filters['advset_group'])) return false;
+            
+            // Check if there are active filters in the subarrays
+            foreach ($remove_filters as $tag => $functions) {
+                if ($tag !== 'advset_group' && !empty($functions)) {
+                    return true;
+                }
+            }
+            return false;
+            
+        default:
+            return false;
+    }
+}
+
 // from https://stevegrunwell.com/blog/quick-tip-is_login_page-function-for-wordpress/
 if ( ! function_exists( 'is_admin_area' ) ) {
   function is_admin_area() {
@@ -167,37 +204,9 @@ function advset_page_header() {
 	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : '';
 	?>
 	<style>
-		.nav-tab-wrapper.show-expert-settings .toggle-expert-settings-show,
-		.nav-tab-wrapper:not(.show-expert-settings) .toggle-expert-settings-hide,
-		.nav-tab-wrapper:not(.show-expert-settings) .expert-setting {
-			display: none;
-		}
-		.expert-setting,
-		.toggle-expert-settings a {
+		.expert-setting {
 			color: #c60;
-			transition: color .3s;
 		}
-		.nav-tab-wrapper:not(.show-expert-settings) .toggle-expert-settings a {
-			color: #999;
-		}
-		.toggle-expert-settings a:hover,
-		.toggle-expert-settings a:focus-visible {
-			color: currentColor !important;
-		}
-		.toggle-expert-settings {
-			float: left;
-			padding: 5px 10px;
-			border-top: 1px solid transparent;
-			line-height: 1.71428571;
-			font-size: 14px;
-			margin-left: .5em;
-		}
-		.toggle-expert-settings a {
-			outline: none;
-			box-shadow: none;
-			text-decoration: none;
-		}
-
 		.heart {
 			font-size: 2rem;
 			display: inline-block;
@@ -230,14 +239,21 @@ function advset_page_header() {
 		</div>
 		<div style="border: #3c3 solid 2px; background: #fff; padding: 1rem; border-radius: .5rem; display: flex; gap: 1rem; font-size: 1rem; line-height: 1.4; "><span class="heart">💚</span><span>This plugin is currently being extensively revised.<br />If you have any questions or wishes, just <a href="?page=advanced-settings&tab=admin-get-in-touch">get in touch</a>.</span></div>
 	</div>
-	<nav class="nav-tab-wrapper<?php echo empty($_COOKIE['advset_show_expert_settings']) ? '' : ' show-expert-settings' ?>">
+	<nav class="nav-tab-wrapper">
 		<a href="?page=advanced-settings" class="nav-tab <?php echo $active_tab === '' ? 'nav-tab-active' : ''; ?>"><?php echo __('System') ?></a>
 		<a href="?page=advanced-settings&tab=admin-code" class="nav-tab <?php echo $active_tab === 'admin-code' ? 'nav-tab-active' : ''; ?>"><?php echo __('HTML Code') ?></a>
+		<?php if (advset_option('show_experimental_expert_features') || advset_is_tab_in_use('scripts')) { ?>
 		<a href="?page=advanced-settings&tab=admin-scripts" class="expert-setting nav-tab <?php echo $active_tab === 'admin-scripts' ? 'nav-tab-active' : ''; ?>"><?php echo __('Scripts') ?></a>
+		<?php } ?>
+		<?php if (advset_option('show_experimental_expert_features') || advset_is_tab_in_use('styles')) { ?>
 		<a href="?page=advanced-settings&tab=admin-styles" class="expert-setting nav-tab <?php echo $active_tab === 'admin-styles' ? 'nav-tab-active' : ''; ?>"><?php echo __('Styles') ?></a>
+		<?php } ?>
+		<?php if (advset_option('show_experimental_expert_features') || advset_is_tab_in_use('post-types')) { ?>
 		<a href="?page=advanced-settings&tab=admin-post-types" class="expert-setting nav-tab <?php echo $active_tab === 'admin-post-types' ? 'nav-tab-active' : ''; ?>"><?php echo __('Post Types') ?></a>
+		<?php } ?>
+		<?php if (advset_option('show_experimental_expert_features') || advset_is_tab_in_use('filters')) { ?>
 		<a href="?page=advanced-settings&tab=admin-filters" class="expert-setting nav-tab <?php echo $active_tab === 'admin-filters' ? 'nav-tab-active' : ''; ?>"><?php echo __('Filters/Actions') ?></a>
-		<div class="toggle-expert-settings"><a href="javascript:;" onclick="const className = 'show-expert-settings', classList = this.closest('nav').classList, setTo = !classList.contains(className); classList.toggle(className, setTo); document.cookie = 'advset_show_expert_settings=' + (setTo ? '1' : '0') + '; path=<?php echo htmlspecialchars(parse_url(admin_url(), PHP_URL_PATH)); ?>; max-age=' + (setTo ? '31536000' : '0'); return false; "><span class="toggle-expert-settings-show">→ show expert settings</span><span class="toggle-expert-settings-hide">← hide expert settings</span></a></div>
+		<?php } ?>
 		<a style="float: right; " href="?page=advanced-settings&tab=admin-advset" class="nav-tab <?php echo $active_tab === 'admin-advset' ? 'nav-tab-active' : ''; ?>"><?php echo __('Config') ?></a>
 	</nav>
 	<style>
