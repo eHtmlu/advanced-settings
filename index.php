@@ -346,6 +346,17 @@ if( advset_option('feedburner') ) {
 	add_action( 'feed_link', 'appthemes_custom_rss_feed', 10, 2 );
 }
 
+# Remove wp default favicon
+if ( advset_option('remove_default_wp_favicon') ) {
+	add_action('do_favicon', function() {
+		if ($_SERVER['REQUEST_URI'] === '/favicon.ico') {
+			header("Content-Type: image/x-icon");
+			http_response_code(404);
+			exit;
+		}
+	}, 5);
+}
+
 # Favicon
 if( advset_option('favicon') ) {
 

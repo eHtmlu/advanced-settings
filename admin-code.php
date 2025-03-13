@@ -26,6 +26,12 @@
 						</label>
 
 						<br />
+						<label for="remove_default_wp_favicon">
+							<input name="remove_default_wp_favicon" type="checkbox" id="remove_default_wp_favicon" value="1" <?php advset_check_if('remove_default_wp_favicon') ?> />
+							<?php _e('Remove the default WordPress favicon') ?></label>
+						</label>
+
+						<br />
 						<label for="favicon">
 							<input name="favicon" type="checkbox" id="favicon" value="1" <?php advset_check_if('favicon') ?> />
 							<?php _e('Automatically add a FavIcon') ?> <i style="color:#999">(<?php _e('whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme folder') ?>)</i></label>

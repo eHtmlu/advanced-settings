@@ -413,6 +413,7 @@ class Advanced_Settings_Track_Settings {
             'advset_code' => [
                 'facebook_og_metas' => $handler_boolean,
                 'remove_menu' => $handler_boolean,
+                'remove_default_wp_favicon' => $handler_boolean,
                 'favicon' => $handler_boolean,
                 'description' => $handler_boolean,
                 'single_metas' => $handler_boolean,
