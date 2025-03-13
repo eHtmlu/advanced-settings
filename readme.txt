@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, options, performance, speed, admin
 Requires at least: 5.0.0
 Tested up to: 6.7
-Stable tag: 2.8.0
+Stable tag: 2.9.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -86,6 +86,15 @@ Note: Some features are marked as deprecated. These can be shown/hidden in the C
 
 
 == Changelog ==
+
+= 2.9.0 - 2025-03-13 =
+* New feature to remove the default WordPress favicon
+* New feature to prevent auto core update emails
+* New feature to prevent auto plugin update emails
+* New feature to prevent auto theme update emails
+* New config feature to show deprecated features (by default hidden now)
+* New config feature to show experimental expert features (by default hidden now)
+* Code optimizations
 
 = 2.8.0 - 2025-03-10 =
 * Add "Config" tab with settings for the plugin itself
