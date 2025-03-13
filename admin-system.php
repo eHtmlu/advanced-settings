@@ -164,9 +164,37 @@
 				<td>
 					<fieldset>
 
+					<?php
+					$digit1 = [
+						'2' => 'Twenty',
+						'3' => 'Thirty',
+						'4' => 'Forty',
+						'5' => 'Fifty',
+						'6' => 'Sixty',
+						'7' => 'Seventy',
+						'8' => 'Eighty',
+						'9' => 'Ninety',
+					];
+					$digit2 = [
+						'0' => '',
+						'1' => '-One',
+						'2' => '-Two',
+						'3' => '-Three',
+						'4' => '-Four',
+						'5' => '-Five',
+						'6' => '-Six',
+						'7' => '-Seven',
+						'8' => '-Eight',
+						'9' => '-Nine',
+					];
+					$current_year = date('y');
+					$current_theme_slug = 'twenty' . strtolower($digit1[$current_year[0]] . substr($digit2[$current_year[1]], 1));
+					$current_theme_name = 'Twenty ' . $digit1[$current_year[0]] . $digit2[$current_year[1]];
+					$current_theme_url = 'https://wordpress.org/themes/' . $current_theme_slug . '/';
+					?>
 					<label for="core_upgrade_skip_new_bundled">
 						<input name="core_upgrade_skip_new_bundled" type="checkbox" id="core_upgrade_skip_new_bundled" value="1" <?php advset_check_if('core_upgrade_skip_new_bundled') ?> />
-						<?php _e('Prevent installation of new default WordPress themes during core updates') ?>
+						<?php _e('Prevent installation of new default WordPress themes during core updates') ?> <i style="color:#999">(<?php echo sprintf(__('By default, themes like %s are added automatically every year'), '<a href="' . $current_theme_url . '" target="_blank">' . $current_theme_name . '</a>') ?>)</i>
 					</label>
 
 					<br />
