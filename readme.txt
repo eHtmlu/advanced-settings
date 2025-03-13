@@ -11,7 +11,7 @@ Stable tag: 2.8.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Get advanced settings and change all you imagine that are not provided by WordPress.
+Adds settings that you might expect to find in the WordPress core.
 
 == Description ==
 
@@ -19,77 +19,63 @@ This plugin offers settings that you might expect to find in the WordPress core.
 
 💚 This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
 
-= Post types =
-
-* Manage/create/edit
-* Add supports: title, editor, author, thumbnail, excerpt, trackbacks, custom fields, comments, revisions, page attributes, etc.
-* Configure: hierarchical, has_archive, query_var, show_in_menu, show_ui, publicly_queryable, public, etc.
-* Taxonomies: category, post_tag
-
-= HTML Code =
-
-* Fix incorrect Facebook thumbnails including OG metas
-* Hide top admin menu
-* Automatically add a FavIcon (whenever there is a favicon.ico, favicon.png or favicon.svg file in the template folder)
-* Add a description meta tag using the blog description (SEO)
-* Add description and keywords meta tags in each posts (SEO)
-* Remove header WordPress generator meta tag
-* Remove header WLW Manifest meta tag (Windows Live Writer link)
-* Remove header RSD (Weblog Client Link) meta tag
-* Remove header shortlink meta tag
-* Configure site title to use just the wp_title() function (better for hardcode programming)
-*	Limit the excerpt length
-* Add a read more link after excerpt
-* Remove wptexturize filter
-* Remove Trackbacks and Pingbacks from Comment Count
-* Insert author bio in each post
-* Allow HTML in user profile
-* Compress all HTML code
-* Remove HTML comments (it's don't remove conditional IE comments like: <!--[if IE]>)
-* Add Google Analytics code
-* Add FeedBurner code
-
 = System =
 
 * Hide the WordPress update message in the Dashboard
 * Add dashboard logo
-* Unregister default WordPress widgets
-* Disable widget system
 * Disable comment system
 * Disable Posts Auto Saving
 * Disable author pages
 * Automatically generate the Post Thumbnail (from the first image in post)
 * Set JPEG quality
 * Resize image at upload to max size
-* Prevent installation of new default WordPress themes during core updates
 * Display total number of executed SQL queries and page loading time
+* Prevent installation of new default WordPress themes during core updates
+* Prevent sending email notifications for core updates
+* Prevent sending email notifications for plugin updates
+* Prevent sending email notifications for theme updates
 
-= Scripts =
+= HTML Code =
 
-* Remove unnecessary jQuery migrate script (jquery-migrate.min.js)
-* Include jQuery Google CDN instead local script (version 1.11.0)
-* Remove type="text/javascript" attribute from <script> tag
-* Track enqueued scripts
-* Merge and include removed scripts
-* Load merged removed scripts in footer
+* Fix incorrect Facebook thumbnails including OG metas
+* Hide top admin menu
+* Remove default WordPress favicon
+* Automatically add a FavIcon (whenever there is a favicon.ico, favicon.png or favicon.svg file in the template folder)
+* Add a description meta tag using the blog description (SEO)
+* Add description and keywords meta tags in each posts (SEO)
+* Remove header WordPress generator meta tag
+* Remove header RSD (Weblog Client Link) meta tag
+* Remove header shortlink meta tag
+* Configure site title to use just the wp_title() function (better for hardcode programming)
+* Limit the excerpt length
+* Add a read more link after excerpt
+* Remove wptexturize filter
+* Remove Trackbacks and Pingbacks from Comment Count
+* Insert author bio in each post
+* Allow more complex HTML in user profile
+* Compress all HTML code
+* Remove HTML comments (it doesn't remove conditional IE comments like: <!--[if IE]>)
+* Add Google Analytics code
+* Add FeedBurner code
 
-= Styles =
+= Config =
 
-* Track enqueued styles
-* Merge and include removed styles
-
-= Filters/Hooks =
-
-* Disable wp filters/hooks
+* Show/hide deprecated features
+* Show/hide experimental expert features
+* Configure tracking consent for feature usage statistics
 
 Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/eHtmlu/advanced-settings)
-
-"Simplicity is the ultimate sophistication" -- Da Vinci
 
 
 == Installation ==
 
-Upload plugin to your blog, activate it, then click on a setting options in admin menu (system, html code, post types and filters/actions).
+1. Upload the plugin to your WordPress plugins directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Go to Settings > Advanced in the WordPress admin menu
+4. Use the tab navigation to access different settings sections
+5. Configure your desired settings in each section
+
+Note: Some features are marked as deprecated. These can be shown/hidden in the Config tab.
 
 
 == Screenshots ==
@@ -164,7 +150,7 @@ Upload plugin to your blog, activate it, then click on a setting options in admi
 * Organized admin menu creating new menu options
 
 = 1.5.3 =
-* Disable The “Please Update Now” Message On WordPress Dashboard
+* Disable The "Please Update Now" Message On WordPress Dashboard
 * Unregister default WordPress widgets
 * Remove widget system
 * The comment filter don't remove conditional IE comments now
