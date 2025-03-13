@@ -34,10 +34,7 @@
 			</tr>
 
 			<tr valign="top">
-				<th scope="row">
-					<?php _e('Optimize'); ?> <br />
-					<i style="color:#999"><?php _e('removing some SQL queries can do the database work faster') ?></i>
-				</th>
+				<th scope="row"><?php _e('Optimize'); ?></th>
 				<td>
 					<fieldset>
 						<?php if (advset_option('show_deprecated_features') || advset_option('remove_default_wp_widgets')) { ?>
