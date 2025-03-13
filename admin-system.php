@@ -86,13 +86,13 @@
 					<fieldset>
 
 						<label for="add_thumbs">
-							<?php
-							if( current_theme_supports('post-thumbnails') && !defined('ADVSET_THUMBS') ) {
-								echo '<i style="color:#999">['.__('Current theme already has post thumbnail support').']</i>';
-							} else {
-									?>
-								<input name="add_thumbs" type="checkbox" id="add_thumbs" value="1" <?php advset_check_if( 'add_thumbs' ) ?> />
+							<?php $already_has_thumbs = current_theme_supports('post-thumbnails') && !defined('ADVSET_THUMBS'); ?>
+							<input name="add_thumbs" type="checkbox" id="add_thumbs" value="1" <?php advset_check_if( 'add_thumbs' ) ?> <?php echo $already_has_thumbs ? 'disabled' : '' ?> />
+							<?php if ( $already_has_thumbs ) echo '<span style="color: #999;">'; ?>
 								<?php _e('Add thumbnail support') ?>
+							<?php if ( $already_has_thumbs ) echo '</span>'; ?>
+							<?php if( $already_has_thumbs ) { ?>
+								<i>[<?php _e('Already supported by current theme') ?>]</i>
 							<?php } ?>
 						</label>
 
