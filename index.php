@@ -565,6 +565,21 @@ if ( advset_option('core_upgrade_skip_new_bundled') ) {
     }
 }
 
+# Prevent auto core update send email
+if ( advset_option('prevent_auto_core_update_send_email') ) {
+	add_filter('auto_core_update_send_email', '__return_false');
+}
+
+# Prevent auto plugin update send email
+if ( advset_option('prevent_auto_plugin_update_send_email') ) {
+	add_filter('auto_plugin_update_send_email', '__return_false');
+}
+
+# Prevent auto theme update send email
+if ( advset_option('prevent_auto_theme_update_send_email') ) {
+	add_filter('auto_theme_update_send_email', '__return_false');
+}
+
 # Remove admin menu
 if( advset_option('show_query_num') ) {
 	function __show_sql_query_num(){

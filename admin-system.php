@@ -144,13 +144,6 @@
 					<br />
 					<? } else echo EMPTY_TRASH_DAYS;*/ ?>
 
-					<label for="core_upgrade_skip_new_bundled">
-						<input name="core_upgrade_skip_new_bundled" type="checkbox" id="core_upgrade_skip_new_bundled" value="1" <?php advset_check_if('core_upgrade_skip_new_bundled') ?> />
-						<?php _e('Prevent installation of new default WordPress themes during core updates') ?>
-					</label>
-
-					<br />
-
 					<label for="show_query_num">
 						<input name="show_query_num" type="checkbox" id="show_query_num" value="1" <?php advset_check_if('show_query_num') ?> />
 						<?php _e('Display total number of executed SQL queries and page loading time <i style="color:#999">(only admin users can see this)') ?></i>
@@ -161,6 +154,41 @@
 						<input name="post_type_pag" type="checkbox" id="post_type_pag" value="1" <?php // advset_check_if('post_type_pag') ?> />
 						<?php // _e('Fix post type pagination') ?>
 					</label-->
+
+					</fieldset>
+				</td>
+			</tr>
+
+			<tr valign="top">
+				<th scope="row"><?php _e('Update Behavior'); ?></th>
+				<td>
+					<fieldset>
+
+					<label for="core_upgrade_skip_new_bundled">
+						<input name="core_upgrade_skip_new_bundled" type="checkbox" id="core_upgrade_skip_new_bundled" value="1" <?php advset_check_if('core_upgrade_skip_new_bundled') ?> />
+						<?php _e('Prevent installation of new default WordPress themes during core updates') ?>
+					</label>
+
+					<br />
+
+					<label for="prevent_auto_core_update_send_email">
+						<input name="prevent_auto_core_update_send_email" type="checkbox" id="prevent_auto_core_update_send_email" value="1" <?php advset_check_if('prevent_auto_core_update_send_email') ?> />
+						<?php _e('Prevent sending email notifications for core updates') ?>
+					</label>
+
+					<br />
+
+					<label for="prevent_auto_plugin_update_send_email">
+						<input name="prevent_auto_plugin_update_send_email" type="checkbox" id="prevent_auto_plugin_update_send_email" value="1" <?php advset_check_if('prevent_auto_plugin_update_send_email') ?> />
+						<?php _e('Prevent sending email notifications for plugin updates') ?>
+					</label>
+
+					<br />
+
+					<label for="prevent_auto_theme_update_send_email">
+						<input name="prevent_auto_theme_update_send_email" type="checkbox" id="prevent_auto_theme_update_send_email" value="1" <?php advset_check_if('prevent_auto_theme_update_send_email') ?> />
+						<?php _e('Prevent sending email notifications for theme updates') ?>
+					</label>
 
 					</fieldset>
 				</td>
