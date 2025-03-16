@@ -451,6 +451,10 @@ class Advanced_Settings_Track_Settings {
                 'prevent_auto_theme_update_send_email' => $handler_boolean,
                 'show_query_num' => $handler_boolean,
                 'add_thumbs' => $handler_boolean,
+                'protect_emails' => $handler_boolean,
+                'protect_emails_method' => function($value) { 
+                    return in_array($value, ['entities', 'javascript']) ? $value : false; 
+                },
             ],
             'advset_tracksettings_asklater' => $handler_boolean,
         ];
@@ -473,8 +477,13 @@ class Advanced_Settings_Track_Settings {
             if (is_array($option_handler)) {
                 $result_option = [];
                 foreach ($option_handler as $field_name => $field_handler) {
-                    if (isset($value[$field_name]) && $field_handler($value[$field_name])) {
-                        $result_option[$field_name] = 1;
+                    if (isset($value[$field_name]) && ($r = $field_handler($value[$field_name]))) {
+                        if ($r === true) {
+                            $result_option[$field_name] = 1;
+                        }
+                        elseif (!is_bool($r)) {
+                            $result_option[$field_name] = $r;
+                        }
                     }
                 }
                 if (!empty($result_option)) {

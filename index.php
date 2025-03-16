@@ -297,12 +297,94 @@ function advset_plugin_action_links( $links, $file ) {
 	return $links;
 }
 
-# Disable The “Please Update Now” Message On WordPress Dashboard
+# Disable The "Please Update Now" Message On WordPress Dashboard
 if ( advset_option('hide_update_message') ) {
 	add_action( 'admin_menu', '__advsettings_hide_update_message', 2 );
 	function __advsettings_hide_update_message() {
 		remove_action( 'admin_notices', 'update_nag', 3 );
 	}
+}
+
+# Email Protection
+if ( !is_admin() && advset_option('protect_emails') ) {
+
+    function advset_protect_emails_in_output($content) {
+        return preg_replace_callback('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
+            static $cache = [];
+            $email = $matches[1];
+            
+            // Use cached version if available
+            if (isset($cache[$email])) {
+                return $cache[$email];
+            }
+            
+            // Convert to entities and cache
+            $output = implode('', array_map(function($char) {
+                return '&#' . ord($char) . ';';
+            }, str_split($email)));
+            
+            $cache[$email] = $output;
+            return $output;
+        }, $content);
+    }
+
+    function advset_protect_emails_in_output_with_javascript($content)
+    {
+        $content = preg_split('/(\<[^\>]+\>)/', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+        for ($a = 0; $a < count($content); $a++)
+        {
+            if ($a % 2)
+            {
+                if (substr($content[$a], 0, 2) === '</')
+                {
+                    continue;
+                }
+
+                $line = preg_split('/((([a-z0-9\_\-]+)\s*\=\s*\")([^\"]*(?:@|\%40|\&\#64\;|\&\#x40\;)[^\"]*)(\"))/', $content[$a], -1, PREG_SPLIT_DELIM_CAPTURE);
+                $b64arr = array();
+
+                if (count($line) > 1)
+                {
+                    for ($b = 3; $b < count($line); $b+=6)
+                    {
+                        $b64arr[$line[$b]] = $line[$b + 1];
+                        $line[$b + 1] = $line[$b] === 'href' ? 'javascript:;' : '';
+                        $line[$b - 2] = '';
+                        $line[$b] = '';
+                    }
+
+                    $content[$a] = implode('', $line) . '<script>(function(){var s=document.getElementsByTagName(\'script\'),e=s[s.length-1].parentNode,d=JSON.parse(atob(\'' . base64_encode(json_encode($b64arr)) . '\')),l;for(l in d){e[l]=d[l];}})();</script>';
+                }
+            }
+            else
+            {
+                $line = preg_split('/(?<=^|[^a-z0-9\.+&\_-])([a-z0-9\.+&\_-]+(?:@|\%40|\&\#64\;|\&\#x40\;)[a-z0-9\.\_-]{2,}\.[a-z0-9]+)(?=[^a-z0-9]|$)/i', $content[$a], -1, PREG_SPLIT_DELIM_CAPTURE);
+
+                if (count($line) > 1)
+                {
+                    for ($b = 1; $b < count($line); $b+=2)
+                    {
+                        $line[$b] = '<script>document.write(atob(\'' . base64_encode($line[$b]) . '\'));</script>';
+                    }
+
+                    $content[$a] = implode('', $line);
+                }
+            }
+        }
+
+        return implode('', $content);
+    }
+
+    // Buffer the entire output to protect all email addresses
+    function advset_start_email_protection() {
+        if (advset_option('protect_emails_method') === 'javascript') {
+            ob_start('advset_protect_emails_in_output_with_javascript');
+        } else {
+            ob_start('advset_protect_emails_in_output');
+        }
+    }
+    add_action('init', 'advset_start_email_protection');
 }
 
 # Add a Custom Dashboard Logo

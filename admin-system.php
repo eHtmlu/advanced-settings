@@ -219,6 +219,28 @@
 				</td>
 			</tr>
 
+			<tr valign="top">
+				<th scope="row"><?php _e('Security'); ?></th>
+				<td>
+					<fieldset>
+						<label for="protect_emails">
+							<input name="protect_emails" type="checkbox" id="protect_emails" value="1" <?php advset_check_if('protect_emails') ?> onchange="document.getElementById('protect_emails_method').disabled = !this.checked">
+							<?php _e('Protect email addresses from spam bots') ?> 
+							<i style="color:#999">(<?php _e('Converts email addresses to encoded versions to prevent spam harvesting.') ?>)</i>
+						</label>
+						<br />
+						<label for="protect_emails_method" style="margin-left: 25px;">
+							<?php _e('Protection method:') ?>
+							<select name="protect_emails_method" id="protect_emails_method" <?php echo !advset_option('protect_emails') ? 'disabled' : ''; ?>>
+								<option value="entities" <?php echo (advset_option('protect_emails_method', 'entities') === 'entities' ? 'selected' : ''); ?>><?php _e('HTML Entities (SEO friendly)') ?></option>
+								<option value="javascript" <?php echo (advset_option('protect_emails_method') === 'javascript' ? 'selected' : ''); ?>><?php _e('JavaScript (Better protection)') ?></option>
+							</select>
+						</label>
+						<br />
+					</fieldset>
+				</td>
+			</tr>
+
 		</table>
 
 		<p class="submit"><input type="submit" name="submit" id="submit" class="button-primary" value="<?php _e('Save changes') ?>"></p>
