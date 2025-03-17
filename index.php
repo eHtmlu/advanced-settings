@@ -309,7 +309,7 @@ if ( advset_option('hide_update_message') ) {
 if ( !is_admin() && advset_option('protect_emails') ) {
 
     function advset_protect_emails_in_output($content) {
-        return preg_replace_callback('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
+        return preg_replace_callback('/((?:mailto\:)?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
             static $cache = [];
             $email = $matches[1];
             
