@@ -1170,3 +1170,11 @@ function advset_register_post_types() {
 
 }
 
+// Include admin UI for administrators
+function advset_load_admin_ui() {
+    if (is_user_logged_in() && current_user_can('manage_options')) {
+        require_once ADVSET_DIR . '/admin-ui/admin-ui.php';
+    }
+}
+add_action('init', 'advset_load_admin_ui');
+
