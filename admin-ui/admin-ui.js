@@ -10,6 +10,12 @@
     // Get close button
     const closeBtn = modal.querySelector('.advset-modal-close');
     
+    // React app initialization state
+    let reactAppInitialized = false;
+    
+    // Setup search input event immediately
+    setupSearchInput();
+    
     // Function to show loading animation
     function showLoading() {
         const modalBody = modal.querySelector('.advset-modal-body');
@@ -34,6 +40,9 @@
         
         // Show loading animation
         showLoading();
+        
+        // Dispatch modal opened event for React integration
+        document.dispatchEvent(new CustomEvent('advset-modal-opened'));
         
         // Load content via AJAX
         fetch(advsetAdminUI.ajaxUrl, {
@@ -62,12 +71,32 @@
         });
     };
     
+    // Function to setup search input event
+    function setupSearchInput() {
+        const searchInput = modal.querySelector('.advset-modal-search input');
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    // Dispatch search event for React integration
+                    document.dispatchEvent(new CustomEvent('advset-search', {
+                        detail: { query: e.target.value }
+                    }));
+                }, 300); // Debounce search for better performance
+            });
+        }
+    }
+    
     // Function to close modal with animation
     function closeModal() {
         const modal = document.getElementById('advset-admin-modal');
         if (modal) {
             // Add closing class to trigger animation
             modal.classList.add('closing');
+            
+            // Dispatch modal closed event for React integration
+            document.dispatchEvent(new CustomEvent('advset-modal-closed'));
             
             // Wait for animation to complete before actually closing
             setTimeout(() => {
@@ -94,6 +123,29 @@
         if (e.key === 'Escape' && modal.open) {
             e.preventDefault();
             closeModal();
+        }
+    });
+    
+    // Initialize React app when modal is opened
+    document.addEventListener('advset-modal-opened', function() {
+        if (!reactAppInitialized) {
+            const modalContent = modal.querySelector('.advset-modal-body-content');
+            if (modalContent) {
+                // Load React app dynamically
+                const script = document.createElement('script');
+                script.src = '/wp-content/plugins/advanced-settings/admin-ui/react/js/app.js';
+                script.onload = function() {
+                    window.AdvSetModalApp.init(modalContent);
+                    reactAppInitialized = true;
+                };
+                document.head.appendChild(script);
+
+                // Load React styles
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = '/wp-content/plugins/advanced-settings/admin-ui/react/css/app.css';
+                document.head.appendChild(link);
+            }
         }
     });
     

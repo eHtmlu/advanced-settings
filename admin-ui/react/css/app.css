@@ -1,0 +1,48 @@
+.advset-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.advset-loading .spinner {
+    float: none;
+    margin: 0;
+}
+
+.advset-no-results {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+}
+
+.advset-results {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.advset-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.advset-item:hover,
+.advset-item:focus-visible {
+    border-color: #2271b1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.advset-item h3 {
+    margin: 0 0 0.5rem 0;
+    color: #1d2327;
+}
+
+.advset-item p {
+    margin: 0;
+    color: #666;
+} 

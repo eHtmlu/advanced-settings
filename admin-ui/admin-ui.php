@@ -57,18 +57,18 @@ function advset_admin_ui_scripts() {
     // Register and enqueue CSS
     wp_register_style(
         'advset-admin-ui',
-        plugins_url('css/admin-ui.css', __FILE__),
+        plugins_url('admin-ui.css', __FILE__),
         [],
-        filemtime(ADVSET_DIR . '/admin-ui/css/admin-ui.css')
+        filemtime(ADVSET_DIR . '/admin-ui/admin-ui.css')
     );
     wp_enqueue_style('advset-admin-ui');
     
     // Register and enqueue JavaScript
     wp_register_script(
         'advset-admin-ui',
-        plugins_url('js/admin-ui.js', __FILE__),
+        plugins_url('admin-ui.js', __FILE__),
         [],
-        filemtime(ADVSET_DIR . '/admin-ui/js/admin-ui.js'),
+        filemtime(ADVSET_DIR . '/admin-ui/admin-ui.js'),
         true
     );
     wp_enqueue_script('advset-admin-ui');

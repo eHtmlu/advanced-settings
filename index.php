@@ -1170,6 +1170,15 @@ function advset_register_post_types() {
 
 }
 
+
+
+
+
+
+/**
+ * Admin UI
+ */
+
 // Include admin UI for administrators
 function advset_load_admin_ui() {
     if (is_user_logged_in() && current_user_can('manage_options')) {
@@ -1177,4 +1186,31 @@ function advset_load_admin_ui() {
     }
 }
 add_action('init', 'advset_load_admin_ui');
+
+
+
+
+
+
+/**
+ * API
+ */
+
+// Load API endpoints
+add_action('rest_api_init', function () {
+	require_once ADVSET_DIR . '/api.php';
+});
+
+// Add wpApiSettings to frontend
+add_action('wp_enqueue_scripts', function() {
+    if (!is_user_logged_in() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    wp_enqueue_script('wp-api');
+    wp_localize_script('wp-api', 'wpApiSettings', [
+        'root'  => esc_url_raw(rest_url()),
+        'nonce' => wp_create_nonce('wp_rest')
+    ]);
+}, 10);
 
