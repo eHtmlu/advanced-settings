@@ -3,7 +3,6 @@ const AdvSetModalApp = {
     state: {
         searchQuery: '',
         items: [],
-        isLoading: false
     },
 
     init(container) {
@@ -47,24 +46,23 @@ const AdvSetModalApp = {
     render() {
         const { searchQuery, items } = this.state;
         
-        const content = this.renderContent(items, searchQuery);
+        // Update the no results element
+        const noResultsElement = document.querySelector('.advset-no-results');
+        if (noResultsElement) {
+            noResultsElement.style.display = items.length ? 'none' : 'block';
+        }
+        
+        // Render the content
+        const content = this.renderContent(items);
         this.container.innerHTML = content;
     },
 
-    renderContent(items, query) {
+    renderContent(items) {
         if (!items.length) {
-            return `
-                <div class="advset-no-results">
-                    <p>No results found for "${query}"</p>
-                </div>
-            `;
+            return '';
         }
 
-        return `
-            <div class="advset-results">
-                ${items.map(item => this.renderItem(item)).join('')}
-            </div>
-        `;
+        return items.map(item => this.renderItem(item)).join('');
     },
 
     renderItem(item) {

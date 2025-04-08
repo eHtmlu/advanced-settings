@@ -1,20 +1,6 @@
-.advset-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    gap: 1rem;
-}
-
-.advset-loading .spinner {
-    float: none;
-    margin: 0;
-}
-
 .advset-no-results {
     padding: 2rem;
     text-align: center;
-    color: #666;
 }
 
 .advset-results {
