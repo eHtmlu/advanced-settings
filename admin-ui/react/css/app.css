@@ -9,16 +9,13 @@
 
 /* React App Styles */
 .advset-react-app {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: 0;
 }
 
 .advset-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-    margin-top: 20px;
 }
 
 .advset-item {
