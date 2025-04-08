@@ -1,3 +1,6 @@
+/* Import component styles */
+@import 'components.css';
+
 .advset-no-results {
     padding: 2rem;
     text-align: center;

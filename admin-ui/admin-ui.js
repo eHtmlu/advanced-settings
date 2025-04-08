@@ -131,20 +131,32 @@
         if (!reactAppInitialized) {
             const modalContent = modal.querySelector('.advset-modal-body-content');
             if (modalContent) {
-                // Load React app dynamically
-                const script = document.createElement('script');
-                script.src = '/wp-content/plugins/advanced-settings/admin-ui/react/js/app.js';
-                script.onload = function() {
-                    window.AdvSetModalApp.init(modalContent);
-                    reactAppInitialized = true;
+                // Load React app CSS
+                const cssLink = document.createElement('link');
+                cssLink.rel = 'stylesheet';
+                cssLink.href = advsetAdminUI.reactAppCssUrl;
+                document.head.appendChild(cssLink);
+                
+                // Load ComponentRegistry first
+                const registryScript = document.createElement('script');
+                registryScript.src = advsetAdminUI.componentRegistryUrl;
+                registryScript.onload = function() {
+                    // Load GenericToggle component
+                    const toggleScript = document.createElement('script');
+                    toggleScript.src = advsetAdminUI.genericToggleUrl;
+                    toggleScript.onload = function() {
+                        // Load React app script
+                        const appScript = document.createElement('script');
+                        appScript.src = advsetAdminUI.reactAppUrl;
+                        appScript.onload = function() {
+                            window.AdvSetModalApp.init(modalContent);
+                            reactAppInitialized = true;
+                        };
+                        document.head.appendChild(appScript);
+                    };
+                    document.head.appendChild(toggleScript);
                 };
-                document.head.appendChild(script);
-
-                // Load React styles
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = '/wp-content/plugins/advanced-settings/admin-ui/react/css/app.css';
-                document.head.appendChild(link);
+                document.head.appendChild(registryScript);
             }
         }
     });

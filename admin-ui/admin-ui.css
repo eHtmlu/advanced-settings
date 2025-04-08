@@ -4,6 +4,8 @@
 
 
 :root {
+    --advset-color-primary: rgb(255,8,188);
+
     --advset-color-base: hsl(240, 25%, 10%);
     --advset-color-background: hsl(240, 25%, 97%);
     --advset-color-border: hsl(240, 25%, 90%);

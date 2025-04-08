@@ -5,7 +5,8 @@ const AdvSetModalApp = {
         items: [],
         allItems: [], // Cache for all items
         isLoading: false,
-        categories: []
+        categories: [],
+        settings: {} // Store for settings values
     },
 
     init(container) {
@@ -45,6 +46,9 @@ const AdvSetModalApp = {
                 items: data.features, // Initially show all items
                 categories: data.categories
             });
+            
+            // Initialize components after rendering
+            setTimeout(() => this.initializeComponents(), 0);
         } catch (error) {
             console.error('Failed to load features:', error);
         } finally {
@@ -93,14 +97,106 @@ const AdvSetModalApp = {
     },
 
     renderItem(item) {
+        // Generate a unique ID for the component
+        const componentId = `advset-${item.id.replace(/\./g, '-')}`;
+        
+        // Get the component name from the item
+        const componentName = item.ui_component || 'GenericToggle';
+        
+        // Prepare props for the component
+        const props = {
+            id: componentId,
+            label: item.label || item.title,
+            checked: this.state.settings[item.id] || false
+        };
+        
+        // Render the component using the registry
+        const componentHtml = window.AdvSetComponentRegistry ? 
+            window.AdvSetComponentRegistry.render(componentName, props) : '';
+        
         return `
             <div class="advset-item" data-id="${item.id}">
-                <h3>${item.title}</h3>
+                <div class="advset-item-header">
+                    <h3>${item.title}</h3>
+                    <span class="advset-item-category">${item.category}</span>
+                </div>
                 <p>${item.description}</p>
-                ${item.label ? `<p class="advset-item-label">${item.label}</p>` : ''}
-                <span class="advset-item-category">${item.category}</span>
+                <div class="advset-item-control">
+                    ${componentHtml}
+                </div>
             </div>
         `;
+    },
+    
+    /**
+     * Initialize all components after rendering
+     */
+    initializeComponents() {
+        const { items } = this.state;
+        
+        items.forEach(item => {
+            const componentId = `advset-${item.id.replace(/\./g, '-')}`;
+            const componentName = item.ui_component || 'GenericToggle';
+            
+            // Initialize the component with a callback
+            if (window.AdvSetComponentRegistry) {
+                window.AdvSetComponentRegistry.init(componentName, componentId, (value) => {
+                    this.handleSettingChange(item.id, value);
+                });
+            }
+        });
+    },
+    
+    /**
+     * Handle setting changes
+     * 
+     * @param {string} settingId - The ID of the setting
+     * @param {any} value - The new value
+     */
+    handleSettingChange(settingId, value) {
+        // Update the state
+        this.setState({
+            settings: {
+                ...this.state.settings,
+                [settingId]: value
+            }
+        });
+        
+        // Save the setting to the server
+        this.saveSetting(settingId, value);
+    },
+    
+    /**
+     * Save a setting to the server
+     * 
+     * @param {string} settingId - The ID of the setting
+     * @param {any} value - The new value
+     */
+    async saveSetting(settingId, value) {
+        try {
+            const response = await fetch('/wp-json/advanced-settings/v1/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': wpApiSettings.nonce
+                },
+                body: JSON.stringify({
+                    settings: {
+                        [settingId]: value
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                console.error('Failed to save setting:', data);
+                // TODO: Show error message to user
+            }
+        } catch (error) {
+            console.error('Error saving setting:', error);
+            // TODO: Show error message to user
+        }
     }
 };
 

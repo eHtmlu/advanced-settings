@@ -11,7 +11,7 @@ return [
                 'description' => __('Receive notifications when core updates are available.', 'advanced-settings'),
                 'label' => __('Disable core update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'generic-toggle',
+            'ui_component' => 'GenericToggle',
             'handler_execute' => function() {
                 add_filter('auto_core_update_send_email', '__return_false');
             },
@@ -26,7 +26,7 @@ return [
                 'description' => __('Receive notifications when plugin updates are available.', 'advanced-settings'),
                 'label' => __('Disable plugin update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'generic-toggle',
+            'ui_component' => 'GenericToggle',
             'handler_execute' => function() {
                 add_filter('auto_plugin_update_send_email', '__return_false');
             },
@@ -41,7 +41,7 @@ return [
                 'description' => __('Receive notifications when theme updates are available.', 'advanced-settings'),
                 'label' => __('Disable theme update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'generic-toggle',
+            'ui_component' => 'GenericToggle',
             'handler_execute' => function() {
                 add_filter('auto_theme_update_send_email', '__return_false');
             },
