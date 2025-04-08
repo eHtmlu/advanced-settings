@@ -56,18 +56,22 @@ const GenericToggle = {
             return;
         }
         
-        toggle.addEventListener('change', (event) => {
+        // Remove any existing event listeners to prevent duplicates
+        const newToggle = toggle.cloneNode(true);
+        toggle.parentNode.replaceChild(newToggle, toggle);
+        
+        newToggle.addEventListener('change', (event) => {
             if (onChange && typeof onChange === 'function') {
                 onChange(event.target.checked);
             }
         });
         
         // Add keyboard accessibility
-        toggle.addEventListener('keydown', (event) => {
+        newToggle.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                toggle.checked = !toggle.checked;
-                toggle.dispatchEvent(new Event('change'));
+                newToggle.checked = !newToggle.checked;
+                newToggle.dispatchEvent(new Event('change'));
             }
         });
     }

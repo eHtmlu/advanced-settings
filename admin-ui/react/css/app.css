@@ -7,6 +7,13 @@
 /* Import component styles */
 @import 'components.css';
 
+/* ===== React App Container ===== */
+.advset-react-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 /* ===== No Results ===== */
 .advset-no-results {
     padding: 2rem;

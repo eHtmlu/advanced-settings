@@ -1,7 +1,7 @@
 /**
  * React App for Advanced Settings Modal
  * 
- * A lightweight React-like application for managing advanced settings
+ * A lightweight React application for managing advanced settings
  * without requiring a build process or JSX
  */
 const AdvSetModalApp = {
@@ -26,7 +26,6 @@ const AdvSetModalApp = {
         this.container = container;
         this.setupEventListeners();
         this.loadAllFeatures();
-        this.render();
     },
 
     /**
@@ -75,9 +74,6 @@ const AdvSetModalApp = {
                 items: data.features, // Initially show all items
                 categories: data.categories
             });
-            
-            // Initialize components after rendering
-            setTimeout(() => this.initializeComponents(), 0);
         } catch (error) {
             console.error('Failed to load features:', error);
             // Show error message to user
@@ -122,80 +118,91 @@ const AdvSetModalApp = {
             noResultsElement.style.display = items.length ? 'none' : 'block';
         }
         
+        // Clear the container
+        this.container.innerHTML = '';
+        
+        // Create the main app element
+        const appElement = document.createElement('div');
+        appElement.className = 'advset-react-app';
+        
         // Render the content
-        const content = this.renderContent(items);
-        this.container.innerHTML = content;
-    },
-
-    /**
-     * Render the content for all items
-     * 
-     * @param {Array} items - The items to render
-     * @returns {string} HTML string
-     */
-    renderContent(items) {
-        if (!items.length) {
-            return '';
+        if (items.length) {
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'advset-results';
+            
+            items.forEach(item => {
+                const itemElement = this.createItemElement(item);
+                itemsContainer.appendChild(itemElement);
+            });
+            
+            appElement.appendChild(itemsContainer);
         }
-
-        return items.map(item => this.renderItem(item)).join('');
+        
+        // Add the app element to the container
+        this.container.appendChild(appElement);
     },
 
     /**
-     * Render a single item
+     * Create a DOM element for a single item
      * 
      * @param {Object} item - The item to render
-     * @returns {string} HTML string
+     * @returns {HTMLElement} DOM element for the item
      */
-    renderItem(item) {
-        // Generate a unique ID for the component
-        const componentId = `advset-${item.id.replace(/\./g, '-')}`;
+    createItemElement(item) {
+        // Create the item container
+        const itemElement = document.createElement('div');
+        itemElement.className = 'advset-item';
+        itemElement.dataset.id = item.id;
         
-        // Get the component name from the item
+        // Create the header
+        const headerElement = document.createElement('div');
+        headerElement.className = 'advset-item-header';
+        
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = item.title;
+        
+        const categoryElement = document.createElement('span');
+        categoryElement.className = 'advset-item-category';
+        categoryElement.textContent = item.category;
+        
+        headerElement.appendChild(titleElement);
+        headerElement.appendChild(categoryElement);
+        
+        // Create the description
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = item.description;
+        
+        // Create the control container
+        const controlElement = document.createElement('div');
+        controlElement.className = 'advset-item-control';
+        
+        // Create the component
+        const componentId = `advset-${item.id.replace(/\./g, '-')}`;
         const componentName = item.ui_component || 'GenericToggle';
         
-        // Prepare props for the component
-        const props = {
-            id: componentId,
-            label: item.label || item.title,
-            checked: this.state.settings[item.id] || false
-        };
+        // Create the component element
+        const componentElement = document.createElement('div');
+        componentElement.innerHTML = window.AdvSetComponentRegistry ? 
+            window.AdvSetComponentRegistry.render(componentName, {
+                id: componentId,
+                label: item.label || item.title,
+                checked: this.state.settings[item.id] || false
+            }) : '';
         
-        // Render the component using the registry
-        const componentHtml = window.AdvSetComponentRegistry ? 
-            window.AdvSetComponentRegistry.render(componentName, props) : '';
+        // Initialize the component
+        if (window.AdvSetComponentRegistry) {
+            window.AdvSetComponentRegistry.init(componentName, componentId, (value) => {
+                this.handleSettingChange(item.id, value);
+            });
+        }
         
-        return `
-            <div class="advset-item" data-id="${item.id}">
-                <div class="advset-item-header">
-                    <h3>${item.title}</h3>
-                    <span class="advset-item-category">${item.category}</span>
-                </div>
-                <p>${item.description}</p>
-                <div class="advset-item-control">
-                    ${componentHtml}
-                </div>
-            </div>
-        `;
-    },
-    
-    /**
-     * Initialize all components after rendering
-     */
-    initializeComponents() {
-        const { items } = this.state;
+        // Add all elements to the item
+        controlElement.appendChild(componentElement);
+        itemElement.appendChild(headerElement);
+        itemElement.appendChild(descriptionElement);
+        itemElement.appendChild(controlElement);
         
-        items.forEach(item => {
-            const componentId = `advset-${item.id.replace(/\./g, '-')}`;
-            const componentName = item.ui_component || 'GenericToggle';
-            
-            // Initialize the component with a callback
-            if (window.AdvSetComponentRegistry) {
-                window.AdvSetComponentRegistry.init(componentName, componentId, (value) => {
-                    this.handleSettingChange(item.id, value);
-                });
-            }
-        });
+        return itemElement;
     },
     
     /**

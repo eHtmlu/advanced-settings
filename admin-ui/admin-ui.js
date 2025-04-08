@@ -176,8 +176,13 @@
                         const appScript = document.createElement('script');
                         appScript.src = advsetAdminUI.reactAppUrl;
                         appScript.onload = function() {
-                            window.AdvSetModalApp.init(modalContent);
-                            reactAppInitialized = true;
+                            // Initialize the React app
+                            if (window.AdvSetModalApp) {
+                                window.AdvSetModalApp.init(modalContent);
+                                reactAppInitialized = true;
+                            } else {
+                                console.error('React app not loaded properly');
+                            }
                         };
                         document.head.appendChild(appScript);
                     };

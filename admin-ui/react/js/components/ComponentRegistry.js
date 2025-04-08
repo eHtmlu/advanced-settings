@@ -63,7 +63,10 @@ const ComponentRegistry = {
         }
         
         try {
-            component.init(id, callback);
+            // Use setTimeout to ensure the DOM is ready
+            setTimeout(() => {
+                component.init(id, callback);
+            }, 0);
         } catch (error) {
             console.error(`Error initializing component "${name}":`, error);
         }
