@@ -11,7 +11,6 @@
 .advset-react-app {
     padding: 0;
     display: flex;
-    gap: 20px;
     height: 100%;
 }
 
@@ -21,15 +20,15 @@
     flex-shrink: 0;
     background-color: #f0f0f1;
     border-radius: 8px;
-    padding: 15px;
     height: fit-content;
     position: sticky;
 }
 
 .advset-category-sidebar-title {
-    margin: 0 0 15px 0;
+    margin: 0;
     font-size: 16px;
     font-weight: 600;
+    padding: 15px;
     color: #1d2327;
 }
 
@@ -92,7 +91,7 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: box-shadow .3s ease;
-    margin: 10px;
+    margin: 10px 20px;
 }
 
 .advset-item:hover,

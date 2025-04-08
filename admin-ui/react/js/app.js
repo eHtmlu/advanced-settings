@@ -269,7 +269,13 @@ function App(props) {
                                 e.preventDefault();
                                 onCategoryClick(categoryId);
                             }
-                        }, category ? category.title : categoryId)
+                        }, 
+                            React.createElement('span', {
+                                className: 'advset-category-icon',
+                                dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                            }),
+                            React.createElement('span', null, category ? category.title : categoryId)
+                        )
                     );
                 })
             )
@@ -286,7 +292,13 @@ function App(props) {
                 },
                     React.createElement('h2', { 
                         className: 'advset-category-title'
-                    }, category ? category.title : categoryId),
+                    }, 
+                        React.createElement('span', {
+                            className: 'advset-category-icon',
+                            dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                        }),
+                        React.createElement('span', null, category ? category.title : categoryId)
+                    ),
                     React.createElement('div', { className: 'advset-results' },
                         itemsByCategory[categoryId].map(item => 
                             React.createElement(ItemCard, {

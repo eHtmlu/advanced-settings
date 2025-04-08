@@ -141,7 +141,6 @@
 /* ===== Modal Body ===== */
 .advset-modal-body {
     flex: 1;
-    padding: 20px;
     overflow-y: auto;
     position: relative;
     display: flex;
@@ -273,4 +272,46 @@
     font-size: 11px;
     color: #555;
     text-transform: uppercase;
+}
+
+/* ===== Category Icons ===== */
+.advset-category-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+    line-height: 1;
+}
+
+.advset-category-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+.advset-category-menu-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color var(--advset-transition-duration);
+}
+
+.advset-category-menu-item a:hover,
+.advset-category-menu-item a:focus-visible {
+    background-color: var(--advset-color-background);
+}
+
+.advset-category-title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 16px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.advset-category-title .advset-category-icon svg {
+    width: 24px;
+    height: 24px;
 } 

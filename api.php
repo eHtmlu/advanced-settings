@@ -55,6 +55,7 @@ function advset_get_features_callback() {
             'id' => $feature_data['category'],
             'title' => $feature_data['title'],
             'description' => $feature_data['description'],
+            'icon' => isset($feature_data['icon']) ? $feature_data['icon'] : '',
         ];
 
         foreach ($feature_data['items'] as $key => $feature) {
