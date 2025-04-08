@@ -1,22 +1,79 @@
 /**
  * Advanced Settings Admin UI JavaScript
+ * 
+ * Handles the modal dialog functionality and integration with the React app
  */
 
 (function() {
-    // Get modal element
+    'use strict';
+    
+    // DOM Elements
     const modal = document.getElementById('advset-admin-modal');
     if (!modal) return;
     
-    // Get close button
     const closeBtn = modal.querySelector('.advset-modal-close');
     
-    // React app initialization state
+    // State
     let reactAppInitialized = false;
     
-    // Setup search input event immediately
+    // Initialize
     setupSearchInput();
+    setupEventListeners();
     
-    // Function to show loading animation
+    /**
+     * Setup all event listeners
+     */
+    function setupEventListeners() {
+        // Close button click
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.open) {
+                e.preventDefault();
+                closeModal();
+            }
+        });
+        
+        // Initialize React app when modal is opened
+        document.addEventListener('advset-modal-opened', initializeReactApp);
+        
+        // Listen for loading events from React app
+        document.addEventListener('advset-show-loading', showLoading);
+        document.addEventListener('advset-hide-loading', hideLoading);
+    }
+    
+    /**
+     * Setup search input event
+     */
+    function setupSearchInput() {
+        const searchInput = modal.querySelector('.advset-modal-search input');
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    // Dispatch search event for React integration
+                    document.dispatchEvent(new CustomEvent('advset-search', {
+                        detail: { query: e.target.value }
+                    }));
+                }, 300); // Debounce search for better performance
+            });
+        }
+    }
+    
+    /**
+     * Show loading animation
+     */
     function showLoading() {
         const modalBody = modal.querySelector('.advset-modal-body');
         const loadingElement = modalBody.querySelector('.advset-modal-body-loading');
@@ -25,7 +82,9 @@
         }
     }
     
-    // Function to hide loading animation
+    /**
+     * Hide loading animation
+     */
     function hideLoading() {
         const loadingElement = modal.querySelector('.advset-modal-body-loading');
         if (loadingElement) {
@@ -33,7 +92,9 @@
         }
     }
     
-    // Function to open modal
+    /**
+     * Open the modal dialog
+     */
     window.advset_open_modal = function() {
         // Show the modal
         modal.showModal();
@@ -71,26 +132,10 @@
         });
     };
     
-    // Function to setup search input event
-    function setupSearchInput() {
-        const searchInput = modal.querySelector('.advset-modal-search input');
-        if (searchInput) {
-            let searchTimeout;
-            searchInput.addEventListener('input', function(e) {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    // Dispatch search event for React integration
-                    document.dispatchEvent(new CustomEvent('advset-search', {
-                        detail: { query: e.target.value }
-                    }));
-                }, 300); // Debounce search for better performance
-            });
-        }
-    }
-    
-    // Function to close modal with animation
+    /**
+     * Close the modal dialog with animation
+     */
     function closeModal() {
-        const modal = document.getElementById('advset-admin-modal');
         if (modal) {
             // Add closing class to trigger animation
             modal.classList.add('closing');
@@ -106,28 +151,10 @@
         }
     }
     
-    // Event listeners
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    }
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.open) {
-            e.preventDefault();
-            closeModal();
-        }
-    });
-    
-    // Initialize React app when modal is opened
-    document.addEventListener('advset-modal-opened', function() {
+    /**
+     * Initialize the React app
+     */
+    function initializeReactApp() {
         if (!reactAppInitialized) {
             const modalContent = modal.querySelector('.advset-modal-body-content');
             if (modalContent) {
@@ -159,15 +186,5 @@
                 document.head.appendChild(registryScript);
             }
         }
-    });
-    
-    // Listen for loading events from React app
-    document.addEventListener('advset-show-loading', function() {
-        showLoading();
-    });
-    
-    document.addEventListener('advset-hide-loading', function() {
-        hideLoading();
-    });
-    
+    }
 })(); 

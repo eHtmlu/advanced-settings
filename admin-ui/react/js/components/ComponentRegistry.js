@@ -1,7 +1,9 @@
 /**
  * Component Registry
  * 
- * Manages all available UI components for the Advanced Settings plugin
+ * Manages all available UI components for the Advanced Settings plugin.
+ * This registry allows for dynamic loading and rendering of components
+ * without requiring a build process.
  */
 const ComponentRegistry = {
     /**
@@ -12,10 +14,16 @@ const ComponentRegistry = {
      */
     get(name) {
         if (!window.AdvSetComponents) {
+            console.warn('Component registry not initialized');
             return null;
         }
         
-        return window.AdvSetComponents[name] || null;
+        const component = window.AdvSetComponents[name];
+        if (!component) {
+            console.warn(`Component "${name}" not found in registry`);
+        }
+        
+        return component || null;
     },
     
     /**
@@ -32,7 +40,12 @@ const ComponentRegistry = {
             return '';
         }
         
-        return component.render(props);
+        try {
+            return component.render(props);
+        } catch (error) {
+            console.error(`Error rendering component "${name}":`, error);
+            return `<div class="advset-component-error">Error rendering component: ${name}</div>`;
+        }
     },
     
     /**
@@ -49,7 +62,30 @@ const ComponentRegistry = {
             return;
         }
         
-        component.init(id, callback);
+        try {
+            component.init(id, callback);
+        } catch (error) {
+            console.error(`Error initializing component "${name}":`, error);
+        }
+    },
+    
+    /**
+     * Register a new component
+     * 
+     * @param {string} name - Component name
+     * @param {Object} component - Component object with render and init methods
+     */
+    register(name, component) {
+        if (!window.AdvSetComponents) {
+            window.AdvSetComponents = {};
+        }
+        
+        if (!component.render || !component.init) {
+            console.warn(`Component "${name}" is missing required methods (render, init)`);
+            return;
+        }
+        
+        window.AdvSetComponents[name] = component;
     }
 };
 

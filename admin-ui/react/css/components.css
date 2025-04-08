@@ -1,8 +1,10 @@
 /**
  * Component Styles
+ * 
+ * Styles for all UI components used in the Advanced Settings plugin
  */
 
-/* Toggle Component */
+/* ===== Toggle Component ===== */
 .advset-toggle-container {
     display: flex;
     align-items: center;
@@ -62,7 +64,7 @@
     color: #555;
 }
 
-/* Item Layout Improvements */
+/* ===== Item Layout Improvements ===== */
 .advset-item-header {
     display: flex;
     justify-content: space-between;
@@ -74,4 +76,24 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #eee;
+}
+
+/* ===== Error Messages ===== */
+.advset-component-error {
+    color: #d63638;
+    background-color: #fcf0f1;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+.advset-error-message {
+    color: #d63638;
+    background-color: #fcf0f1;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border-left: 4px solid #d63638;
 } 

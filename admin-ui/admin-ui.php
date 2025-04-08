@@ -8,9 +8,6 @@
 // Exit direct requests
 if (!defined('ABSPATH')) exit;
 
-
-
-
 /**
  * Add admin bar icon for administrators
  */
@@ -30,20 +27,17 @@ function advset_admin_bar_icon() {
     }
     
     // Add the main menu item with inline SVG
-    $wp_admin_bar->add_menu(array(
+    $wp_admin_bar->add_menu([
         'id'    => 'advset-admin-icon',
         'title' => '<span class="ab-icon">' . $icon_svg . '</span><span class="ab-label">Advanced Settings</span>',
         'href'  => 'javascript:void(0);',
-        'meta'  => array(
+        'meta'  => [
             'class' => 'advset-admin-icon',
             'onclick' => 'advset_open_modal(); return false;'
-        )
-    ));
+        ]
+    ]);
 }
 add_action('admin_bar_menu', 'advset_admin_bar_icon', 100);
-
-
-
 
 /**
  * Enqueue admin UI scripts and styles
@@ -98,7 +92,7 @@ function advset_admin_ui_scripts() {
     );
     
     // Localize script with data
-    wp_localize_script('advset-admin-ui', 'advsetAdminUI', array(
+    wp_localize_script('advset-admin-ui', 'advsetAdminUI', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
         'reactAppUrl' => plugins_url('react/js/app.js', __FILE__),
@@ -106,13 +100,10 @@ function advset_admin_ui_scripts() {
         'reactAppCssUrl' => plugins_url('react/css/app.css', __FILE__),
         'componentRegistryUrl' => plugins_url('react/js/components/ComponentRegistry.js', __FILE__),
         'genericToggleUrl' => plugins_url('react/js/components/GenericToggle.js', __FILE__)
-    ));
+    ]);
 }
 add_action('admin_enqueue_scripts', 'advset_admin_ui_scripts');
 add_action('wp_enqueue_scripts', 'advset_admin_ui_scripts');
-
-
-
 
 /**
  * Add modal HTML to admin footer
@@ -165,9 +156,6 @@ function advset_admin_modal_html() {
 add_action('admin_footer', 'advset_admin_modal_html');
 add_action('wp_footer', 'advset_admin_modal_html');
 
-
-
-
 /**
  * AJAX handler for modal content
  */
@@ -185,7 +173,7 @@ function advset_get_modal_content() {
     // Get modal content
     $content = '';
     
-    wp_send_json_success(array('content' => $content));
+    wp_send_json_success(['content' => $content]);
 }
 add_action('wp_ajax_advset_get_modal_content', 'advset_get_modal_content');
 

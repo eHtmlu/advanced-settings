@@ -1,23 +1,34 @@
+/**
+ * Advanced Settings React App Styles
+ * 
+ * Main styles for the React-like application
+ */
+
 /* Import component styles */
 @import 'components.css';
 
+/* ===== No Results ===== */
 .advset-no-results {
     padding: 2rem;
     text-align: center;
+    color: #666;
+    font-style: italic;
 }
 
+/* ===== Results Grid ===== */
 .advset-results {
     display: grid;
     gap: 1rem;
     padding: 1rem;
 }
 
+/* ===== Item Cards ===== */
 .advset-item {
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 1rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .advset-item:hover,
@@ -29,9 +40,25 @@
 .advset-item h3 {
     margin: 0 0 0.5rem 0;
     color: #1d2327;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .advset-item p {
     margin: 0;
     color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ===== Category Badge ===== */
+.advset-item-category {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #f0f0f1;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #50575e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 } 
