@@ -25,7 +25,9 @@ const AdvSetModalApp = {
     },
 
     async performSearch(query) {
-        this.setState({ isLoading: true });
+        // Dispatch event to show loading
+        document.dispatchEvent(new CustomEvent('advset-show-loading'));
+        
         try {
             const response = await fetch(`/wp-json/advanced-settings/v1/search?query=${encodeURIComponent(query)}`, {
                 headers: {
@@ -33,30 +35,20 @@ const AdvSetModalApp = {
                 }
             });
             const data = await response.json();
-            this.setState({ items: data, isLoading: false });
+            this.setState({ items: data });
         } catch (error) {
             console.error('Search failed:', error);
-            this.setState({ isLoading: false });
+        } finally {
+            // Dispatch event to hide loading
+            document.dispatchEvent(new CustomEvent('advset-hide-loading'));
         }
     },
 
     render() {
-        const { searchQuery, items, isLoading } = this.state;
+        const { searchQuery, items } = this.state;
         
-        const content = isLoading 
-            ? this.renderLoading()
-            : this.renderContent(items, searchQuery);
-
+        const content = this.renderContent(items, searchQuery);
         this.container.innerHTML = content;
-    },
-
-    renderLoading() {
-        return `
-            <div class="advset-loading">
-                <span class="spinner is-active"></span>
-                <span>Loading...</span>
-            </div>
-        `;
     },
 
     renderContent(items, query) {

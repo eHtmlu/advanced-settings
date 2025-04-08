@@ -149,4 +149,13 @@
         }
     });
     
+    // Listen for loading events from React app
+    document.addEventListener('advset-show-loading', function() {
+        showLoading();
+    });
+    
+    document.addEventListener('advset-hide-loading', function() {
+        hideLoading();
+    });
+    
 })(); 
