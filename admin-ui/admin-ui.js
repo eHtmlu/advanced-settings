@@ -106,32 +106,6 @@
         
         // Dispatch modal opened event for React integration
         document.dispatchEvent(new CustomEvent('advset-modal-opened'));
-        
-        // Load content via AJAX
-        fetch(advsetAdminUI.ajaxUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=advset_get_modal_content&nonce=' + advsetAdminUI.nonce
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update modal content
-                const modalBodyContent = modal.querySelector('.advset-modal-body-content');
-                modalBodyContent.innerHTML = data.data.content;
-            }
-        })
-        .catch(error => {
-            console.error('Error loading modal content:', error);
-            // Hide loading animation even if there's an error
-            hideLoading();
-        })
-        .finally(() => {
-            // Hide loading animation when done
-            hideLoading();
-        });
     };
     
     /**

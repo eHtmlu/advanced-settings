@@ -157,26 +157,3 @@ function advset_admin_modal_html() {
 }
 add_action('admin_footer', 'advset_admin_modal_html');
 add_action('wp_footer', 'advset_admin_modal_html');
-
-/**
- * AJAX handler for modal content
- */
-function advset_get_modal_content() {
-    // Check nonce
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'advset-admin-ui-nonce')) {
-        wp_send_json_error('Invalid nonce');
-    }
-    
-    // Check user capabilities
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error('Insufficient permissions');
-    }
-    
-    // Get modal content
-    $content = '';
-    
-    wp_send_json_success(['content' => $content]);
-}
-add_action('wp_ajax_advset_get_modal_content', 'advset_get_modal_content');
-
-
