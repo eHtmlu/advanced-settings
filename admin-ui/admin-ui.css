@@ -41,11 +41,10 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     padding: 0;
     max-width: 90%;
-    width: 800px;
+    width: 1000px;
     height: 80vh;
     background-color: #fff;
     color: var(--advset-color-base);
-    position: relative;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: initial;
@@ -145,6 +144,15 @@
     padding: 20px;
     overflow-y: auto;
     position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.advset-modal-body-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* ===== Loading Animation ===== */
@@ -201,21 +209,26 @@
 }
 
 /* ===== Custom Scrollbar ===== */
-.advset-modal-body::-webkit-scrollbar {
+.advset-modal-body::-webkit-scrollbar,
+.advset-results-container::-webkit-scrollbar {
     width: 8px;
 }
 
-.advset-modal-body::-webkit-scrollbar-track {
+.advset-modal-body::-webkit-scrollbar-track,
+.advset-results-container::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-.advset-modal-body::-webkit-scrollbar-thumb {
+.advset-modal-body::-webkit-scrollbar-thumb,
+.advset-results-container::-webkit-scrollbar-thumb {
     background: #c1c1c1;
     border-radius: 4px;
 }
 
 .advset-modal-body::-webkit-scrollbar-thumb:hover,
-.advset-modal-body::-webkit-scrollbar-thumb:focus-visible {
+.advset-modal-body::-webkit-scrollbar-thumb:focus-visible,
+.advset-results-container::-webkit-scrollbar-thumb:hover,
+.advset-results-container::-webkit-scrollbar-thumb:focus-visible {
     background: #a8a8a8;
 }
 

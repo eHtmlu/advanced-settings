@@ -14,7 +14,8 @@ const AdvSetModalApp = {
         allItems: [], // Cache for all items
         isLoading: false,
         categories: [],
-        settings: {} // Store for settings values
+        settings: {}, // Store for settings values
+        activeCategory: null // Track active category for scrolling
     },
 
     /**
@@ -110,10 +111,27 @@ const AdvSetModalApp = {
     },
 
     /**
+     * Scroll to a specific category
+     * 
+     * @param {string} categoryId - The category ID to scroll to
+     */
+    scrollToCategory(categoryId) {
+        this.setState({ activeCategory: categoryId });
+        
+        // Use setTimeout to ensure the DOM has updated
+        setTimeout(() => {
+            const element = document.getElementById(`category-${categoryId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 0);
+    },
+
+    /**
      * Render the application
      */
     render() {
-        const { searchQuery, items, isLoading } = this.state;
+        const { searchQuery, items, isLoading, categories } = this.state;
         
         // Update the no results element
         const noResultsElement = document.querySelector('.advset-no-results');
@@ -125,7 +143,9 @@ const AdvSetModalApp = {
         if (window.React && window.ReactDOM) {
             const appElement = React.createElement(App, {
                 items: items,
+                categories: categories,
                 onSettingChange: this.handleSettingChange.bind(this),
+                onCategoryClick: this.scrollToCategory.bind(this),
                 settings: this.state.settings
             });
             
@@ -216,18 +236,69 @@ const AdvSetModalApp = {
  * Main App Component
  */
 function App(props) {
-    const { items, onSettingChange, settings } = props;
+    const { items, categories, onSettingChange, onCategoryClick, settings } = props;
+    
+    // Group items by category
+    const itemsByCategory = {};
+    items.forEach(item => {
+        if (!itemsByCategory[item.category]) {
+            itemsByCategory[item.category] = [];
+        }
+        itemsByCategory[item.category].push(item);
+    });
+    
+    // Get visible categories (those with items)
+    const visibleCategories = Object.keys(itemsByCategory).filter(categoryId => 
+        itemsByCategory[categoryId].length > 0
+    );
     
     return React.createElement('div', { className: 'advset-react-app' },
-        React.createElement('div', { className: 'advset-results' },
-            items.map(item => 
-                React.createElement(ItemCard, {
-                    key: item.id,
-                    item: item,
-                    onSettingChange: onSettingChange,
-                    settingValue: settings[item.id] || false
+        // Category sidebar
+        React.createElement('div', { className: 'advset-category-sidebar' },
+            React.createElement('h3', { className: 'advset-category-sidebar-title' }, 'Kategorien'),
+            React.createElement('ul', { className: 'advset-category-menu' },
+                visibleCategories.map(categoryId => {
+                    const category = categories[categoryId];
+                    return React.createElement('li', { 
+                        key: categoryId,
+                        className: 'advset-category-menu-item'
+                    },
+                        React.createElement('a', {
+                            href: `#category-${categoryId}`,
+                            onClick: (e) => {
+                                e.preventDefault();
+                                onCategoryClick(categoryId);
+                            }
+                        }, category ? category.title : categoryId)
+                    );
                 })
             )
+        ),
+        
+        // Results area with categorized items
+        React.createElement('div', { className: 'advset-results-container' },
+            visibleCategories.map(categoryId => {
+                const category = categories[categoryId];
+                return React.createElement('div', { 
+                    key: categoryId,
+                    id: `category-${categoryId}`,
+                    className: 'advset-category-section'
+                },
+                    React.createElement('h2', { 
+                        className: 'advset-category-title'
+                    }, category ? category.title : categoryId),
+                    React.createElement('div', { className: 'advset-results' },
+                        itemsByCategory[categoryId].map(item => 
+                            React.createElement(ItemCard, {
+                                key: item.id,
+                                item: item,
+                                onSettingChange: onSettingChange,
+                                settingValue: settings[item.id] || false
+                            })
+                        )
+                    )
+                );
+            })
         )
     );
 }
