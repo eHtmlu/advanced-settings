@@ -3,18 +3,22 @@ const AdvSetModalApp = {
     state: {
         searchQuery: '',
         items: [],
+        allItems: [], // Cache for all items
+        isLoading: false,
+        categories: []
     },
 
     init(container) {
         this.container = container;
         this.setupEventListeners();
+        this.loadAllFeatures();
         this.render();
     },
 
     setupEventListeners() {
         document.addEventListener('advset-search', (event) => {
             this.setState({ searchQuery: event.detail.query });
-            this.performSearch(event.detail.query);
+            this.performLocalSearch(event.detail.query);
         });
     },
 
@@ -23,28 +27,51 @@ const AdvSetModalApp = {
         this.render();
     },
 
-    async performSearch(query) {
+    async loadAllFeatures() {
         // Dispatch event to show loading
         document.dispatchEvent(new CustomEvent('advset-show-loading'));
+        this.setState({ isLoading: true });
         
         try {
-            const response = await fetch(`/wp-json/advanced-settings/v1/search?query=${encodeURIComponent(query)}`, {
+            const response = await fetch(`/wp-json/advanced-settings/v1/features`, {
                 headers: {
                     'X-WP-Nonce': wpApiSettings.nonce
                 }
             });
             const data = await response.json();
-            this.setState({ items: data });
+
+            this.setState({ 
+                allItems: data.features,
+                items: data.features, // Initially show all items
+                categories: data.categories
+            });
         } catch (error) {
-            console.error('Search failed:', error);
+            console.error('Failed to load features:', error);
         } finally {
             // Dispatch event to hide loading
             document.dispatchEvent(new CustomEvent('advset-hide-loading'));
+            this.setState({ isLoading: false });
         }
     },
 
+    performLocalSearch(query) {
+        if (!query) {
+            // If query is empty, show all items
+            this.setState({ items: this.state.allItems });
+            return;
+        }
+        
+        // Filter items locally
+        const filteredItems = this.state.allItems.filter(item => {
+            const searchText = `${item.title} ${item.description} ${item.label}`.toLowerCase();
+            return searchText.includes(query.toLowerCase());
+        });
+        
+        this.setState({ items: filteredItems });
+    },
+
     render() {
-        const { searchQuery, items } = this.state;
+        const { searchQuery, items, isLoading } = this.state;
         
         // Update the no results element
         const noResultsElement = document.querySelector('.advset-no-results');
@@ -70,6 +97,8 @@ const AdvSetModalApp = {
             <div class="advset-item" data-id="${item.id}">
                 <h3>${item.title}</h3>
                 <p>${item.description}</p>
+                ${item.label ? `<p class="advset-item-label">${item.label}</p>` : ''}
+                <span class="advset-item-category">${item.category}</span>
             </div>
         `;
     }
