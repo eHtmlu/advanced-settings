@@ -78,7 +78,7 @@ function advset_admin_ui_scripts() {
     wp_register_script(
         'advset-react-app',
         plugins_url('react/js/app.js', __FILE__),
-        [],
+        ['wp-element', 'wp-components', 'wp-i18n'],
         filemtime(ADVSET_DIR . '/admin-ui/react/js/app.js'),
         true
     );
@@ -99,7 +99,9 @@ function advset_admin_ui_scripts() {
         'reactComponentsUrl' => plugins_url('react/js/components/index.js', __FILE__),
         'reactAppCssUrl' => plugins_url('react/css/app.css', __FILE__),
         'componentRegistryUrl' => plugins_url('react/js/components/ComponentRegistry.js', __FILE__),
-        'genericToggleUrl' => plugins_url('react/js/components/GenericToggle.js', __FILE__)
+        'genericToggleUrl' => plugins_url('react/js/components/GenericToggle.js', __FILE__),
+        'wpReactUrl' => includes_url('js/dist/vendor/react.min.js'),
+        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js')
     ]);
 }
 add_action('admin_enqueue_scripts', 'advset_admin_ui_scripts');

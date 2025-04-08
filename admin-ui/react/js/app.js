@@ -118,91 +118,18 @@ const AdvSetModalApp = {
             noResultsElement.style.display = items.length ? 'none' : 'block';
         }
         
-        // Clear the container
-        this.container.innerHTML = '';
-        
-        // Create the main app element
-        const appElement = document.createElement('div');
-        appElement.className = 'advset-react-app';
-        
-        // Render the content
-        if (items.length) {
-            const itemsContainer = document.createElement('div');
-            itemsContainer.className = 'advset-results';
-            
-            items.forEach(item => {
-                const itemElement = this.createItemElement(item);
-                itemsContainer.appendChild(itemElement);
+        // Render the React app
+        if (window.React && window.ReactDOM) {
+            const appElement = React.createElement(App, {
+                items: items,
+                onSettingChange: this.handleSettingChange.bind(this),
+                settings: this.state.settings
             });
             
-            appElement.appendChild(itemsContainer);
+            ReactDOM.render(appElement, this.container);
+        } else {
+            console.error('React or ReactDOM not loaded');
         }
-        
-        // Add the app element to the container
-        this.container.appendChild(appElement);
-    },
-
-    /**
-     * Create a DOM element for a single item
-     * 
-     * @param {Object} item - The item to render
-     * @returns {HTMLElement} DOM element for the item
-     */
-    createItemElement(item) {
-        // Create the item container
-        const itemElement = document.createElement('div');
-        itemElement.className = 'advset-item';
-        itemElement.dataset.id = item.id;
-        
-        // Create the header
-        const headerElement = document.createElement('div');
-        headerElement.className = 'advset-item-header';
-        
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = item.title;
-        
-        const categoryElement = document.createElement('span');
-        categoryElement.className = 'advset-item-category';
-        categoryElement.textContent = item.category;
-        
-        headerElement.appendChild(titleElement);
-        headerElement.appendChild(categoryElement);
-        
-        // Create the description
-        const descriptionElement = document.createElement('p');
-        descriptionElement.textContent = item.description;
-        
-        // Create the control container
-        const controlElement = document.createElement('div');
-        controlElement.className = 'advset-item-control';
-        
-        // Create the component
-        const componentId = `advset-${item.id.replace(/\./g, '-')}`;
-        const componentName = item.ui_component || 'GenericToggle';
-        
-        // Create the component element
-        const componentElement = document.createElement('div');
-        componentElement.innerHTML = window.AdvSetComponentRegistry ? 
-            window.AdvSetComponentRegistry.render(componentName, {
-                id: componentId,
-                label: item.label || item.title,
-                checked: this.state.settings[item.id] || false
-            }) : '';
-        
-        // Initialize the component
-        if (window.AdvSetComponentRegistry) {
-            window.AdvSetComponentRegistry.init(componentName, componentId, (value) => {
-                this.handleSettingChange(item.id, value);
-            });
-        }
-        
-        // Add all elements to the item
-        controlElement.appendChild(componentElement);
-        itemElement.appendChild(headerElement);
-        itemElement.appendChild(descriptionElement);
-        itemElement.appendChild(controlElement);
-        
-        return itemElement;
     },
     
     /**
@@ -281,6 +208,75 @@ const AdvSetModalApp = {
         }, 5000);
     }
 };
+
+/**
+ * Main App Component
+ */
+function App(props) {
+    const { items, onSettingChange, settings } = props;
+    
+    return React.createElement('div', { className: 'advset-react-app' },
+        React.createElement('div', { className: 'advset-results' },
+            items.map(item => 
+                React.createElement(ItemCard, {
+                    key: item.id,
+                    item: item,
+                    onSettingChange: onSettingChange,
+                    settingValue: settings[item.id] || false
+                })
+            )
+        )
+    );
+}
+
+/**
+ * Item Card Component
+ */
+function ItemCard(props) {
+    const { item, onSettingChange, settingValue } = props;
+    
+    return React.createElement('div', { 
+        className: 'advset-item',
+        'data-id': item.id
+    },
+        React.createElement('div', { className: 'advset-item-header' },
+            React.createElement('h3', null, item.title),
+            React.createElement('span', { className: 'advset-item-category' }, item.category)
+        ),
+        React.createElement('p', null, item.description),
+        React.createElement('div', { className: 'advset-item-control' },
+            React.createElement(GenericToggle, {
+                id: `advset-${item.id.replace(/\./g, '-')}`,
+                label: item.label || item.title,
+                checked: settingValue,
+                onChange: (value) => onSettingChange(item.id, value)
+            })
+        )
+    );
+}
+
+/**
+ * Generic Toggle Component
+ */
+function GenericToggle(props) {
+    const { id, label, checked, onChange } = props;
+    
+    return React.createElement('div', { className: 'advset-toggle-container' },
+        React.createElement('label', { className: 'advset-toggle', htmlFor: id },
+            React.createElement('input', {
+                type: 'checkbox',
+                id: id,
+                className: 'advset-toggle-input',
+                checked: checked,
+                'data-component': 'generic-toggle',
+                'aria-checked': checked ? 'true' : 'false',
+                onChange: (e) => onChange(e.target.checked)
+            }),
+            React.createElement('span', { className: 'advset-toggle-slider' })
+        ),
+        React.createElement('span', { className: 'advset-toggle-label' }, label || '')
+    );
+}
 
 // Export for use in other files
 window.AdvSetModalApp = AdvSetModalApp; 

@@ -15,6 +15,8 @@
     
     // State
     let reactAppInitialized = false;
+    let reactLoaded = false;
+    let reactDomLoaded = false;
     
     // Initialize
     setupSearchInput();
@@ -152,6 +154,48 @@
     }
     
     /**
+     * Load React and ReactDOM dynamically
+     */
+    function loadReact() {
+        return new Promise((resolve) => {
+            // Check if React is already loaded
+            if (window.React && window.ReactDOM) {
+                reactLoaded = true;
+                reactDomLoaded = true;
+                resolve();
+                return;
+            }
+            
+            // Load React
+            const reactScript = document.createElement('script');
+            reactScript.src = advsetAdminUI.wpReactUrl;
+            reactScript.onload = function() {
+                reactLoaded = true;
+                checkReactLoaded(resolve);
+            };
+            document.head.appendChild(reactScript);
+            
+            // Load ReactDOM
+            const reactDomScript = document.createElement('script');
+            reactDomScript.src = advsetAdminUI.wpReactDomUrl;
+            reactDomScript.onload = function() {
+                reactDomLoaded = true;
+                checkReactLoaded(resolve);
+            };
+            document.head.appendChild(reactDomScript);
+        });
+    }
+    
+    /**
+     * Check if both React and ReactDOM are loaded
+     */
+    function checkReactLoaded(resolve) {
+        if (reactLoaded && reactDomLoaded) {
+            resolve();
+        }
+    }
+    
+    /**
      * Initialize the React app
      */
     function initializeReactApp() {
@@ -164,31 +208,22 @@
                 cssLink.href = advsetAdminUI.reactAppCssUrl;
                 document.head.appendChild(cssLink);
                 
-                // Load ComponentRegistry first
-                const registryScript = document.createElement('script');
-                registryScript.src = advsetAdminUI.componentRegistryUrl;
-                registryScript.onload = function() {
-                    // Load GenericToggle component
-                    const toggleScript = document.createElement('script');
-                    toggleScript.src = advsetAdminUI.genericToggleUrl;
-                    toggleScript.onload = function() {
-                        // Load React app script
-                        const appScript = document.createElement('script');
-                        appScript.src = advsetAdminUI.reactAppUrl;
-                        appScript.onload = function() {
-                            // Initialize the React app
-                            if (window.AdvSetModalApp) {
-                                window.AdvSetModalApp.init(modalContent);
-                                reactAppInitialized = true;
-                            } else {
-                                console.error('React app not loaded properly');
-                            }
-                        };
-                        document.head.appendChild(appScript);
+                // Load React and ReactDOM
+                loadReact().then(() => {
+                    // Load React app script
+                    const appScript = document.createElement('script');
+                    appScript.src = advsetAdminUI.reactAppUrl;
+                    appScript.onload = function() {
+                        // Initialize the React app
+                        if (window.AdvSetModalApp) {
+                            window.AdvSetModalApp.init(modalContent);
+                            reactAppInitialized = true;
+                        } else {
+                            console.error('React app not loaded properly');
+                        }
                     };
-                    document.head.appendChild(toggleScript);
-                };
-                document.head.appendChild(registryScript);
+                    document.head.appendChild(appScript);
+                });
             }
         }
     }
