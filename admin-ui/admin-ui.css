@@ -147,10 +147,6 @@
     position: relative;
 }
 
-.advset-modal-body-content:not(:has(+ .advset-modal-body-loading--hidden)) {
-    pointer-events: none;
-}
-
 /* ===== Loading Animation ===== */
 .advset-modal-body-loading {
     position: absolute;
@@ -174,6 +170,7 @@
 .advset-modal-body-loading--hidden {
     opacity: 0;
     pointer-events: none;
+    display: none;
 }
 
 /* ===== Animations ===== */

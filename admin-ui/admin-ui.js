@@ -17,6 +17,7 @@
     let reactAppInitialized = false;
     let reactLoaded = false;
     let reactDomLoaded = false;
+    let dataLoaded = false;
     
     // Initialize
     setupSearchInput();
@@ -52,6 +53,12 @@
         // Listen for loading events from React app
         document.addEventListener('advset-show-loading', showLoading);
         document.addEventListener('advset-hide-loading', hideLoading);
+        
+        // Listen for data loaded event
+        document.addEventListener('advset-data-loaded', function() {
+            dataLoaded = true;
+            hideLoading();
+        });
     }
     
     /**
@@ -77,8 +84,7 @@
      * Show loading animation
      */
     function showLoading() {
-        const modalBody = modal.querySelector('.advset-modal-body');
-        const loadingElement = modalBody.querySelector('.advset-modal-body-loading');
+        const loadingElement = modal.querySelector('.advset-modal-body-loading');
         if (loadingElement) {
             loadingElement.classList.remove('advset-modal-body-loading--hidden');
         }
@@ -101,8 +107,12 @@
         // Show the modal
         modal.showModal();
         
-        // Show loading animation
-        showLoading();
+        // Show loading animation only if data is not already loaded
+        if (!dataLoaded) {
+            showLoading();
+        } else {
+            hideLoading();
+        }
         
         // Dispatch modal opened event for React integration
         document.dispatchEvent(new CustomEvent('advset-modal-opened'));

@@ -74,6 +74,9 @@ const AdvSetModalApp = {
                 items: data.features, // Initially show all items
                 categories: data.categories
             });
+            
+            // Dispatch event to indicate data is loaded
+            document.dispatchEvent(new CustomEvent('advset-data-loaded'));
         } catch (error) {
             console.error('Failed to load features:', error);
             // Show error message to user
