@@ -191,9 +191,10 @@
                 
                 // Load React and ReactDOM
                 loadReact().then(() => {
-                    // Load React app script
+                    // Load React app script as a module
                     const appScript = document.createElement('script');
                     appScript.src = advsetAdminUI.reactAppUrl;
+                    appScript.type = 'module';
                     appScript.onload = function() {
                         // Initialize the React app
                         if (window.AdvSetModalApp) {

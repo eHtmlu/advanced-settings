@@ -73,8 +73,6 @@ function advset_admin_ui_scripts() {
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
         'reactAppUrl' => plugins_url('react/js/app.js', __FILE__),
         'reactAppCssUrl' => plugins_url('react/css/app.css', __FILE__),
-        'componentRegistryUrl' => plugins_url('react/js/components/ComponentRegistry.js', __FILE__),
-        'genericToggleUrl' => plugins_url('react/js/components/GenericToggle.js', __FILE__),
         'wpReactUrl' => includes_url('js/dist/vendor/react.min.js'),
         'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js')
     ]);

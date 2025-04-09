@@ -12,7 +12,7 @@ return [
                 'description' => __('Disable comments on the site', 'advanced-settings'),
                 'label' => __('Disable comments', 'advanced-settings'),
             ],
-            'ui_component' => 'GenericToggle',
+            'ui_component' => 'SettingComponentGenericToggle',
             'handler_execute' => function() {
                 // TODO: Implement comment disabling
             },

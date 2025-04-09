@@ -4,6 +4,128 @@
  * A lightweight React application for managing advanced settings
  * without requiring a build process or JSX
  */
+
+// Import components
+import { SettingComponentGenericToggle } from './components/SettingComponentGenericToggle.js';
+import ComponentRegistry from './components/ComponentRegistry.js';
+
+// Register components
+ComponentRegistry.register('generic-toggle', SettingComponentGenericToggle);
+
+/**
+ * Main App Component
+ */
+function App(props) {
+    const { items, categories, onSettingChange, onCategoryClick, settings } = props;
+    
+    // Group items by category
+    const itemsByCategory = {};
+    items.forEach(item => {
+        if (!itemsByCategory[item.category]) {
+            itemsByCategory[item.category] = [];
+        }
+        itemsByCategory[item.category].push(item);
+    });
+    
+    // Get visible categories (those with items)
+    const visibleCategories = Object.keys(itemsByCategory).filter(categoryId => 
+        itemsByCategory[categoryId].length > 0
+    );
+    
+    return React.createElement('div', { className: 'advset-react-app' },
+        // Category sidebar
+        React.createElement('div', { className: 'advset-category-sidebar' },
+            React.createElement('ul', { className: 'advset-category-menu' },
+                visibleCategories.map(categoryId => {
+                    const category = categories[categoryId];
+                    return React.createElement('li', { 
+                        key: categoryId,
+                        className: 'advset-category-menu-item'
+                    },
+                        React.createElement('a', {
+                            href: `#category-${categoryId}`,
+                            onClick: (e) => {
+                                e.preventDefault();
+                                onCategoryClick(categoryId);
+                            }
+                        }, 
+                            React.createElement('span', {
+                                className: 'advset-category-icon',
+                                dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                            }),
+                            React.createElement('span', {
+                                className: 'advset-category-text'
+                            }, category ? category.title : categoryId)
+                        )
+                    );
+                })
+            )
+        ),
+        
+        // Results area with categorized items
+        React.createElement('div', { className: 'advset-results-container' },
+            visibleCategories.map(categoryId => {
+                const category = categories[categoryId];
+                return React.createElement('div', { 
+                    key: categoryId,
+                    id: `category-${categoryId}`,
+                    className: 'advset-category-section'
+                },
+                    React.createElement('h2', { 
+                        className: 'advset-category-title'
+                    }, 
+                        React.createElement('span', {
+                            className: 'advset-category-icon',
+                            dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                        }),
+                        React.createElement('span', {
+                            className: 'advset-category-text'
+                        }, category ? category.title : categoryId)
+                    ),
+                    React.createElement('div', { className: 'advset-results' },
+                        itemsByCategory[categoryId].map(item => 
+                            React.createElement(ItemCard, {
+                                key: item.id,
+                                item: item,
+                                onSettingChange: onSettingChange,
+                                settingValue: settings[item.id] || false
+                            })
+                        )
+                    )
+                );
+            })
+        )
+    );
+}
+
+/**
+ * Item Card Component
+ */
+function ItemCard(props) {
+    const { item, onSettingChange, settingValue } = props;
+    
+    return React.createElement('div', { 
+        className: 'advset-item',
+        'data-id': item.id
+    },
+        /* React.createElement('div', { className: 'advset-item-header' },
+            React.createElement('span', { className: 'advset-item-path' }, item.id.replace(/\./g, ' → ')),
+            React.createElement('h3', null, item.title),
+        ), */
+        React.createElement('div', { className: 'advset-item-control' },
+            React.createElement(SettingComponentGenericToggle, {
+                id: `advset-${item.id.replace(/\./g, '-')}`,
+                label: item.label || item.title,
+                checked: settingValue,
+                onChange: (value) => onSettingChange(item.id, value)
+            })
+        )
+    );
+}
+
+/**
+ * Advanced Settings Modal App
+ */
 const AdvSetModalApp = {
     /**
      * Application state
@@ -232,140 +354,8 @@ const AdvSetModalApp = {
     }
 };
 
-/**
- * Main App Component
- */
-function App(props) {
-    const { items, categories, onSettingChange, onCategoryClick, settings } = props;
-    
-    // Group items by category
-    const itemsByCategory = {};
-    items.forEach(item => {
-        if (!itemsByCategory[item.category]) {
-            itemsByCategory[item.category] = [];
-        }
-        itemsByCategory[item.category].push(item);
-    });
-    
-    // Get visible categories (those with items)
-    const visibleCategories = Object.keys(itemsByCategory).filter(categoryId => 
-        itemsByCategory[categoryId].length > 0
-    );
-    
-    return React.createElement('div', { className: 'advset-react-app' },
-        // Category sidebar
-        React.createElement('div', { className: 'advset-category-sidebar' },
-            React.createElement('ul', { className: 'advset-category-menu' },
-                visibleCategories.map(categoryId => {
-                    const category = categories[categoryId];
-                    return React.createElement('li', { 
-                        key: categoryId,
-                        className: 'advset-category-menu-item'
-                    },
-                        React.createElement('a', {
-                            href: `#category-${categoryId}`,
-                            onClick: (e) => {
-                                e.preventDefault();
-                                onCategoryClick(categoryId);
-                            }
-                        }, 
-                            React.createElement('span', {
-                                className: 'advset-category-icon',
-                                dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
-                            }),
-                            React.createElement('span', {
-                                className: 'advset-category-text'
-                            }, category ? category.title : categoryId)
-                        )
-                    );
-                })
-            )
-        ),
-        
-        // Results area with categorized items
-        React.createElement('div', { className: 'advset-results-container' },
-            visibleCategories.map(categoryId => {
-                const category = categories[categoryId];
-                return React.createElement('div', { 
-                    key: categoryId,
-                    id: `category-${categoryId}`,
-                    className: 'advset-category-section'
-                },
-                    React.createElement('h2', { 
-                        className: 'advset-category-title'
-                    }, 
-                        React.createElement('span', {
-                            className: 'advset-category-icon',
-                            dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
-                        }),
-                        React.createElement('span', {
-                            className: 'advset-category-text'
-                        }, category ? category.title : categoryId)
-                    ),
-                    React.createElement('div', { className: 'advset-results' },
-                        itemsByCategory[categoryId].map(item => 
-                            React.createElement(ItemCard, {
-                                key: item.id,
-                                item: item,
-                                onSettingChange: onSettingChange,
-                                settingValue: settings[item.id] || false
-                            })
-                        )
-                    )
-                );
-            })
-        )
-    );
-}
-
-/**
- * Item Card Component
- */
-function ItemCard(props) {
-    const { item, onSettingChange, settingValue } = props;
-    
-    return React.createElement('div', { 
-        className: 'advset-item',
-        'data-id': item.id
-    },
-        React.createElement('div', { className: 'advset-item-header' },
-            React.createElement('h3', null, item.title),
-            React.createElement('span', { className: 'advset-item-category' }, item.category)
-        ),
-        React.createElement('p', null, item.description),
-        React.createElement('div', { className: 'advset-item-control' },
-            React.createElement(GenericToggle, {
-                id: `advset-${item.id.replace(/\./g, '-')}`,
-                label: item.label || item.title,
-                checked: settingValue,
-                onChange: (value) => onSettingChange(item.id, value)
-            })
-        )
-    );
-}
-
-/**
- * Generic Toggle Component
- */
-function GenericToggle(props) {
-    const { id, label, checked, onChange } = props;
-    
-    return React.createElement('div', { className: 'advset-toggle-container' },
-        React.createElement('label', { className: 'advset-toggle', htmlFor: id },
-            React.createElement('input', {
-                type: 'checkbox',
-                id: id,
-                className: 'advset-toggle-input',
-                checked: checked,
-                'data-component': 'generic-toggle',
-                'aria-checked': checked ? 'true' : 'false',
-                onChange: (e) => onChange(e.target.checked)
-            }),
-            React.createElement('span', { className: 'advset-toggle-slider' })
-        ),
-        React.createElement('span', { className: 'advset-toggle-label' }, label || '')
-    );
-}
-
 // Export for use in other files
+export { AdvSetModalApp, App, ItemCard };
+
+// Make available globally for backward compatibility
 window.AdvSetModalApp = AdvSetModalApp; 
