@@ -74,6 +74,10 @@
 
 /* Category Section */
 
+.advset-category-section:last-child {
+    min-height: 100%;
+}
+
 .advset-category-title {
     display: flex;
     align-items: center;
