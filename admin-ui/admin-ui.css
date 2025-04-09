@@ -126,10 +126,14 @@
 
 .advset-modal-title {
     margin: 0;
-    font-size: var(--advset-font-size-large);
-    letter-spacing: .02em;
+    /* font-size: var(--advset-font-size-large); */
+    /* letter-spacing: .02em; */
     font-weight: 600;
-    flex-grow: 1;
+    flex-grow: 1;text-transform: uppercase;
+    color: var(--advset-color-base-70);
+    font-size: var(--advset-font-size-medium);
+    align-self: start;
+    letter-spacing: .05em;
 }
 
 .advset-modal-close {
