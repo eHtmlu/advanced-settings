@@ -67,22 +67,6 @@ function advset_admin_ui_scripts() {
     );
     wp_enqueue_script('advset-admin-ui');
     
-    // Register React app assets (but don't enqueue them yet)
-    wp_register_style(
-        'advset-react-app',
-        plugins_url('react/css/app.css', __FILE__),
-        [],
-        filemtime(ADVSET_DIR . '/admin-ui/react/css/app.css')
-    );
-    
-    wp_register_script(
-        'advset-react-app',
-        plugins_url('react/js/app.js', __FILE__),
-        ['wp-element', 'wp-components', 'wp-i18n'],
-        filemtime(ADVSET_DIR . '/admin-ui/react/js/app.js'),
-        true
-    );
-    
     // Localize script with data
     wp_localize_script('advset-admin-ui', 'advsetAdminUI', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
