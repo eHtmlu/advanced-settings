@@ -355,7 +355,4 @@ const AdvSetModalApp = {
 };
 
 // Export for use in other files
-export { AdvSetModalApp, App, ItemCard };
-
-// Make available globally for backward compatibility
-window.AdvSetModalApp = AdvSetModalApp; 
+export { AdvSetModalApp, App, ItemCard }; 

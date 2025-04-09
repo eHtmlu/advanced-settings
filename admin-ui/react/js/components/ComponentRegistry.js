@@ -77,7 +77,4 @@ class ComponentRegistry {
 
 // Create and export a singleton instance
 const registry = new ComponentRegistry();
-export default registry;
-
-// Make available globally for backward compatibility
-window.AdvSetComponentRegistry = registry; 
+export default registry; 

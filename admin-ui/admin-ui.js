@@ -191,20 +191,20 @@
                 
                 // Load React and ReactDOM
                 loadReact().then(() => {
-                    // Load React app script as a module
-                    const appScript = document.createElement('script');
-                    appScript.src = advsetAdminUI.reactAppUrl;
-                    appScript.type = 'module';
-                    appScript.onload = function() {
-                        // Initialize the React app
-                        if (window.AdvSetModalApp) {
-                            window.AdvSetModalApp.init(modalContent);
-                            reactAppInitialized = true;
-                        } else {
-                            console.error('React app not loaded properly');
-                        }
-                    };
-                    document.head.appendChild(appScript);
+                    // Import the React app module directly
+                    import(advsetAdminUI.reactAppUrl)
+                        .then(module => {
+                            // Initialize the React app using the imported module
+                            if (module.AdvSetModalApp) {
+                                module.AdvSetModalApp.init(modalContent);
+                                reactAppInitialized = true;
+                            } else {
+                                console.error('React app not loaded properly');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Failed to load React app module:', error);
+                        });
                 });
             }
         }
