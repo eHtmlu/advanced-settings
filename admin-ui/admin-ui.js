@@ -147,23 +147,26 @@
                 return;
             }
             
-            // Load React
+            // Load React first, then ReactDOM
             const reactScript = document.createElement('script');
             reactScript.src = advsetAdminUI.wpReactUrl;
+            
             reactScript.onload = function() {
                 reactLoaded = true;
-                checkReactLoaded(resolve);
+                
+                // Only load ReactDOM after React is fully loaded
+                const reactDomScript = document.createElement('script');
+                reactDomScript.src = advsetAdminUI.wpReactDomUrl;
+                
+                reactDomScript.onload = function() {
+                    reactDomLoaded = true;
+                    checkReactLoaded(resolve);
+                };
+                
+                document.head.appendChild(reactDomScript);
             };
-            document.head.appendChild(reactScript);
             
-            // Load ReactDOM
-            const reactDomScript = document.createElement('script');
-            reactDomScript.src = advsetAdminUI.wpReactDomUrl;
-            reactDomScript.onload = function() {
-                reactDomLoaded = true;
-                checkReactLoaded(resolve);
-            };
-            document.head.appendChild(reactDomScript);
+            document.head.appendChild(reactScript);
         });
     }
     
