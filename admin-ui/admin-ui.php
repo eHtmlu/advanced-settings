@@ -83,20 +83,11 @@ function advset_admin_ui_scripts() {
         true
     );
     
-    wp_register_script(
-        'advset-react-components',
-        plugins_url('react/js/components/index.js', __FILE__),
-        ['advset-react-app'],
-        filemtime(ADVSET_DIR . '/admin-ui/react/js/components/index.js'),
-        true
-    );
-    
     // Localize script with data
     wp_localize_script('advset-admin-ui', 'advsetAdminUI', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
         'reactAppUrl' => plugins_url('react/js/app.js', __FILE__),
-        'reactComponentsUrl' => plugins_url('react/js/components/index.js', __FILE__),
         'reactAppCssUrl' => plugins_url('react/css/app.css', __FILE__),
         'componentRegistryUrl' => plugins_url('react/js/components/ComponentRegistry.js', __FILE__),
         'genericToggleUrl' => plugins_url('react/js/components/GenericToggle.js', __FILE__),
