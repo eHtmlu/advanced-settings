@@ -23,7 +23,6 @@
     // Initialize
     setupSearchInput();
     setupEventListeners();
-    adjustModalHeight();
     
     /**
      * Setup all event listeners
@@ -61,20 +60,6 @@
             dataLoaded = true;
             hideLoading();
         });
-        
-        // Adjust modal height on window resize
-        window.addEventListener('resize', adjustModalHeight);
-    }
-    
-    /**
-     * Adjust modal height based on viewport
-     */
-    function adjustModalHeight() {
-        if (modalBody) {
-            // Set max height to 80% of viewport height
-            const maxHeight = window.innerHeight * 0.8;
-            modalBody.style.maxHeight = `${maxHeight}px`;
-        }
     }
     
     /**
@@ -118,9 +103,6 @@
     window.advset_open_modal = function() {
         // Show the modal
         modal.showModal();
-        
-        // Adjust modal height
-        adjustModalHeight();
         
         // Show loading animation only if data is not already loaded
         if (!dataLoaded) {

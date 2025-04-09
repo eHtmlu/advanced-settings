@@ -136,10 +136,12 @@ function advset_admin_modal_html() {
             <header class="advset-modal-header">
                 <div class="advset-modal-header-top">
                     <h2 class="advset-modal-title"><?php _e('Advanced Settings', 'advanced-settings'); ?></h2>
-                    <button class="advset-modal-close" aria-label="<?php _e('Close', 'advanced-settings'); ?>"><?php echo $close_svg; ?></button>
-                </div>
-                <div class="advset-modal-search">
-                    <input type="search" id="advset-modal-search" autofocus placeholder="<?php _e('Search …', 'advanced-settings'); ?>">
+                    <div class="advset-modal-search">
+                        <input type="search" id="advset-modal-search" autofocus placeholder="<?php _e('Search …', 'advanced-settings'); ?>">
+                    </div>
+                    <div class="advset-modal-header-right">
+                        <button class="advset-modal-close" aria-label="<?php _e('Close', 'advanced-settings'); ?>"><?php echo $close_svg; ?></button>
+                    </div>
                 </div>
             </header>
             <div class="advset-modal-body">

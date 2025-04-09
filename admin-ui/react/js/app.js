@@ -255,7 +255,6 @@ function App(props) {
     return React.createElement('div', { className: 'advset-react-app' },
         // Category sidebar
         React.createElement('div', { className: 'advset-category-sidebar' },
-            React.createElement('h3', { className: 'advset-category-sidebar-title' }, 'Kategorien'),
             React.createElement('ul', { className: 'advset-category-menu' },
                 visibleCategories.map(categoryId => {
                     const category = categories[categoryId];
@@ -274,7 +273,9 @@ function App(props) {
                                 className: 'advset-category-icon',
                                 dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
                             }),
-                            React.createElement('span', null, category ? category.title : categoryId)
+                            React.createElement('span', {
+                                className: 'advset-category-text'
+                            }, category ? category.title : categoryId)
                         )
                     );
                 })
@@ -297,7 +298,9 @@ function App(props) {
                             className: 'advset-category-icon',
                             dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
                         }),
-                        React.createElement('span', null, category ? category.title : categoryId)
+                        React.createElement('span', {
+                            className: 'advset-category-text'
+                        }, category ? category.title : categoryId)
                     ),
                     React.createElement('div', { className: 'advset-results' },
                         itemsByCategory[categoryId].map(item => 
