@@ -49,10 +49,12 @@
     border-radius: 50%;
 }
 
-.advset-toggle-input:checked + .advset-toggle-slider,
-.advset-toggle-input:focus-visible + .advset-toggle-slider {
+.advset-toggle-input:checked + .advset-toggle-slider {
     background-color: var(--advset-color-primary);
-    box-shadow: 0 0 1px var(--advset-color-primary);
+}
+
+.advset-toggle-input:focus-visible + .advset-toggle-slider {
+    box-shadow: 0 0 2px 2px var(--advset-color-primary);
 }
 
 .advset-toggle-input:checked + .advset-toggle-slider:before {

@@ -43,7 +43,7 @@
 }
 
 .advset-category-menu-item a {
-    display: block;
+    display: flex;
     padding: 8px 12px;
     border-radius: 4px;
     color: #50575e;
@@ -129,91 +129,6 @@
 
 .advset-item-control {
     margin-top: auto;
-}
-
-/* Toggle Component */
-.advset-toggle-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.advset-toggle {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.advset-toggle-input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.advset-toggle-slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .3s;
-    border-radius: 24px;
-}
-
-.advset-toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
-    border-radius: 50%;
-}
-
-.advset-toggle-input:checked + .advset-toggle-slider {
-    background-color: #2271b1;
-}
-
-.advset-toggle-input:checked + .advset-toggle-slider:before {
-    transform: translateX(26px);
-}
-
-.advset-toggle-input:focus-visible + .advset-toggle-slider {
-    box-shadow: 0 0 1px 2px #2271b1;
-}
-
-.advset-toggle-label {
-    font-size: 14px;
-    color: #1d2327;
-}
-
-/* Loading State */
-.advset-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-}
-
-.advset-loading::after {
-    content: "";
-    width: 30px;
-    height: 30px;
-    border: 3px solid #f0f0f1;
-    border-top-color: #2271b1;
-    border-radius: 50%;
-    animation: advset-spin 1s linear infinite;
-}
-
-@keyframes advset-spin {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 /* Error Message */

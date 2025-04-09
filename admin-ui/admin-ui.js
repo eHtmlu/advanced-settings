@@ -85,13 +85,9 @@
         if (searchInput) {
             let searchTimeout;
             searchInput.addEventListener('input', function(e) {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    // Dispatch search event for React integration
-                    document.dispatchEvent(new CustomEvent('advset-search', {
-                        detail: { query: e.target.value }
-                    }));
-                }, 300); // Debounce search for better performance
+                document.dispatchEvent(new CustomEvent('advset-search', {
+                    detail: { query: e.target.value }
+                }));
             });
         }
     }
