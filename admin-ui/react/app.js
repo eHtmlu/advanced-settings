@@ -7,7 +7,7 @@
 
 // Import components
 import { SettingComponentGenericToggle } from './components/SettingComponentGenericToggle.js';
-import ComponentRegistry from './components/ComponentRegistry.js';
+import ComponentRegistry from './ComponentRegistry.js';
 
 // Register components
 ComponentRegistry.register('generic-toggle', SettingComponentGenericToggle);

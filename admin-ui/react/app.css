@@ -5,7 +5,7 @@
  */
 
 /* Import component styles */
-@import 'components.css';
+@import 'components/components.css';
 
 /* React App Styles */
 .advset-react-app {

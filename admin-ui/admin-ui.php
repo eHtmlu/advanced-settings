@@ -71,8 +71,8 @@ function advset_admin_ui_scripts() {
     wp_localize_script('advset-admin-ui', 'advsetAdminUI', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
-        'reactAppUrl' => plugins_url('react/js/app.js', __FILE__),
-        'reactAppCssUrl' => plugins_url('react/css/app.css', __FILE__),
+        'reactAppUrl' => plugins_url('react/app.js', __FILE__),
+        'reactAppCssUrl' => plugins_url('react/app.css', __FILE__),
         'wpReactUrl' => includes_url('js/dist/vendor/react.min.js'),
         'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js')
     ]);
