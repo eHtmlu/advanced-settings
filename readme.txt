@@ -17,7 +17,7 @@ Adds settings that you might expect to find in the WordPress core.
 
 This plugin offers settings that you might expect to find in the WordPress core.
 
-== 🩷 a major release is imminent - stay tuned 🩷 ==
+== 🩷 A MAJOR RELEASE IS IMMINENT - STAY TUNED 🩷 ==
 This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
 
 = System =
