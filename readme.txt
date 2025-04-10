@@ -6,8 +6,8 @@ Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, options, performance, speed, admin
 Requires at least: 5.0.0
-Tested up to: 6.7
-Stable tag: 2.9.0
+Tested up to: 6.8
+Stable tag: 2.10.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,8 @@ Adds settings that you might expect to find in the WordPress core.
 
 This plugin offers settings that you might expect to find in the WordPress core.
 
-💚 This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
+== 🩷 a major release is imminent - stay tuned 🩷 ==
+This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
 
 = System =
 
@@ -34,6 +35,7 @@ This plugin offers settings that you might expect to find in the WordPress core.
 * Prevent sending email notifications for core updates
 * Prevent sending email notifications for plugin updates
 * Prevent sending email notifications for theme updates
+* Protect email addresses from spam bots
 
 = HTML Code =
 
@@ -86,6 +88,9 @@ Note: Some features are marked as deprecated. These can be shown/hidden in the C
 
 
 == Changelog ==
+
+= 2.10.0 - 2025-04-10 =
+* New feature to protect email addresses from spam bots (HTML entities & JavaScript)
 
 = 2.9.0 - 2025-03-13 =
 * New feature to remove the default WordPress favicon
