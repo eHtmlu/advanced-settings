@@ -6,11 +6,11 @@
  */
 
 // Import components
-import { SettingComponentGenericToggle } from './components/SettingComponentGenericToggle.js';
+import { SettingComponentGeneric } from './components/SettingComponentGeneric.js';
 import ComponentRegistry from './ComponentRegistry.js';
 
 // Register components
-ComponentRegistry.register('generic-toggle', SettingComponentGenericToggle);
+ComponentRegistry.register('generic', SettingComponentGeneric);
 
 /**
  * Main App Component
@@ -104,6 +104,21 @@ function App(props) {
 function ItemCard(props) {
     const { item, onSettingChange, settingValue } = props;
     
+    // Get the component from the registry
+    const Component = ComponentRegistry.get(item.ui_component);
+    
+    // If no component is found, show an error
+    if (!Component) {
+        return React.createElement('div', { 
+            className: 'advset-item',
+            'data-id': item.id
+        },
+            React.createElement('div', { className: 'advset-component-error' },
+                `Component ${item.ui_component} not found`
+            )
+        );
+    }
+
     return React.createElement('div', { 
         className: 'advset-item',
         'data-id': item.id
@@ -113,11 +128,11 @@ function ItemCard(props) {
             React.createElement('h3', null, item.title),
         ), */
         React.createElement('div', { className: 'advset-item-control' },
-            React.createElement(SettingComponentGenericToggle, {
+            React.createElement(Component, {
                 id: `advset-${item.id.replace(/\./g, '-')}`,
-                label: item.label || item.title,
-                checked: settingValue,
-                onChange: (value) => onSettingChange(item.id, value)
+                value: settingValue,
+                onChange: (value) => onSettingChange(item.id, value),
+                config: item.ui_config || {}
             })
         )
     );
@@ -223,10 +238,30 @@ const AdvSetModalApp = {
             return;
         }
         
+        const searchQuery = query.toLowerCase();
+        
         // Filter items locally
         const filteredItems = this.state.allItems.filter(item => {
-            const searchText = `${item.title} ${item.description} ${item.label}`.toLowerCase();
-            return searchText.includes(query.toLowerCase());
+            // Combine all searchable texts
+            const searchTexts = [];
+            
+            // Add texts from ui_config fields
+            if (item.ui_config?.fields) {
+                Object.values(item.ui_config.fields).forEach(field => {
+                    if (field.label) searchTexts.push(field.label);
+                    if (field.description) searchTexts.push(field.description);
+                    if (field.options) {
+                        Object.values(field.options).forEach(option => {
+                            if (option.label) searchTexts.push(option.label);
+                            if (option.description) searchTexts.push(option.description);
+                        });
+                    }
+                });
+            }
+            
+            // Join all texts and search
+            const searchText = searchTexts.join(' ').toLowerCase();
+            return searchText.includes(searchQuery);
         });
         
         this.setState({ items: filteredItems });

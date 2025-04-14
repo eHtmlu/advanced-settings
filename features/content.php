@@ -12,12 +12,20 @@ return [
                 'description' => __('Disable comments on the site', 'advanced-settings'),
                 'label' => __('Disable comments', 'advanced-settings'),
             ],
-            'ui_component' => 'SettingComponentGenericToggle',
+            'ui_component' => 'generic',
+            'ui_config' => [
+                'fields' => [
+                    'enabled' => [
+                        'type' => 'toggle',
+                        'label' => __('Disable comments', 'advanced-settings'),
+                    ],
+                ],
+            ],
             'handler_execute' => function() {
                 // TODO: Implement comment disabling
             },
             'handler_validate' => function($value) {
-                return is_bool($value);
+                return  is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
             },
         ],
     ],

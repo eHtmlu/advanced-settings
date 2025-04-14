@@ -22,7 +22,7 @@ class ComponentRegistry {
             return;
         }
 
-        if (!component || typeof component !== 'object') {
+        if (!component || typeof component !== 'function') {
             console.warn(`ComponentRegistry: Invalid component implementation for ${name}`);
             return;
         }

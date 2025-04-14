@@ -12,12 +12,20 @@ return [
                 'description' => __('Receive notifications when core updates are available.', 'advanced-settings'),
                 'label' => __('Disable core update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'SettingComponentGenericToggle',
+            'ui_component' => 'generic',
+            'ui_config' => [
+                'fields' => [
+                    'enabled' => [
+                        'type' => 'toggle',
+                        'label' => __('Disable core update email notifications', 'advanced-settings'),
+                    ],
+                ],
+            ],
             'handler_execute' => function() {
                 add_filter('auto_core_update_send_email', '__return_false');
             },
             'handler_validate' => function($value) {
-                return is_bool($value);
+                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
             },
         ],
 
@@ -27,12 +35,20 @@ return [
                 'description' => __('Receive notifications when plugin updates are available.', 'advanced-settings'),
                 'label' => __('Disable plugin update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'SettingComponentGenericToggle',
+            'ui_component' => 'generic',
+            'ui_config' => [
+                'fields' => [
+                    'enabled' => [
+                        'type' => 'toggle',
+                        'label' => __('Disable plugin update email notifications', 'advanced-settings'),
+                    ],
+                ],
+            ],
             'handler_execute' => function() {
                 add_filter('auto_plugin_update_send_email', '__return_false');
             },
             'handler_validate' => function($value) {
-                return is_bool($value);
+                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
             },
         ],
 
@@ -42,12 +58,20 @@ return [
                 'description' => __('Receive notifications when theme updates are available.', 'advanced-settings'),
                 'label' => __('Disable theme update email notifications', 'advanced-settings'),
             ],
-            'ui_component' => 'SettingComponentGenericToggle',
+            'ui_component' => 'generic',
+            'ui_config' => [
+                'fields' => [
+                    'enabled' => [
+                        'type' => 'toggle',
+                        'label' => __('Disable theme update email notifications', 'advanced-settings'),
+                    ],
+                ],
+            ],
             'handler_execute' => function() {
                 add_filter('auto_theme_update_send_email', '__return_false');
             },
             'handler_validate' => function($value) {
-                return is_bool($value);
+                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
             },
         ],
     ],

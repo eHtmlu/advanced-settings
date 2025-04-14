@@ -59,16 +59,12 @@ function advset_get_features_callback() {
         ];
 
         foreach ($feature_data['items'] as $key => $feature) {
-            if (isset($feature['texts'])) {
-                $features[] = [
-                    'id' => $key,
-                    'category' => $feature_data['category'],
-                    'title' => $feature['texts']['title'],
-                    'description' => $feature['texts']['description'],
-                    'label' => isset($feature['texts']['label']) ? $feature['texts']['label'] : '',
-                    'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : ''
-                ];
-            }
+            $features[] = [
+                'id' => $key,
+                'category' => $feature_data['category'],
+                'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : '',
+                'ui_config' => isset($feature['ui_config']) ? $feature['ui_config'] : (object) []
+            ];
         }
     }
 

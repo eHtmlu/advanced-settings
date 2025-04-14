@@ -7,17 +7,37 @@ return [
     'description' => __('Security settings', 'advanced-settings'),
     'items' => [
         'security.protect_emails' => [
-            'texts' => [
-                'title' => __('Protect Emails', 'advanced-settings'),
-                'description' => __('Protect email addresses from spam bots.', 'advanced-settings'),
-                'label' => __('Protect email addresses from spam bots', 'advanced-settings'),
+            'ui_component' => 'generic',
+            'ui_config' => [
+                'fields' => [
+                    'enabled' => [
+                        'type' => 'toggle',
+                        'label' => __('Protect email addresses from spam bots', 'advanced-settings'),
+                        'default' => false
+                    ],
+                    'method' => [
+                        'type' => 'select',
+                        'label' => __('Protection method', 'advanced-settings'),
+                        'options' => [
+                            'entities' => [
+                                'label' => __('HTML entities (SEO friendly)', 'advanced-settings'),
+                            ],
+                            'javascript' => [
+                                'label' => __('JavaScript (Better protection)', 'advanced-settings'),
+                            ],
+                        ],
+                        'default' => 'entities',
+                        'visible' => ['enabled' => true]
+                    ],
+                ]
             ],
-            'ui_component' => 'SettingComponentGenericToggle',
             'handler_execute' => function() {
                 // TODO: Implement email protection
             },
             'handler_validate' => function($value) {
-                return is_bool($value);
+                return is_array($value) && 
+                       isset($value['enabled']) && is_bool($value['enabled']) &&
+                       (!isset($value['method']) || in_array($value['method'], ['entities', 'javascript']));
             },
         ],
     ],
