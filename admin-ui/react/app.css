@@ -5,7 +5,7 @@
  */
 
 /* Import component styles */
-@import 'components/components.css';
+@import 'components/SettingComponentGeneric.css';
 
 /* React App Styles */
 .advset-react-app {
