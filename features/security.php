@@ -34,11 +34,6 @@ return [
             'handler_execute' => function() {
                 // TODO: Implement email protection
             },
-            'handler_validate' => function($value) {
-                return is_array($value) && 
-                       isset($value['enabled']) && is_bool($value['enabled']) &&
-                       (!isset($value['method']) || in_array($value['method'], ['entities', 'javascript']));
-            },
         ],
     ],
 ];

@@ -24,9 +24,6 @@ return [
             'handler_execute' => function() {
                 add_filter('auto_core_update_send_email', '__return_false');
             },
-            'handler_validate' => function($value) {
-                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
-            },
         ],
 
         'admin.updates.notifications.plugins' => [
@@ -47,9 +44,6 @@ return [
             'handler_execute' => function() {
                 add_filter('auto_plugin_update_send_email', '__return_false');
             },
-            'handler_validate' => function($value) {
-                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
-            },
         ],
 
         'admin.updates.notifications.themes.disable' => [
@@ -69,9 +63,6 @@ return [
             ],
             'handler_execute' => function() {
                 add_filter('auto_theme_update_send_email', '__return_false');
-            },
-            'handler_validate' => function($value) {
-                return is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
             },
         ],
     ],

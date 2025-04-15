@@ -24,9 +24,6 @@ return [
             'handler_execute' => function() {
                 // TODO: Implement comment disabling
             },
-            'handler_validate' => function($value) {
-                return  is_array($value) &&  isset($value['enabled']) && is_bool($value['enabled']);
-            },
         ],
     ],
 ];
