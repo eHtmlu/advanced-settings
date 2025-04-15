@@ -7,11 +7,6 @@ return [
     'description' => __('Admin settings', 'advanced-settings'),
     'items' => [
         'admin.updates.notifications.core' => [
-            'texts' => [
-                'title' => __('Core Updates', 'advanced-settings'),
-                'description' => __('Receive notifications when core updates are available.', 'advanced-settings'),
-                'label' => __('Disable core update email notifications', 'advanced-settings'),
-            ],
             'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
@@ -27,11 +22,6 @@ return [
         ],
 
         'admin.updates.notifications.plugins' => [
-            'texts' => [
-                'title' => __('Plugin Updates', 'advanced-settings'),
-                'description' => __('Receive notifications when plugin updates are available.', 'advanced-settings'),
-                'label' => __('Disable plugin update email notifications', 'advanced-settings'),
-            ],
             'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
@@ -47,11 +37,6 @@ return [
         ],
 
         'admin.updates.notifications.themes.disable' => [
-            'texts' => [
-                'title' => __('Theme Updates', 'advanced-settings'),
-                'description' => __('Receive notifications when theme updates are available.', 'advanced-settings'),
-                'label' => __('Disable theme update email notifications', 'advanced-settings'),
-            ],
             'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [

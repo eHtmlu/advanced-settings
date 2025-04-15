@@ -7,11 +7,6 @@ return [
     'description' => __('Content settings', 'advanced-settings'),
     'items' => [
         'content.disable_comments' => [
-            'texts' => [
-                'title' => __('Disable Comments', 'advanced-settings'),
-                'description' => __('Disable comments on the site', 'advanced-settings'),
-                'label' => __('Disable comments', 'advanced-settings'),
-            ],
             'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
