@@ -12,7 +12,7 @@ return [
                     'enabled' => [
                         'type' => 'toggle',
                         'label' => __('Disable core update email notifications', 'advanced-settings'),
-                        'descriptionHtml' => sprintf(__('You can change the recipient (which is the admin email) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
+                        'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
                     ],
                 ],
             ],
@@ -27,7 +27,7 @@ return [
                     'enabled' => [
                         'type' => 'toggle',
                         'label' => __('Disable plugin update email notifications', 'advanced-settings'),
-                        'descriptionHtml' => sprintf(__('You can change the recipient (which is the admin email) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
+                        'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
                     ],
                 ],
             ],
@@ -42,7 +42,7 @@ return [
                     'enabled' => [
                         'type' => 'toggle',
                         'label' => __('Disable theme update email notifications', 'advanced-settings'),
-                        'descriptionHtml' => sprintf(__('You can change the recipient (which is the admin email) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
+                        'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
                     ],
                 ],
             ],

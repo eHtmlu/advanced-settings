@@ -15,14 +15,16 @@ return [
                         'default' => false
                     ],
                     'method' => [
-                        'type' => 'select',
+                        'type' => 'radio',
                         'label' => __('Protection method', 'advanced-settings'),
                         'options' => [
                             'entities' => [
-                                'label' => __('HTML entities (SEO friendly)', 'advanced-settings'),
+                                'label' => __('HTML entities', 'advanced-settings'),
+                                'description' => __('More SEO friendly, but not as protected.', 'advanced-settings'),
                             ],
                             'javascript' => [
-                                'label' => __('JavaScript (Better protection)', 'advanced-settings'),
+                                'label' => __('JavaScript', 'advanced-settings'),
+                                'description' => __('Better protection, but slightly less SEO-friendly.', 'advanced-settings'),
                             ],
                         ],
                         'default' => 'entities',
