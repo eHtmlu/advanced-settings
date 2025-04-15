@@ -55,6 +55,11 @@
     font-size: inherit;
 }
 
+.advset-modal a:hover,
+.advset-modal a:focus-visible {
+    color: var(--advset-color-primary);
+}
+
 .advset-modal *::placeholder {
     color: var(--advset-color-base-70);
 }

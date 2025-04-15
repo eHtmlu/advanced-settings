@@ -119,8 +119,10 @@
 
 .advset-item {
     padding: 1em 0;
-    transition: box-shadow .3s ease;
     margin: 0 1em;
+}
+
+.advset-item:not(:last-child) {
     border-bottom: 1px solid var(--advset-color-border);
 }
 
@@ -140,13 +142,6 @@
     margin: 0;
     font-size: var(--advset-font-size-medium);
     font-weight: 600;
-}
-
-.advset-item p {
-    margin: 0 0 .5em;
-    color: #50575e;
-    font-size: var(--advset-font-size-small);
-    line-height: 1.4;
 }
 
 /* Error Message */

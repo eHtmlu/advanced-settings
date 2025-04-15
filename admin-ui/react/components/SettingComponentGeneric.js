@@ -59,7 +59,11 @@ export function SettingComponentGeneric(props) {
                             React.createElement('span', { className: 'advset-generic-field-toggle-element-slider' })
                         ),
                         React.createElement('span', { className: 'advset-generic-field-toggle-label' }, field.label)
-                    )
+                    ),
+                    (field.description || field.descriptionHtml) && React.createElement('p', { 
+                        className: 'advset-generic-field-description advset-generic-field-toggle-description',
+                        ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                    })
                 );
                 
             case 'radio':
@@ -90,7 +94,11 @@ export function SettingComponentGeneric(props) {
                                     }, option.description)
                                 )
                             )
-                        )
+                        ),
+                        (field.description || field.descriptionHtml) && React.createElement('p', { 
+                            className: 'advset-generic-field-description advset-generic-field-radio-description',
+                            ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                        })
                     )
                 );
 
@@ -114,9 +122,10 @@ export function SettingComponentGeneric(props) {
                         ),
                         React.createElement('span', { className: 'advset-generic-field-checkbox-label' }, field.label)
                     ),
-                    field.description && React.createElement('p', { 
-                        className: 'advset-generic-field-checkbox-description' 
-                    }, field.description)
+                    (field.description || field.descriptionHtml) && React.createElement('p', { 
+                        className: 'advset-generic-field-description advset-generic-field-checkbox-description',
+                        ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                    })
                 );
             
             case 'select':
@@ -126,23 +135,26 @@ export function SettingComponentGeneric(props) {
                 },
                     React.createElement('label', { className: 'advset-generic-field-select-container', htmlFor: `${id}-${fieldId}` },
                         React.createElement('span', { className: 'advset-generic-field-select-label' }, field.label),
-                        React.createElement('select', {
-                            id: `${id}-${fieldId}`,
-                            className: 'advset-generic-field-select-input',
-                            value: fieldValue,
-                            onChange: (e) => handleFieldChange(fieldId, e.target.value)
-                        },
-                            Object.entries(field.options).map(([optionId, option]) =>
-                                React.createElement('option', {
-                                    key: optionId,
-                                    value: optionId
-                                }, option.label)
+                        React.createElement('span', { className: 'advset-generic-field-select-input-container' },
+                            React.createElement('select', {
+                                id: `${id}-${fieldId}`,
+                                className: 'advset-generic-field-select-input',
+                                value: fieldValue,
+                                onChange: (e) => handleFieldChange(fieldId, e.target.value)
+                            },
+                                Object.entries(field.options).map(([optionId, option]) =>
+                                    React.createElement('option', {
+                                        key: optionId,
+                                        value: optionId
+                                    }, option.label)
+                                )
                             )
                         )
                     ),
-                    field.description && React.createElement('p', { 
-                        className: 'advset-generic-field-select-description' 
-                    }, field.description)
+                    (field.description || field.descriptionHtml) && React.createElement('p', { 
+                        className: 'advset-generic-field-description advset-generic-field-select-description',
+                        ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                    })
                 );
 
             case 'text':
@@ -165,12 +177,13 @@ export function SettingComponentGeneric(props) {
                 },
                     React.createElement('label', { className: 'advset-generic-field-textual-container', htmlFor: `${id}-${fieldId}` },
                         React.createElement('span', { className: 'advset-generic-field-textual-label' }, field.label),
-                        React.createElement('input', {
-                            type: inputType,
-                            id: `${id}-${fieldId}`,
-                            className: 'advset-generic-field-textual-input',
-                            value: fieldValue,
-                            ...(
+                        React.createElement('span', { className: 'advset-generic-field-textual-input-container' },
+                            React.createElement('input', {
+                                type: inputType,
+                                id: `${id}-${fieldId}`,
+                                className: 'advset-generic-field-textual-input',
+                                value: fieldValue,
+                                ...(
                                 ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
                                     ...(typeof field.min !== 'undefined' && { min: field.min }),
                                     ...(typeof field.max !== 'undefined' && { max: field.max }),
@@ -182,12 +195,14 @@ export function SettingComponentGeneric(props) {
                                     ...(typeof field.pattern === 'string' && { pattern: field.pattern }),
                                 } : {}
                             ),
-                            onChange: (e) => handleFieldChange(fieldId, e.target.value)
-                        })
+                                onChange: (e) => handleFieldChange(fieldId, e.target.value)
+                            })
+                        )
                     ),
-                    field.description && React.createElement('p', { 
-                        className: 'advset-generic-field-textual-description' 
-                    }, field.description)
+                    (field.description || field.descriptionHtml) && React.createElement('p', { 
+                        className: 'advset-generic-field-description advset-generic-field-textual-description',
+                        ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                    })
                 );
 
             case 'info':
@@ -196,7 +211,10 @@ export function SettingComponentGeneric(props) {
                     className: 'advset-generic-field advset-generic-field-info'
                 },
                     field.label && React.createElement('h4', { className: 'advset-generic-field-info-label' }, field.label),
-                    field.description && React.createElement('p', { className: 'advset-generic-field-info-text' }, field.description)
+                    (field.description || field.descriptionHtml) && React.createElement('p', { 
+                        className: 'advset-generic-field-description advset-generic-field-info-text',
+                        ...(field.descriptionHtml ? { dangerouslySetInnerHTML: { __html: field.descriptionHtml } } : { children: field.description })
+                    })
                 );
                 
             default:

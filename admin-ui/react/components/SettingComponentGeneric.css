@@ -4,9 +4,46 @@
  * Styles for all UI components used in the Advanced Settings plugin
  */
 
+
+.advset-generic-field {
+    --label-width: 25%;
+    --label-gap: 1em;
+}
+
+.advset-generic-field-textual-label,
+.advset-generic-field-select-label,
+.advset-generic-field-info-label {
+    width: var(--label-width);
+    flex: 0 0 var(--label-width);
+    /* padding-right: var(--label-gap); */
+}
+
+.advset-generic-field-textual-label + input,
+.advset-generic-field-select-label + select,
+.advset-generic-field-info-label + * {
+    /* width: calc(100% - var(--label-width)); */
+    max-width: calc(100% - var(--label-width));
+    flex: 1 1 calc(100% - var(--label-width));
+}
+
+
+.advset-generic-field-description {
+    font-size: var(--advset-font-size-small);
+    font-style: italic;
+    margin-block: 0;
+    margin-left: calc(var(--label-width) + var(--label-gap));
+    color: var(--advset-color-base-70);
+}
+
+
+
 /* ===== Toggle Component ===== */
+.advset-generic-field-toggle {
+    padding-left: 3.5em;
+}
+
 .advset-generic-field-toggle-container {
-    display: flex;
+    display: inline-flex;
     align-items: center;
 }
 
@@ -16,6 +53,7 @@
     width: 3em;
     height: 1.5em;
     margin-right: .5em;
+    margin-left: -3.5em;
     flex: 0 0 3em;
 }
 
@@ -34,10 +72,10 @@
     bottom: 0;
     background-color: #ccc;
     transition: .3s;
-    border-radius: 1.5em;
+    border-radius: .75em;
 }
 
-.advset-generic-field-toggle-element-slider:before {
+.advset-generic-field-toggle-element-slider::before {
     position: absolute;
     content: "";
     height: 1em;
@@ -57,13 +95,18 @@
     box-shadow: 0 0 .125em .125em var(--advset-color-primary);
 }
 
-.advset-generic-field-toggle-input:checked + .advset-generic-field-toggle-element-slider:before {
-    transform: translateX(1.625em);
+.advset-generic-field-toggle-input:checked + .advset-generic-field-toggle-element-slider::before {
+    transform: translateX(1.5em);
 }
 
 .advset-generic-field-toggle-label {
-    font-size: var(--advset-font-size-small);
-    color: #555;
+    /* font-size: var(--advset-font-size-small);
+    color: #555; */
+    cursor: pointer;
+}
+
+.advset-generic-field-toggle-description {
+    margin-left: 0;
 }
 
 /* ===== Item Layout Improvements ===== */
@@ -116,9 +159,9 @@
 }
 
 .advset-generic-field {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    gap: .5em;
+    gap: .5em; */
 }
 
 .advset-generic-field-radio-fieldset {
@@ -256,15 +299,19 @@
 .advset-generic-field-select-container {
     display: flex;
     align-items: center;
-    gap: .5em;
+    gap: var(--label-gap);
+}
+
+.advset-generic-field-select-input-container {
+    width: 100%;
 }
 
 .advset-generic-field-select select {
     appearance: none;
     width: 100%;
-    max-width: 25em;
+    max-width: none;
     padding: .5em 1em;
-    border: 1px solid var(--advset-color-base);
+    border: 1px solid var(--advset-color-base-70);
     border-radius: .25em;
     background-color: var(--advset-color-base-97);
     color: var(--advset-color-text);
@@ -275,17 +322,22 @@
 .advset-generic-field-textual-container {
     display: flex;
     align-items: center;
-    gap: .5em;
+    gap: var(--label-gap);
+}
+
+.advset-generic-field-textual-input-container {
+    width: 100%;
+    flex: 1;
 }
 
 .advset-generic-field-textual input {
     width: 100%;
-    max-width: 25em;
+    max-width: none;
     padding: .5em 1em;
-    border: 1px solid var(--advset-color-base);
+    border: 1px solid var(--advset-color-base-70);
     border-radius: .25em;
     background-color: var(--advset-color-base-97);
-    color: var(--advset-color-text);
+    color: var(--advset-color-base);
     font-size: inherit;
     line-height: inherit;
 }
