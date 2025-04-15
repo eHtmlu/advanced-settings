@@ -184,17 +184,18 @@ export function SettingComponentGeneric(props) {
                                 className: 'advset-generic-field-textual-input',
                                 value: fieldValue,
                                 ...(
-                                ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
-                                    ...(typeof field.min !== 'undefined' && { min: field.min }),
-                                    ...(typeof field.max !== 'undefined' && { max: field.max }),
-                                    ...(typeof field.step !== 'undefined' && { step: field.step })
-                                } : {}
-                            ),
-                            ...(
-                                ['text', 'url', 'email', 'tel', 'password'].includes(inputType) ? {
-                                    ...(typeof field.pattern === 'string' && { pattern: field.pattern }),
-                                } : {}
-                            ),
+                                    ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
+                                        ...(typeof field.min !== 'undefined' && { min: field.min }),
+                                        ...(typeof field.max !== 'undefined' && { max: field.max }),
+                                        ...(typeof field.step !== 'undefined' && { step: field.step })
+                                    } : {}
+                                ),
+                                ...(
+                                    ['text', 'url', 'email', 'tel', 'password'].includes(inputType) ? {
+                                        ...(typeof field.pattern === 'string' && { pattern: field.pattern }),
+                                    } : {}
+                                ),
+                                ...(field.placeholder ? { placeholder: field.placeholder } : {}),
                                 onChange: (e) => handleFieldChange(fieldId, e.target.value)
                             })
                         )
