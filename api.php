@@ -63,6 +63,9 @@ function advset_validate_field_type($type, $value, $config = []) {
             if (!is_string($value)) {
                 return false;
             }
+            if ($value === '') {
+                return true;
+            }
             // Check pattern if specified
             if (isset($config['pattern']) && is_string($config['pattern'])) {
                 return preg_match('/' . $config['pattern'] . '/', $value) === 1;
@@ -72,6 +75,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'email':
             if (!is_string($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Generic email validation (similar to browser)
             if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -87,6 +93,9 @@ function advset_validate_field_type($type, $value, $config = []) {
             if (!is_string($value)) {
                 return false;
             }
+            if ($value === '') {
+                return true;
+            }
             // Generic URL validation (similar to browser)
             if (!filter_var($value, FILTER_VALIDATE_URL)) {
                 return false;
@@ -100,6 +109,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'tel':
             if (!is_string($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Generic telephone validation (similar to browser)
             // Remove all non-digit characters except +, -, (, ), and space
@@ -117,6 +129,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'range':
             if (!is_numeric($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Check min value
             if (isset($config['min']) && is_numeric($config['min']) && $value < $config['min']) {
@@ -144,6 +159,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'date':
             if (!is_string($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Check date format (YYYY-MM-DD)
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
@@ -184,6 +202,9 @@ function advset_validate_field_type($type, $value, $config = []) {
             if (!is_string($value)) {
                 return false;
             }
+            if ($value === '') {
+                return true;
+            }
             // Check time format (HH:MM or HH:MM:SS)
             if (!preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $value)) {
                 return false;
@@ -222,6 +243,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'datetime-local':
             if (!is_string($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Check datetime format (YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS)
             if (!preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/', $value)) {
@@ -262,6 +286,9 @@ function advset_validate_field_type($type, $value, $config = []) {
             if (!is_string($value)) {
                 return false;
             }
+            if ($value === '') {
+                return true;
+            }
             // Check month format (YYYY-MM)
             if (!preg_match('/^\d{4}-\d{2}$/', $value)) {
                 return false;
@@ -300,6 +327,9 @@ function advset_validate_field_type($type, $value, $config = []) {
         case 'week':
             if (!is_string($value)) {
                 return false;
+            }
+            if ($value === '') {
+                return true;
             }
             // Check week format (YYYY-Www)
             if (!preg_match('/^\d{4}-W\d{2}$/', $value)) {
