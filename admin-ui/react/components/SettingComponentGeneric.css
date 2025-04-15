@@ -70,7 +70,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--advset-color-base-70);
     transition: .3s;
     border-radius: .75em;
 }
@@ -170,24 +170,42 @@
     margin: 0;
 }
 
+.advset-generic-field-radio-fieldset::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
 .advset-generic-field-radio-legend {
     margin: 0;
     padding: 0;
     display: block;
-    font-weight: 600;
-    color: var(--advset-color-text);
-    margin-bottom: .75em;
+    padding-block: .5em;
+    border-block: 1px solid transparent;
+    width: var(--label-width);
+    float: left;
+    margin-right: var(--label-gap);
 }
 
 .advset-generic-field-radio-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
-    gap: 1em;
 }
 
 .advset-generic-field-radio-option {
     cursor: pointer;
-    padding-left: 1.75em;
+    padding: .5em 1em .5em 2.75em;
+    border: 1px solid var(--advset-color-base-70);
+    background-color: var(--advset-color-base-97);
+    border-bottom-width: 0;
+}
+
+.advset-generic-field-radio-option:first-child {
+    border-radius: .25em .25em 0 0;
+}
+
+.advset-generic-field-radio-option:last-child {
+    border-radius: 0 0 .25em .25em;
+    border-bottom-width: 1px;
 }
 
 .advset-generic-field-checkbox-container {
@@ -219,6 +237,7 @@
     border-radius: 50%;
     margin-bottom: -0.25em;
     margin-left: -1.75em;
+    background-color: #fff;
 }
 
 .advset-generic-field-radio-option input[type="radio"]:checked {
@@ -285,16 +304,16 @@
 }
 
 
-.advset-generic-field-radio-option-label {
-    font-weight: 600;
-    color: var(--advset-color-text);
-}
-
 .advset-generic-field-radio-option-description {
     margin: 0;
-    color: var(--advset-color-text-light);
+    color: var(--advset-color-base-70);
     font-size: var(--advset-font-size-small);
-} 
+    font-style: italic;
+}
+
+.advset-generic-field-checkbox-description {
+    margin-left: 0;
+}
 
 .advset-generic-field-select-container {
     display: flex;
