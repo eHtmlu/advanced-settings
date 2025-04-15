@@ -7,7 +7,6 @@ return [
     'description' => __('Admin settings', 'advanced-settings'),
     'items' => [
         'admin.updates.notifications.core' => [
-            'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
                     'enabled' => [
@@ -22,7 +21,6 @@ return [
         ],
 
         'admin.updates.notifications.plugins' => [
-            'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
                     'enabled' => [
@@ -37,7 +35,6 @@ return [
         ],
 
         'admin.updates.notifications.themes.disable' => [
-            'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
                     'enabled' => [

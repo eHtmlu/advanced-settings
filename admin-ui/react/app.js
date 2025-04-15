@@ -105,7 +105,7 @@ function ItemCard(props) {
     const { item, onSettingChange, settingValue } = props;
     
     // Get the component from the registry
-    const Component = ComponentRegistry.get(item.ui_component);
+    const Component = ComponentRegistry.get(item.ui_component || 'generic');
     
     // If no component is found, show an error
     if (!Component) {

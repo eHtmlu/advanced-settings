@@ -7,7 +7,6 @@ return [
     'description' => __('Security settings', 'advanced-settings'),
     'items' => [
         'security.protect_emails' => [
-            'ui_component' => 'generic',
             'ui_config' => [
                 'fields' => [
                     'enabled' => [
