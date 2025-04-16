@@ -358,7 +358,9 @@
     background-color: var(--advset-color-base-97);
     color: var(--advset-color-base);
     font-size: inherit;
-    line-height: inherit;
+    line-height: 2;
+    box-sizing: border-box;
+    height: calc(2px + 1em + 1lh);
 }
 
 .advset-generic-field-textual input:invalid:not(:focus) {
