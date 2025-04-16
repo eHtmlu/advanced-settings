@@ -473,17 +473,11 @@ function advset_save_settings_callback($request) {
                 }
             }
             
-            // Execute the handler if it exists
-            if (isset($feature['handler_execute']) && is_callable($feature['handler_execute'])) {
-                try {
-                    call_user_func($feature['handler_execute']);
-                    $updated = true;
-                } catch (Exception $e) {
-                    $errors[] = "Error executing handler for setting: $feature_id - " . $e->getMessage();
-                }
-            }
+            // Todo: collect for saving
         }
     }
+
+    // Todo: save
     
     if (!empty($errors)) {
         return new WP_Error('validation_error', 'Some settings could not be updated', [
