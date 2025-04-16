@@ -349,7 +349,8 @@
     flex: 1;
 }
 
-.advset-generic-field-textual input {
+.advset-generic-field-textual input,
+.advset-generic-field-textual input:focus {
     width: 100%;
     max-width: none;
     padding: .5em 1em;
@@ -360,6 +361,8 @@
     font-size: inherit;
     box-sizing: border-box;
     height: calc(2px + 1em + 1lh);
+    outline-color: var(--advset-color-primary);
+    accent-color: var(--advset-color-primary);
 }
 
 .advset-generic-field-textual input:invalid:not(:focus) {
@@ -375,5 +378,4 @@
 
 .advset-generic-field-textual--range input {
     padding-inline: 0;
-    accent-color: var(--advset-color-primary);
 }
