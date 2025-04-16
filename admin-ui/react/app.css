@@ -70,6 +70,7 @@
 .advset-results-container {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 /* Category Section */
