@@ -49,6 +49,9 @@ add_action('advset_register_features', function() {
                 ],
             ]
         ],
+        'handler_cleanup' => function($value) {
+            return empty($value['enabled']) ? null : $value;
+        },
         'handler_execute' => function() {
             // TODO: Implement email protection
         },

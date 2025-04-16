@@ -386,6 +386,7 @@ function advset_get_features_callback() {
 
     // Prepare response
     $response = [
+        'settings' => get_option('advanced_settings_settings', (object) []),
         'features' => [],
         'categories' => array_values($categories),
     ];
@@ -404,6 +405,99 @@ function advset_get_features_callback() {
 }
 
 /**
+ * Check if a value should be considered empty/default
+ * 
+ * @param mixed $value The value to check
+ * @param array $field_config The field configuration
+ * @return bool Whether the value should be considered empty/default
+ */
+function advset_is_empty_or_default_value($value, $field_config) {
+    // If no field config is provided, only check for null/empty string
+    if (!is_array($field_config)) {
+        return $value === null || $value === '';
+    }
+    
+    // If a default is set, we only check if the value equals the default
+    if (isset($field_config['default'])) {
+        return $value === $field_config['default'];
+    }
+    
+    // If no default is set, we check for empty values based on type
+    switch ($field_config['type']) {
+        case 'toggle':
+        case 'checkbox':
+            return $value === false;
+            
+        case 'text':
+        case 'email':
+        case 'url':
+        case 'tel':
+        case 'password':
+        case 'color':
+        case 'date':
+        case 'time':
+        case 'datetime-local':
+        case 'month':
+        case 'week':
+            return $value === '';
+            
+        case 'number':
+        case 'range':
+            return $value === '' || $value === null || $value === 0;
+            
+        case 'select':
+        case 'radio':
+            return $value === '' || $value === null;
+            
+        default:
+            // For unknown types, only check for null/empty string
+            return $value === null || $value === '';
+    }
+}
+
+/**
+ * Clean up a feature value
+ * 
+ * @param mixed $value The value to clean up
+ * @param array $feature The feature configuration
+ * @return mixed|null The cleaned value or null if it should be removed
+ */
+function advset_cleanup_feature_value($value, $feature) {
+    // First perform automatic cleanup
+    $cleaned_value = $value;
+    
+    // If value is an array/object, check each field
+    if (is_array($value) && isset($feature['ui_config']['fields'])) {
+        $cleaned_value = [];
+        
+        foreach ($value as $field_id => $field_value) {
+            // Skip if field doesn't exist in config
+            if (!isset($feature['ui_config']['fields'][$field_id])) {
+                continue;
+            }
+            
+            // Only keep non-empty and non-default values
+            if (!advset_is_empty_or_default_value($field_value, $feature['ui_config']['fields'][$field_id])) {
+                $cleaned_value[$field_id] = $field_value;
+            }
+        }
+        
+        // Set to null if all fields were empty/default
+        $cleaned_value = !empty($cleaned_value) ? $cleaned_value : null;
+    } else {
+        // For simple values, check if empty/default
+        $cleaned_value = advset_is_empty_or_default_value($value, $feature['ui_config']) ? null : $value;
+    }
+    
+    // Then apply custom cleanup handler if present
+    if (isset($feature['handler_cleanup']) && is_callable($feature['handler_cleanup'])) {
+        $cleaned_value = call_user_func($feature['handler_cleanup'], $cleaned_value);
+    }
+    
+    return $cleaned_value;
+}
+
+/**
  * Save settings
  * 
  * @param WP_REST_Request $request The request object
@@ -419,11 +513,19 @@ function advset_save_settings_callback($request) {
         return new WP_Error('invalid_settings', 'Settings must be an object', ['status' => 400]);
     }
     
-    $updated = false;
     $errors = [];
-    
+
     // Get all registered features
     $features = advset_get_features();
+    
+    // Get current settings
+    $current_settings = get_option('advanced_settings_settings', []);
+    
+    // Create new settings array
+    $new_settings = $current_settings;
+    
+    // Allow plugins to modify settings before save
+    $settings = apply_filters('advset_before_save_settings', $settings, $current_settings);
     
     foreach ($features as $feature_id => $feature) {
         if (isset($settings[$feature_id])) {
@@ -473,11 +575,17 @@ function advset_save_settings_callback($request) {
                 }
             }
             
-            // Todo: collect for saving
+            // Clean up the value
+            $cleaned_value = advset_cleanup_feature_value($value, $feature);
+            
+            // If value is null after cleanup, remove it from settings
+            if ($cleaned_value === null) {
+                unset($new_settings[$feature_id]);
+            } else {
+                $new_settings[$feature_id] = $cleaned_value;
+            }
         }
     }
-
-    // Todo: save
     
     if (!empty($errors)) {
         return new WP_Error('validation_error', 'Some settings could not be updated', [
@@ -486,12 +594,28 @@ function advset_save_settings_callback($request) {
         ]);
     }
     
-    if (!$updated) {
-        return new WP_Error('no_updates', 'No settings were updated', ['status' => 400]);
+    // Check if settings have actually changed
+    if (serialize($new_settings) === serialize($current_settings)) {
+        return new WP_REST_Response([
+            'success' => true,
+            'message' => 'Settings are unchanged',
+            'settings' => (object) $new_settings
+        ], 200);
     }
+    
+    // Try to save the settings
+    $updated = update_option('advanced_settings_settings', $new_settings);
+    
+    if (!$updated) {
+        return new WP_Error('save_failed', 'Failed to save settings', ['status' => 500]);
+    }
+    
+    // Allow plugins to react to saved settings
+    do_action('advset_after_save_settings', $new_settings, $current_settings);
     
     return new WP_REST_Response([
         'success' => true,
-        'message' => 'Settings updated successfully'
+        'message' => 'Settings updated successfully',
+        'settings' => (object) $new_settings
     ], 200);
 }
