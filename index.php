@@ -306,7 +306,7 @@ if ( advset_option('hide_update_message') ) {
 }
 
 # Email Protection
-if ( !is_admin() && advset_option('protect_emails') ) {
+if ( !is_admin() && !wp_doing_ajax() && advset_option('protect_emails') ) {
 
     function advset_protect_emails_in_output($content) {
         return preg_replace_callback('/((?:mailto\:)?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
@@ -378,13 +378,16 @@ if ( !is_admin() && advset_option('protect_emails') ) {
 
     // Buffer the entire output to protect all email addresses
     function advset_start_email_protection() {
+		if (defined('REST_REQUEST'))
+			return;
+
         if (advset_option('protect_emails_method') === 'javascript') {
             ob_start('advset_protect_emails_in_output_with_javascript');
         } else {
             ob_start('advset_protect_emails_in_output');
         }
     }
-    add_action('init', 'advset_start_email_protection');
+	add_action( 'parse_request', 'advset_start_email_protection' );
 }
 
 # Add a Custom Dashboard Logo
