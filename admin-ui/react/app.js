@@ -208,7 +208,8 @@ const AdvSetModalApp = {
             this.setState({ 
                 allItems: data.features,
                 items: data.features, // Initially show all items
-                categories: data.categories
+                categories: data.categories,
+                settings: data.settings || {} // Add settings from API response
             });
             
             // Dispatch event to indicate data is loaded
@@ -355,6 +356,14 @@ const AdvSetModalApp = {
             if (!response.ok) {
                 console.error('Failed to save setting:', data);
                 this.showError(`Failed to save setting: ${data.message || 'Unknown error'}`);
+                return;
+            }
+
+            // Update all settings from API response
+            if (data.settings) {
+                this.setState({
+                    settings: data.settings
+                });
             }
         } catch (error) {
             console.error('Error saving setting:', error);
