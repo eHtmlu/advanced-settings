@@ -377,39 +377,30 @@ function advset_validate_field_type($type, $value, $config = []) {
  * @return WP_REST_Response Response with features and categories
  */
 function advset_get_features_callback() {
-    $features = [];
-    $categories = [];
+    // Initialize categories and features
+    advset_init_categories_and_features();
 
-    $features_dir = ADVSET_DIR . '/features';
+    // Get features and categories
+    $features = advset_get_features();
+    $categories = advset_get_categories();
 
-    foreach (glob($features_dir . '/*.php') as $feature_file) {
-        $feature_data = include $feature_file;
+    // Prepare response
+    $response = [
+        'features' => [],
+        'categories' => array_values($categories),
+    ];
 
-        if (!is_array($feature_data) || !isset($feature_data['category']) || !isset($feature_data['items'])) {
-            continue;
-        }
-
-        $categories[$feature_data['category']] = [
-            'id' => $feature_data['category'],
-            'title' => $feature_data['title'],
-            'description' => $feature_data['description'],
-            'icon' => isset($feature_data['icon']) ? $feature_data['icon'] : '',
+    // Format features for response
+    foreach ($features as $id => $feature) {
+        $response['features'][] = [
+            'id' => $id,
+            'category' => $feature['category'],
+            'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : '',
+            'ui_config' => isset($feature['ui_config']) ? $feature['ui_config'] : (object) [],
         ];
-
-        foreach ($feature_data['items'] as $key => $feature) {
-            $features[] = [
-                'id' => $key,
-                'category' => $feature_data['category'],
-                'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : '',
-                'ui_config' => isset($feature['ui_config']) ? $feature['ui_config'] : (object) []
-            ];
-        }
     }
 
-    return new WP_REST_Response([
-        'features' => $features,
-        'categories' => $categories
-    ], 200);
+    return new WP_REST_Response($response, 200);
 }
 
 /**
@@ -419,80 +410,76 @@ function advset_get_features_callback() {
  * @return WP_REST_Response|WP_Error Response or error
  */
 function advset_save_settings_callback($request) {
+    // Initialize categories and features
+    advset_init_categories_and_features();
+
     $settings = $request->get_param('settings');
     
     if (!is_array($settings)) {
         return new WP_Error('invalid_settings', 'Settings must be an object', ['status' => 400]);
     }
     
-    // Get all feature files
-    $features_dir = ADVSET_DIR . '/features';
     $updated = false;
     $errors = [];
     
-    foreach (glob($features_dir . '/*.php') as $feature_file) {
-        $feature_data = include $feature_file;
-        
-        if (!is_array($feature_data) || !isset($feature_data['items'])) {
-            continue;
-        }
-        
-        foreach ($feature_data['items'] as $key => $feature) {
-            if (isset($settings[$key])) {
-                $value = $settings[$key];
-                
-                // First validate the field types if ui_config and fields are present
-                if (isset($feature['ui_config']['fields']) && is_array($feature['ui_config']['fields'])) {
-                    // Check if value contains any fields that are not in ui_config
-                    $invalid_fields = array_diff_key($value, $feature['ui_config']['fields']);
-                    if (!empty($invalid_fields)) {
-                        $errors[] = sprintf(
-                            'Invalid fields in setting "%s": %s. Allowed fields: %s',
-                            $key,
-                            implode(', ', array_keys($invalid_fields)),
-                            implode(', ', array_keys($feature['ui_config']['fields']))
-                        );
-                        continue;
-                    }
+    // Get all registered features
+    $features = advset_get_features();
+    
+    foreach ($features as $feature_id => $feature) {
+        if (isset($settings[$feature_id])) {
+            $value = $settings[$feature_id];
+            
+            // First validate the field types if ui_config and fields are present
+            if (isset($feature['ui_config']['fields']) && is_array($feature['ui_config']['fields'])) {
+                // Check if value contains any fields that are not in ui_config
+                $invalid_fields = array_diff_key($value, $feature['ui_config']['fields']);
+                if (!empty($invalid_fields)) {
+                    $errors[] = sprintf(
+                        'Invalid fields in setting "%s": %s. Allowed fields: %s',
+                        $feature_id,
+                        implode(', ', array_keys($invalid_fields)),
+                        implode(', ', array_keys($feature['ui_config']['fields']))
+                    );
+                    continue;
+                }
 
-                    foreach ($feature['ui_config']['fields'] as $field_id => $field_config) {
-                        if (isset($value[$field_id]) && isset($field_config['type'])) {
-                            if (!advset_validate_field_type($field_config['type'], $value[$field_id], $field_config)) {
-                                $errors[] = sprintf(
-                                    'Invalid value for field "%s" in setting "%s". Expected type: %s%s%s',
-                                    $field_id,
-                                    $key,
-                                    $field_config['type'],
-                                    in_array($field_config['type'], ['select', 'radio']) && isset($field_config['options']) 
-                                        ? sprintf(' (allowed values: %s)', implode(', ', array_keys($field_config['options'])))
-                                        : '',
-                                    in_array($field_config['type'], ['text', 'email', 'url', 'tel', 'password']) && isset($field_config['pattern'])
-                                        ? sprintf(' (must match pattern: %s)', $field_config['pattern'])
-                                        : ''
-                                );
-                                continue 2; // Skip to next setting
-                            }
+                foreach ($feature['ui_config']['fields'] as $field_id => $field_config) {
+                    if (isset($value[$field_id]) && isset($field_config['type'])) {
+                        if (!advset_validate_field_type($field_config['type'], $value[$field_id], $field_config)) {
+                            $errors[] = sprintf(
+                                'Invalid value for field "%s" in setting "%s". Expected type: %s%s%s',
+                                $field_id,
+                                $feature_id,
+                                $field_config['type'],
+                                in_array($field_config['type'], ['select', 'radio']) && isset($field_config['options']) 
+                                    ? sprintf(' (allowed values: %s)', implode(', ', array_keys($field_config['options'])))
+                                    : '',
+                                in_array($field_config['type'], ['text', 'email', 'url', 'tel', 'password']) && isset($field_config['pattern'])
+                                    ? sprintf(' (must match pattern: %s)', $field_config['pattern'])
+                                    : ''
+                            );
+                            continue 2; // Skip to next setting
                         }
                     }
                 }
-                
-                // Then validate using the feature's own validator if it exists
-                if (isset($feature['handler_validate']) && is_callable($feature['handler_validate'])) {
-                    $is_valid = call_user_func($feature['handler_validate'], $value);
-                    if (!$is_valid) {
-                        $errors[] = "Invalid value for setting: $key";
-                        continue;
-                    }
+            }
+            
+            // Then validate using the feature's own validator if it exists
+            if (isset($feature['handler_validate']) && is_callable($feature['handler_validate'])) {
+                $is_valid = call_user_func($feature['handler_validate'], $value);
+                if (!$is_valid) {
+                    $errors[] = "Invalid value for setting: $feature_id";
+                    continue;
                 }
-                
-                // Execute the handler if it exists
-                if (isset($feature['handler_execute']) && is_callable($feature['handler_execute'])) {
-                    try {
-                        call_user_func($feature['handler_execute']);
-                        $updated = true;
-                    } catch (Exception $e) {
-                        $errors[] = "Error executing handler for setting: $key - " . $e->getMessage();
-                    }
+            }
+            
+            // Execute the handler if it exists
+            if (isset($feature['handler_execute']) && is_callable($feature['handler_execute'])) {
+                try {
+                    call_user_func($feature['handler_execute']);
+                    $updated = true;
+                } catch (Exception $e) {
+                    $errors[] = "Error executing handler for setting: $feature_id - " . $e->getMessage();
                 }
             }
         }

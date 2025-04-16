@@ -1193,6 +1193,20 @@ add_action('init', 'advset_load_admin_ui');
 
 
 /**
+ * Categories and features
+ */
+
+// Function to initialize management of categories and features (only when needed)
+function advset_init_categories_and_features() {
+	require_once ADVSET_DIR . '/feature-manager.php';
+}
+
+
+
+
+
+
+/**
  * API
  */
 

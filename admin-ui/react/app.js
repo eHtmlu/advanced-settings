@@ -28,47 +28,45 @@ function App(props) {
     });
     
     // Get visible categories (those with items)
-    const visibleCategories = Object.keys(itemsByCategory).filter(categoryId => 
-        itemsByCategory[categoryId].length > 0
+    const visibleCategories = categories.filter(category => 
+        itemsByCategory[category.id]?.length > 0
     );
     
     return React.createElement('div', { className: 'advset-react-app' },
         // Category sidebar
         React.createElement('div', { className: 'advset-category-sidebar' },
             React.createElement('ul', { className: 'advset-category-menu' },
-                visibleCategories.map(categoryId => {
-                    const category = categories[categoryId];
-                    return React.createElement('li', { 
-                        key: categoryId,
+                visibleCategories.map(category => 
+                    React.createElement('li', { 
+                        key: category.id,
                         className: 'advset-category-menu-item'
                     },
                         React.createElement('a', {
-                            href: `#category-${categoryId}`,
+                            href: `#category-${category.id}`,
                             onClick: (e) => {
                                 e.preventDefault();
-                                onCategoryClick(categoryId);
+                                onCategoryClick(category.id);
                             }
                         }, 
                             React.createElement('span', {
                                 className: 'advset-category-icon',
-                                dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                                dangerouslySetInnerHTML: { __html: category.icon || '' }
                             }),
                             React.createElement('span', {
                                 className: 'advset-category-text'
-                            }, category ? category.title : categoryId)
+                            }, category.title || category.id)
                         )
-                    );
-                })
+                    )
+                )
             )
         ),
         
         // Results area with categorized items
         React.createElement('div', { className: 'advset-results-container' },
-            visibleCategories.map(categoryId => {
-                const category = categories[categoryId];
-                return React.createElement('div', { 
-                    key: categoryId,
-                    id: `category-${categoryId}`,
+            visibleCategories.map(category => 
+                React.createElement('div', { 
+                    key: category.id,
+                    id: `category-${category.id}`,
                     className: 'advset-category-section'
                 },
                     React.createElement('h2', { 
@@ -76,14 +74,14 @@ function App(props) {
                     }, 
                         React.createElement('span', {
                             className: 'advset-category-icon',
-                            dangerouslySetInnerHTML: { __html: category ? category.icon : '' }
+                            dangerouslySetInnerHTML: { __html: category.icon || '' }
                         }),
                         React.createElement('span', {
                             className: 'advset-category-text'
-                        }, category ? category.title : categoryId)
+                        }, category.title || category.id)
                     ),
                     React.createElement('div', { className: 'advset-results' },
-                        itemsByCategory[categoryId].map(item => 
+                        itemsByCategory[category.id].map(item => 
                             React.createElement(ItemCard, {
                                 key: item.id,
                                 item: item,
@@ -92,8 +90,8 @@ function App(props) {
                             })
                         )
                     )
-                );
-            })
+                )
+            )
         )
     );
 }
