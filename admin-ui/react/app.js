@@ -86,7 +86,7 @@ function App(props) {
                                 key: item.id,
                                 item: item,
                                 onSettingChange: onSettingChange,
-                                settingValue: settings[item.id] || false
+                                settingValue: settings[item.id] || {}
                             })
                         )
                     )

@@ -6,7 +6,7 @@
 
 export function SettingComponentGeneric(props) {
     const { id, texts, value = {}, onChange, config } = props;
-    
+
     // Ensure we have a valid ID and config
     if (!id || !config || !config.fields) {
         console.warn('SettingComponentGeneric: Missing required props');
@@ -37,7 +37,7 @@ export function SettingComponentGeneric(props) {
     const renderField = (fieldId, field) => {
         if (!isFieldVisible(field)) return null;
         
-        const fieldValue = value[fieldId] ?? field.default;
+        const fieldValue = fieldId in value ? value[fieldId] : ('default' in field ? field.default : null);
         
         switch (field.type) {
             case 'toggle':
@@ -51,9 +51,9 @@ export function SettingComponentGeneric(props) {
                                 type: 'checkbox',
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-toggle-input',
-                                checked: fieldValue,
+                                checked: fieldValue === true,
                                 'data-component': 'generic-toggle',
-                                'aria-checked': fieldValue ? 'true' : 'false',
+                                'aria-checked': fieldValue === true ? 'true' : 'false',
                                 onChange: (e) => handleFieldChange(fieldId, e.target.checked)
                             }),
                             React.createElement('span', { className: 'advset-generic-field-toggle-element-slider' })
@@ -113,9 +113,9 @@ export function SettingComponentGeneric(props) {
                                 type: 'checkbox',
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-checkbox-input',
-                                checked: fieldValue,
+                                checked: fieldValue === true,
                                 'data-component': 'generic-checkbox',
-                                'aria-checked': fieldValue ? 'true' : 'false',
+                                'aria-checked': fieldValue === true ? 'true' : 'false',
                                 onChange: (e) => handleFieldChange(fieldId, e.target.checked)
                             }),
                             React.createElement('span', { className: 'advset-generic-field-checkbox-element-checkmark' })
@@ -139,7 +139,7 @@ export function SettingComponentGeneric(props) {
                             React.createElement('select', {
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-select-input',
-                                value: fieldValue,
+                                ...(typeof fieldValue === 'string' && typeof field.options[fieldValue] !== 'undefined' ? { value: fieldValue } : {}),
                                 onChange: (e) => handleFieldChange(fieldId, e.target.value)
                             },
                                 Object.entries(field.options).map(([optionId, option]) =>
@@ -182,7 +182,7 @@ export function SettingComponentGeneric(props) {
                                 type: inputType,
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-textual-input',
-                                value: fieldValue,
+                                ...(typeof fieldValue === 'string' ? { value: fieldValue } : {}),
                                 ...(
                                     ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
                                         ...(typeof field.min !== 'undefined' && { min: field.min }),

@@ -127,11 +127,11 @@ function advset_validate_field_type($type, $value, $config = []) {
             
         case 'number':
         case 'range':
-            if (!is_numeric($value)) {
-                return false;
-            }
             if ($value === '') {
                 return true;
+            }
+            if (!is_numeric($value)) {
+                return false;
             }
             // Check min value
             if (isset($config['min']) && is_numeric($config['min']) && $value < $config['min']) {
@@ -332,38 +332,77 @@ function advset_validate_field_type($type, $value, $config = []) {
                 return true;
             }
             // Check week format (YYYY-Www)
-            if (!preg_match('/^\d{4}-W\d{2}$/', $value)) {
+            if (!preg_match('/^(\d{4})-W(\d{2})$/', $value, $matches)) {
                 return false;
             }
-            // Check if week is valid
-            $week = DateTime::createFromFormat('o-\WW', $value);
-            if (!$week || $week->format('o-\WW') !== $value) {
+            
+            $year = intval($matches[1]);
+            $week = intval($matches[2]);
+            
+            // Check if week number is valid (1-53)
+            if ($week < 1 || $week > 53) {
                 return false;
             }
+            
+            // Calculate first day of the year
+            $firstDayOfYear = new DateTime($year . '-01-01');
+            $firstWeekday = intval($firstDayOfYear->format('N'));
+            
+            // Calculate first week of the year based on ISO-8601
+            // If Jan 1 is Fri, Sat or Sun, first week starts next Monday
+            $daysToAdd = (11 - $firstWeekday) % 7;
+            $firstWeek = clone $firstDayOfYear;
+            $firstWeek->modify("+$daysToAdd days");
+            
+            // Calculate max weeks in this year
+            $maxWeeks = ($firstWeekday == 4 || ($firstWeekday == 3 && date('L', strtotime("$year-01-01")) == 1)) ? 53 : 52;
+            if ($week > $maxWeeks) {
+                return false;
+            }
+            
+            // Calculate the date of the requested week
+            $requestedDate = clone $firstWeek;
+            $requestedDate->modify("+" . ($week - 1) * 7 . " days");
+            
             // Check min week
             if (isset($config['min']) && is_string($config['min'])) {
-                $min = DateTime::createFromFormat('o-\WW', $config['min']);
-                if ($min && $week < $min) {
-                    return false;
-                }
-            }
-            // Check max week
-            if (isset($config['max']) && is_string($config['max'])) {
-                $max = DateTime::createFromFormat('o-\WW', $config['max']);
-                if ($max && $week > $max) {
-                    return false;
-                }
-            }
-            // Check step (in weeks)
-            if (isset($config['step']) && is_numeric($config['step']) && $config['step'] > 0) {
-                $min = isset($config['min']) ? DateTime::createFromFormat('o-\WW', $config['min']) : $week;
-                if ($min) {
-                    $diff = floor(($week->getTimestamp() - $min->getTimestamp()) / (7 * 24 * 60 * 60));
-                    if (abs(round($diff / $config['step']) - ($diff / $config['step'])) > 0.000001) {
+                if (preg_match('/^(\d{4})-W(\d{2})$/', $config['min'], $minMatches)) {
+                    $minYear = intval($minMatches[1]);
+                    $minWeek = intval($minMatches[2]);
+                    
+                    if ($year < $minYear || ($year === $minYear && $week < $minWeek)) {
                         return false;
                     }
                 }
             }
+            
+            // Check max week
+            if (isset($config['max']) && is_string($config['max'])) {
+                if (preg_match('/^(\d{4})-W(\d{2})$/', $config['max'], $maxMatches)) {
+                    $maxYear = intval($maxMatches[1]);
+                    $maxWeek = intval($maxMatches[2]);
+                    
+                    if ($year > $maxYear || ($year === $maxYear && $week > $maxWeek)) {
+                        return false;
+                    }
+                }
+            }
+            
+            // Check step (in weeks)
+            if (isset($config['step']) && is_numeric($config['step']) && $config['step'] > 0) {
+                if (isset($config['min']) && preg_match('/^(\d{4})-W(\d{2})$/', $config['min'], $minMatches)) {
+                    $minYear = intval($minMatches[1]);
+                    $minWeek = intval($minMatches[2]);
+                    
+                    // Calculate total weeks difference
+                    $weeksDiff = ($year - $minYear) * 52 + ($week - $minWeek);
+                    
+                    if (abs(round($weeksDiff / $config['step']) - ($weeksDiff / $config['step'])) > 0.000001) {
+                        return false;
+                    }
+                }
+            }
+            
             return true;
             
         default:
