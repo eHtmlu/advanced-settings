@@ -81,6 +81,34 @@ add_action('admin_enqueue_scripts', 'advset_admin_ui_scripts');
 add_action('wp_enqueue_scripts', 'advset_admin_ui_scripts');
 
 /**
+ * Add wpApiSettings if not already set
+ */
+function advset_api_settings() {
+    // Check if user is logged in and has manage_options capability
+    if (!is_user_logged_in() || !current_user_can('manage_options')) {
+        return;
+    }
+
+    // Check if wpApiSettings is already defined
+    global $wp_scripts;
+
+    // Enqueue wp-api if not already enqueued
+    if (isset($wp_scripts->registered['wp-api']) && !wp_script_is('wp-api', 'enqueued')) {
+        wp_enqueue_script('wp-api');
+    }
+
+    // Set wpApiSettings if not already set
+    if (!isset($wp_scripts->registered['wp-api']->extra['data']) || strpos($wp_scripts->registered['wp-api']->extra['data'], 'wpApiSettings') === false) {
+        wp_localize_script('wp-api', 'wpApiSettings', array(
+            'root' => esc_url_raw(rest_url()),
+            'nonce' => wp_create_nonce('wp_rest')
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'advset_api_settings', 1000);
+add_action('admin_enqueue_scripts', 'advset_api_settings', 1000);
+
+/**
  * Add modal HTML to admin footer
  */
 function advset_admin_modal_html() {
