@@ -1213,7 +1213,7 @@ function advset_init_categories_and_features() {
  
 // Load API endpoints
 function advset_load_api_endpoints() {
-	require_once ADVSET_DIR . '/api.php';
+	require_once ADVSET_DIR . '/api-endpoints.php';
 }
 add_action('rest_api_init', 'advset_load_api_endpoints');
 
