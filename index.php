@@ -1173,6 +1173,35 @@ function advset_register_post_types() {
 
 
 
+/**
+ * Define constants
+ */
+
+// Define plugin version if not already defined
+if (!defined('ADVSET_VERSION')) {
+	$plugin_data_loaded = isset($plugin_data['Version'], $plugin_data['TextDomain']) && $plugin_data['TextDomain'] === 'advanced-settings';
+	$plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__);
+    define('ADVSET_VERSION', $plugin_data['Version']);
+}
+
+// Define cache file path
+define('ADVSET_CACHE_FILE', WP_CONTENT_DIR . '/cache/advanced-settings/active-features.php');
+
+
+
+
+/**
+ * Register deactivation hook for cleanup
+ */
+register_deactivation_hook(__FILE__, function() {
+    require_once ADVSET_DIR . '/cache-manager.php';
+    AdvSet_CacheManager::cleanup_cache();
+});
+
+
+
+
+
 
 
 /**
@@ -1210,12 +1239,67 @@ function advset_init_categories_and_features() {
  * API
  */
 
- 
 // Load API endpoints
 function advset_load_api_endpoints() {
 	require_once ADVSET_DIR . '/api-endpoints.php';
 }
 add_action('rest_api_init', 'advset_load_api_endpoints');
+
+
+
+
+
+/**
+ * Execute active features
+ */
+
+add_action('plugins_loaded', function() {
+	// Try to load and execute cached features directly
+	if (file_exists(ADVSET_CACHE_FILE)) {
+		// Read first few lines to check validity
+		$handle = @fopen(ADVSET_CACHE_FILE, 'r');
+		if ($handle) {
+			$header = '';
+			for ($i = 0; $i < 8; $i++) {
+				$line = fgets($handle);
+				if ($line === false) break;
+				$header .= $line;
+			}
+			fclose($handle);
+			
+			// Extract hash from header
+			if (preg_match('/Settings Hash: ([a-f0-9]{32})/i', $header, $matches)) {
+				$file_hash = $matches[1];
+				
+				// Get current settings hash
+				$settings = get_option('advanced_settings_settings', []);
+				$current_hash = md5(serialize($settings));
+				
+				// If hash matches, include cache file
+				if ($current_hash === $file_hash) {
+					if ((@include_once ADVSET_CACHE_FILE) && function_exists('advset_execute_active_features')) {
+						advset_execute_active_features();
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	// If we get here, cache is invalid or missing
+	// Load cache manager and try to regenerate/execute
+	require_once ADVSET_DIR . '/cache-manager.php';
+
+	// Try to generate cache file
+	if (AdvSet_CacheManager::generate_cache_file() && (@include_once ADVSET_CACHE_FILE) && function_exists('advset_execute_active_features')) {
+		advset_execute_active_features();
+	} else {
+		// Fallback: Execute features directly
+		AdvSet_CacheManager::execute_active_features_fallback();
+	}
+});
+
+
 
 
 

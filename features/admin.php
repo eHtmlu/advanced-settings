@@ -24,7 +24,7 @@ add_action('advset_register_features', function() {
     advset_register_feature([
         'id' => 'admin.updates.notifications.core',
         'category' => 'admin',
-        'ui_config' => [
+        'ui_config' => fn() => [
             'fields' => [
                 'enabled' => [
                     'type' => 'toggle',
@@ -42,7 +42,7 @@ add_action('advset_register_features', function() {
     advset_register_feature([
         'id' => 'admin.updates.notifications.plugins',
         'category' => 'admin',
-        'ui_config' => [
+        'ui_config' => fn() => [
             'fields' => [
                 'enabled' => [
                     'type' => 'toggle',
@@ -60,7 +60,7 @@ add_action('advset_register_features', function() {
     advset_register_feature([
         'id' => 'admin.updates.notifications.themes.disable',
         'category' => 'admin',
-        'ui_config' => [
+        'ui_config' => fn() => [
             'fields' => [
                 'enabled' => [
                     'type' => 'toggle',

@@ -8,6 +8,18 @@
 // Exit direct requests
 if (!defined('ABSPATH')) exit;
 
+
+// Initialize categories and features
+advset_init_categories_and_features();
+
+// Regenerate cache file when settings are saved
+add_action('advset_after_save_settings', function() {
+    require_once ADVSET_DIR . '/cache-manager.php';
+    AdvSet_CacheManager::generate_cache_file();
+});
+
+
+
 // Register endpoint for loading all feature texts
 register_rest_route('advanced-settings/v1', '/features', [
     'methods' => 'GET',
@@ -416,9 +428,6 @@ function advset_validate_field_type($type, $value, $config = []) {
  * @return WP_REST_Response Response with features and categories
  */
 function advset_get_features_callback() {
-    // Initialize categories and features
-    advset_init_categories_and_features();
-
     // Get features and categories
     $features = advset_get_features();
     $categories = advset_get_categories();
@@ -432,11 +441,18 @@ function advset_get_features_callback() {
 
     // Format features for response
     foreach ($features as $id => $feature) {
+        $ui_config = isset($feature['ui_config']) ? $feature['ui_config'] : fn() => (object) [];
+        
+        // ui_config must be a callable
+        if (!is_callable($ui_config)) {
+            continue;
+        }
+
         $response['features'][] = [
             'id' => $id,
             'category' => $feature['category'],
             'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : '',
-            'ui_config' => isset($feature['ui_config']) ? $feature['ui_config'] : (object) [],
+            'ui_config' => $ui_config(),
         ];
     }
 
@@ -505,18 +521,28 @@ function advset_cleanup_feature_value($value, $feature) {
     // First perform automatic cleanup
     $cleaned_value = $value;
     
+    // Get ui_config
+    $ui_config = isset($feature['ui_config']) ? $feature['ui_config'] : fn() => [];
+    
+    // ui_config must be a callable
+    if (!is_callable($ui_config)) {
+        return $value;
+    }
+    
+    $ui_config = $ui_config();
+    
     // If value is an array/object, check each field
-    if (is_array($value) && isset($feature['ui_config']['fields'])) {
+    if (is_array($value) && isset($ui_config['fields'])) {
         $cleaned_value = [];
         
         foreach ($value as $field_id => $field_value) {
             // Skip if field doesn't exist in config
-            if (!isset($feature['ui_config']['fields'][$field_id])) {
+            if (!isset($ui_config['fields'][$field_id])) {
                 continue;
             }
             
             // Only keep non-empty and non-default values
-            if (!advset_is_empty_or_default_value($field_value, $feature['ui_config']['fields'][$field_id])) {
+            if (!advset_is_empty_or_default_value($field_value, $ui_config['fields'][$field_id])) {
                 $cleaned_value[$field_id] = $field_value;
             }
         }
@@ -525,7 +551,7 @@ function advset_cleanup_feature_value($value, $feature) {
         $cleaned_value = !empty($cleaned_value) ? $cleaned_value : null;
     } else {
         // For simple values, check if empty/default
-        $cleaned_value = advset_is_empty_or_default_value($value, $feature['ui_config']) ? null : $value;
+        $cleaned_value = advset_is_empty_or_default_value($value, $ui_config) ? null : $value;
     }
     
     // Then apply custom cleanup handler if present
@@ -543,9 +569,6 @@ function advset_cleanup_feature_value($value, $feature) {
  * @return WP_REST_Response|WP_Error Response or error
  */
 function advset_save_settings_callback($request) {
-    // Initialize categories and features
-    advset_init_categories_and_features();
-
     $settings = $request->get_param('settings');
     
     if (!is_array($settings)) {
@@ -570,21 +593,31 @@ function advset_save_settings_callback($request) {
         if (isset($settings[$feature_id])) {
             $value = $settings[$feature_id];
             
+            // Get ui_config
+            $ui_config = isset($feature['ui_config']) ? $feature['ui_config'] : fn() => [];
+            
+            // ui_config must be a callable
+            if (!is_callable($ui_config)) {
+                continue;
+            }
+            
+            $ui_config = $ui_config();
+            
             // First validate the field types if ui_config and fields are present
-            if (isset($feature['ui_config']['fields']) && is_array($feature['ui_config']['fields'])) {
+            if (isset($ui_config['fields']) && is_array($ui_config['fields'])) {
                 // Check if value contains any fields that are not in ui_config
-                $invalid_fields = array_diff_key($value, $feature['ui_config']['fields']);
+                $invalid_fields = array_diff_key($value, $ui_config['fields']);
                 if (!empty($invalid_fields)) {
                     $errors[] = sprintf(
                         'Invalid fields in setting "%s": %s. Allowed fields: %s',
                         $feature_id,
                         implode(', ', array_keys($invalid_fields)),
-                        implode(', ', array_keys($feature['ui_config']['fields']))
+                        implode(', ', array_keys($ui_config['fields']))
                     );
                     continue;
                 }
 
-                foreach ($feature['ui_config']['fields'] as $field_id => $field_config) {
+                foreach ($ui_config['fields'] as $field_id => $field_config) {
                     if (isset($value[$field_id]) && isset($field_config['type'])) {
                         if (!advset_validate_field_type($field_config['type'], $value[$field_id], $field_config)) {
                             $errors[] = sprintf(

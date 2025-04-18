@@ -24,7 +24,7 @@ add_action('advset_register_features', function() {
     advset_register_feature([
         'id' => 'security.protect_emails',
         'category' => 'security',
-        'ui_config' => [
+        'ui_config' => fn() => [
             'fields' => [
                 'enabled' => [
                     'type' => 'toggle',

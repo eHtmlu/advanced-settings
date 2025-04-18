@@ -47,6 +47,15 @@ function advset_register_feature($feature) {
 
     global $advset_features;
 
+    // Ensure ui_config is a callable
+    if (isset($feature['ui_config']) && !is_callable($feature['ui_config'])) {
+        trigger_error(sprintf(
+            'Feature "%s": ui_config must be a callable function, as it is used as a callback to avoid premature calls to translation functions.',
+            $feature['id']
+        ), E_USER_WARNING);
+        return;
+    }
+
     // Apply filters
     $feature = apply_filters('advset_register_feature_' . $feature['id'], $feature);
     $feature = apply_filters('advset_register_feature', $feature);
@@ -133,7 +142,7 @@ function advset_get_features_by_category($category_id) {
 /**
  * Load and register default categories and features
  */
-function advset_load_features() {
+function advset_include_builtin_features() {
     $features_dir = ADVSET_DIR . '/features';
     foreach (glob($features_dir . '/*.php') as $feature_file) {
         require_once $feature_file;
@@ -142,10 +151,18 @@ function advset_load_features() {
 
 	
 // Load features
-advset_load_features();
+advset_include_builtin_features();
 
-// Register all categories
-do_action('advset_register_categories');
 
-// Register all features
+// Register categories in the init hook at the earliest, as translations must not be loaded earlier.
+if (did_action('init')) {
+    do_action('advset_register_categories');
+} else {
+    add_action('init', function() {
+        do_action('advset_register_categories');
+    });
+}
+
+
+// Register features immediately because we are already in or after the plugins_loaded hook
 do_action('advset_register_features');

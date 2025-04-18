@@ -24,7 +24,7 @@ add_action('advset_register_features', function() {
     advset_register_feature([
         'id' => 'content.disable_comments',
         'category' => 'content',
-        'ui_config' => [
+        'ui_config' => fn() => [
             'fields' => [
                 'enabled' => [
                     'type' => 'toggle',
