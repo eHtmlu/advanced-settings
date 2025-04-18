@@ -73,7 +73,7 @@
     [type=url],
     [type=week]
 ),
-.advset-modal input:has(:focus):where(
+.advset-modal input:has(:focus,:focus-visible):where(
     [type=color],
     [type=date],
     [type=datetime-local],
@@ -159,7 +159,7 @@
     line-height: 1.2;
     padding: .5em 1.2em;
     margin: 0;
-    border: 1px solid var(--advset-color-border);
+    border: 1px solid var(--advset-color-base);
     transition: border-color var(--advset-transition-duration);
 }
 
