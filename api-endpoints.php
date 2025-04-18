@@ -9,16 +9,6 @@
 if (!defined('ABSPATH')) exit;
 
 
-// Initialize categories and features
-advset_init_categories_and_features();
-
-// Regenerate cache file when settings are saved
-add_action('advset_after_save_settings', function() {
-    require_once ADVSET_DIR . '/cache-manager.php';
-    AdvSet_CacheManager::generate_cache_file();
-});
-
-
 
 // Register endpoint for loading all feature texts
 register_rest_route('advanced-settings/v1', '/features', [

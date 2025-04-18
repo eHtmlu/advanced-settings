@@ -1258,6 +1258,16 @@ function advset_init_categories_and_features() {
 
 // Load API endpoints
 function advset_load_api_endpoints() {
+
+	// Initialize categories and features
+	advset_init_categories_and_features();
+
+	// Regenerate cache file when settings are saved
+	add_action('advset_after_save_settings', function() {
+		require_once ADVSET_DIR . '/cache-manager.php';
+		AdvSet_CacheManager::generate_cache_file();
+	});
+
 	require_once ADVSET_DIR . '/api-endpoints.php';
 }
 add_action('rest_api_init', 'advset_load_api_endpoints');
