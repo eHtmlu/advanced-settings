@@ -1228,6 +1228,23 @@ add_action('init', 'advset_load_admin_ui');
 // Function to initialize management of categories and features (only when needed)
 function advset_init_categories_and_features() {
 	require_once ADVSET_DIR . '/feature-manager.php';
+
+	// Load categories and features
+	require_once ADVSET_DIR . '/feature-setup/categories.php';
+	require_once ADVSET_DIR . '/feature-setup/features.php';
+
+
+	// Register categories in the init hook at the earliest, as translations must not be loaded earlier.
+	if (did_action('init')) {
+		do_action('advset_register_categories');
+	} else {
+		add_action('init', function() {
+			do_action('advset_register_categories');
+		});
+	}
+
+	// Register features immediately because we are already in or after the plugins_loaded hook
+	do_action('advset_register_features');
 }
 
 

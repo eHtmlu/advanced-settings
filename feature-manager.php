@@ -138,31 +138,3 @@ function advset_get_features_by_category($category_id) {
     
     return $category_features;
 }
-
-/**
- * Load and register default categories and features
- */
-function advset_include_builtin_features() {
-    $features_dir = ADVSET_DIR . '/features';
-    foreach (glob($features_dir . '/*.php') as $feature_file) {
-        require_once $feature_file;
-    }
-}
-
-	
-// Load features
-advset_include_builtin_features();
-
-
-// Register categories in the init hook at the earliest, as translations must not be loaded earlier.
-if (did_action('init')) {
-    do_action('advset_register_categories');
-} else {
-    add_action('init', function() {
-        do_action('advset_register_categories');
-    });
-}
-
-
-// Register features immediately because we are already in or after the plugins_loaded hook
-do_action('advset_register_features');
