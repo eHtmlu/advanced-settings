@@ -79,20 +79,12 @@ class AdvSet_CacheManager {
         $settings = get_option('advanced_settings_settings', []);
         advset_init_categories_and_features();
         
-        // Get all features that are enabled
+        // Get all features that should be executed
         $active_features = [];
         foreach ($settings as $feature_id => $feature_settings) {
             $feature = advset_get_feature($feature_id);
             if ($feature && isset($feature['execution_handler'])) {
-                // For toggle features
-                if (isset($feature_settings['enabled']) && $feature_settings['enabled']) {
-                    $active_features[$feature_id] = [
-                        'handler' => $feature['execution_handler'],
-                        'settings' => $feature_settings
-                    ];
-                }
-                // For other features that have any non-null settings
-                else if (!isset($feature_settings['enabled']) && !empty($feature_settings)) {
+                if (!empty($feature_settings) && (!isset($feature['execution_condition']) || call_user_func($feature['execution_condition'], $feature_settings) === true)) {
                     $active_features[$feature_id] = [
                         'handler' => $feature['execution_handler'],
                         'settings' => $feature_settings
@@ -175,12 +167,7 @@ class AdvSet_CacheManager {
         foreach ($settings as $feature_id => $feature_settings) {
             $feature = advset_get_feature($feature_id);
             if ($feature && isset($feature['execution_handler'])) {
-                // For toggle features
-                if (isset($feature_settings['enabled']) && $feature_settings['enabled']) {
-                    call_user_func($feature['execution_handler'], $feature_settings);
-                }
-                // For other features that have any non-null settings
-                else if (!isset($feature_settings['enabled']) && !empty($feature_settings)) {
+                if (!empty($feature_settings) && (!isset($feature['execution_condition']) || call_user_func($feature['execution_condition'], $feature_settings) === true)) {
                     call_user_func($feature['execution_handler'], $feature_settings);
                 }
             }
