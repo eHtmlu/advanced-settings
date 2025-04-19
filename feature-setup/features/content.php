@@ -21,7 +21,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'handler_execute' => function() {
+    'execution_handler' => function() {
         // TODO: Implement comment disabling
     },
     'priority' => 10,

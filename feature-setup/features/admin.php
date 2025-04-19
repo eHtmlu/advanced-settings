@@ -22,7 +22,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'handler_execute' => function() {
+    'execution_handler' => function() {
         add_filter('auto_core_update_send_email', '__return_false');
     },
     'priority' => 10,
@@ -42,7 +42,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'handler_execute' => function() {
+    'execution_handler' => function() {
         add_filter('auto_plugin_update_send_email', '__return_false');
     },
     'priority' => 20,
@@ -62,7 +62,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'handler_execute' => function() {
+    'execution_handler' => function() {
         add_filter('auto_theme_update_send_email', '__return_false');
     },
     'priority' => 30,

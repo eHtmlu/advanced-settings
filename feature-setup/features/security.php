@@ -41,7 +41,7 @@ advset_register_feature([
     'handler_cleanup' => function($value) {
         return empty($value['enabled']) ? null : $value;
     },
-    'handler_execute' => function() {
+    'execution_handler' => function($settings) {
         // TODO: Implement email protection
     },
     'priority' => 10,
