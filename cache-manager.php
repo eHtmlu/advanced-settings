@@ -129,20 +129,7 @@ class AdvSet_CacheManager {
         $content .= " * 2. Deactivate and reactivate the plugin\n";
         $content .= " * 3. Save the plugin settings again\n";
         $content .= " * \n";
-        //$content .= " * @package Advanced Settings\n";
-        //$content .= " * @see     " . plugins_url('admin-ui/settings.php', ADVSET_FILE) . "\n";
         $content .= " */\n\n";
-
-        
-        /* $content = "<?php\n";
-        $content .= "/**\n";
-        $content .= " * Advanced Settings Active Features\n";
-        $content .= " * \n";
-        $content .= " * AUTOMATICALLY GENERATED FILE - DO NOT EDIT!\n";
-        $content .= " * Version: " . ADVSET_VERSION . "\n";
-        $content .= " * Generated: " . wp_date('Y-m-d H:i:s P') . "\n";
-        $content .= " * Settings Hash: " . md5(serialize($settings)) . "\n";
-        $content .= " * /\n\n"; */
         
         // Add security check
         $content .= "// Security check: Prevent direct access\n";
