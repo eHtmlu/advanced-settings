@@ -1287,7 +1287,7 @@ add_action('plugins_loaded', function() {
 		$handle = @fopen(ADVSET_CACHE_FILE, 'r');
 		if ($handle) {
 			$header = '';
-			for ($i = 0; $i < 8; $i++) {
+			for ($i = 0; $i < 20; $i++) {
 				$line = fgets($handle);
 				if ($line === false) break;
 				$header .= $line;
@@ -1295,7 +1295,7 @@ add_action('plugins_loaded', function() {
 			fclose($handle);
 			
 			// Extract hash from header
-			if (preg_match('/Settings Hash: ([a-f0-9]{32})/i', $header, $matches)) {
+			if (preg_match('/Settings Hash: +([a-f0-9]{32})/i', $header, $matches)) {
 				$file_hash = $matches[1];
 				
 				// Get current settings hash
@@ -1304,8 +1304,7 @@ add_action('plugins_loaded', function() {
 				
 				// If hash matches, include cache file
 				if ($current_hash === $file_hash) {
-					if ((@include_once ADVSET_CACHE_FILE) && function_exists('advset_execute_active_features')) {
-						advset_execute_active_features();
+					if ((@include_once ADVSET_CACHE_FILE) === true) {
 						return;
 					}
 				}
@@ -1318,9 +1317,7 @@ add_action('plugins_loaded', function() {
 	require_once ADVSET_DIR . '/cache-manager.php';
 
 	// Try to generate cache file
-	if (AdvSet_CacheManager::generate_cache_file() && (@include_once ADVSET_CACHE_FILE) && function_exists('advset_execute_active_features')) {
-		advset_execute_active_features();
-	} else {
+	if (!AdvSet_CacheManager::generate_cache_file() || !(@include_once ADVSET_CACHE_FILE)) {
 		// Fallback: Execute features directly
 		AdvSet_CacheManager::execute_active_features_fallback();
 	}
