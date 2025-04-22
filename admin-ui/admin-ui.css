@@ -105,6 +105,10 @@
     letter-spacing: inherit;
 }
 
+.advset-modal strong {
+    font-weight: 700;
+}
+
 /* ===== Modal Dialog ===== */
 .advset-modal {
     border: none;
