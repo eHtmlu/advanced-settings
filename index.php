@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Description: Advanced settings for WordPress.
 Author: Helmut Wandl
 Author URI: https://ehtmlu.com/
-Version: 2.9.0
+Version: 3.0.0
 Requires at least: 5.0.0
 Requires PHP: 5.3
 Text Domain: advanced-settings
@@ -215,6 +215,16 @@ add_action('plugins_loaded', function() {
 // Check if we are in the admin area or on the login page
 function advset_is_admin_area() {
 	return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
+}
+
+function advset_settings($id = null) {
+	$settings = get_option('advanced_settings_settings', []);
+	return $id ? (isset($settings[$id]) ? $settings[$id] : null) : $settings;
+}
+
+function advset_show_deprecated_features() {
+	$show_deprecated = advset_settings('advset.features.show_deprecated');
+	return $show_deprecated && !empty($show_deprecated['enable']);
 }
 
 

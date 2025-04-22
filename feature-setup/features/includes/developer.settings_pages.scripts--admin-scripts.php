@@ -16,14 +16,14 @@
 		<?php settings_fields( 'advanced-settings' ); ?>
 		
 		
-		<?php if (advset_option('show_deprecated_features') || advset_option('jquery_remove_migrate') || advset_option('jquery_cnd') || advset_option('remove_script_type')) { ?>
+		<?php if (advset_show_deprecated_features() || advset_option('jquery_remove_migrate') || advset_option('jquery_cnd') || advset_option('remove_script_type')) { ?>
 		<table class="form-table">
 
 			<tr valign="top">
 				<th scope="row"><?php _e('Options'); ?></th>
 				<td>
 					<fieldset>
-						<?php if (advset_option('show_deprecated_features') || advset_option('jquery_remove_migrate')) { ?>
+						<?php if (advset_show_deprecated_features() || advset_option('jquery_remove_migrate')) { ?>
 						<label for="jquery_remove_migrate">
 							<input name="jquery_remove_migrate" type="checkbox" id="jquery_remove_migrate" value="1" <?php advset_check_if('jquery_remove_migrate') ?> />
 							<s><?php _e('Remove unnecessary jQuery migrate script (jquery-migrate.min.js)'); echo '</s> ' . advset_page_deprecated(); ?>
@@ -32,7 +32,7 @@
 						<br />
 						<?php } ?>
 
-						<?php if (advset_option('show_deprecated_features') || advset_option('jquery_cnd')) { ?>
+						<?php if (advset_show_deprecated_features() || advset_option('jquery_cnd')) { ?>
 						<label for="jquery_cnd">
 							<input name="jquery_cnd" type="checkbox" id="jquery_cnd" value="1" <?php advset_check_if('jquery_cnd') ?> />
 							<s><?php _e('Include jQuery Google CDN instead local script (version 1.11.0)') ?></s> <?php echo advset_page_deprecated() . '<br />&nbsp; &nbsp; &nbsp; <em>' . __('For stability reasons, this feature will remain implemented but will be hidden on new installations.') . '</em>'; ?>
@@ -41,7 +41,7 @@
 						<br />
 						<?php } ?>
 
-						<?php if (advset_option('show_deprecated_features') || advset_option('remove_script_type')) { ?>
+						<?php if (advset_show_deprecated_features() || advset_option('remove_script_type')) { ?>
 						<label for="remove_script_type">
 							<input name="remove_script_type" type="checkbox" id="remove_script_type" value="1" <?php advset_check_if('remove_script_type') ?> />
 							<s><?php _e('Remove <i>type="text/javascript"</i> attribute from &lt;script&gt; tag') ?></s> <?php echo advset_page_deprecated(); ?>
