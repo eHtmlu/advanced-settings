@@ -85,8 +85,8 @@ if( is_admin() ) {
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
 
 	// Settings tracking
-	require_once __DIR__ . '/includes/class.tracksettings.php';
-	Advanced_Settings_Track_Settings::get_instance();
+	//require_once __DIR__ . '/includes/class.tracksettings.php';
+	//Advanced_Settings_Track_Settings::get_instance();
 
 	// update settings
 	if( isset($_POST['option_page']) && $_POST['option_page']=='advanced-settings' ) {

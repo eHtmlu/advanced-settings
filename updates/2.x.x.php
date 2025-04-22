@@ -25,8 +25,8 @@ return [
             delete_option('adv_post_types');
         }
         
-        require_once dirname(__DIR__) . '/includes/class.tracksettings.php';
-        Advanced_Settings_Track_Settings::get_instance()->send_if_consent_exists();
+        //require_once dirname(__DIR__) . '/includes/class.tracksettings.php';
+        //Advanced_Settings_Track_Settings::get_instance()->send_if_consent_exists();
     },
 
     '2.8.0' => function() {
