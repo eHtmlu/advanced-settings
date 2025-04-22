@@ -17,7 +17,6 @@ if (!defined('ABSPATH')) exit;
 
 
 
-
 /**
  * Define constants
  */
@@ -35,18 +34,6 @@ if (!defined('ADVSET_VERSION')) {
 // Define cache file path
 define('ADVSET_CACHE_FILE', WP_CONTENT_DIR . '/cache/advanced-settings/active-features.php');
 
-
-
-
-
-
-
-// from https://stevegrunwell.com/blog/quick-tip-is_login_page-function-for-wordpress/
-if ( ! function_exists( 'is_admin_area' ) ) {
-  function is_admin_area() {
-    return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
-  }
-}
 
 
 
@@ -72,10 +59,6 @@ add_action('plugins_loaded', 'advset_check_for_version_migrations', 10);
 
 
 
-
-
-
-
 /**
  * Register deactivation hook for cleanup
  */
@@ -83,8 +66,6 @@ register_deactivation_hook(__FILE__, function() {
     require_once ADVSET_DIR . '/includes/cache-manager.php';
     AdvSet_CacheManager::cleanup_cache();
 });
-
-
 
 
 
@@ -101,7 +82,6 @@ function advset_load_admin_ui() {
     }
 }
 add_action('init', 'advset_load_admin_ui');
-
 
 
 
@@ -132,7 +112,6 @@ function advset_init_categories_and_features() {
 	// Register features immediately because we are already in or after the plugins_loaded hook
 	do_action('advset_register_features');
 }
-
 
 
 
@@ -210,6 +189,19 @@ add_action('plugins_loaded', function() {
 });
 
 
+
+
+
+/**
+ * Helper functions
+ */
+
+// from https://stevegrunwell.com/blog/quick-tip-is_login_page-function-for-wordpress/
+if ( ! function_exists( 'is_admin_area' ) ) {
+	function is_admin_area() {
+		return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
+	}
+}
 
 
 
