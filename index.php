@@ -161,20 +161,34 @@ add_action('plugins_loaded', function() {
 			}
 			fclose($handle);
 			
-			// Extract hash from header
+			// Extract hash and version from header
+			$is_valid = true;
+			
+			// Check settings hash
 			if (preg_match('/Settings Hash: +([a-f0-9]{32})/i', $header, $matches)) {
 				$file_hash = $matches[1];
-				
-				// Get current settings hash
 				$settings = get_option('advanced_settings_settings', []);
 				$current_hash = md5(serialize($settings));
-				
-				// If hash matches, include cache file
-				if ($current_hash === $file_hash) {
-					if ((@include_once ADVSET_CACHE_FILE) === true) {
-						return;
-					}
+				if ($current_hash !== $file_hash) {
+					$is_valid = false;
 				}
+			} else {
+				$is_valid = false;
+			}
+			
+			// Check plugin version
+			if (preg_match('/Version: +([0-9.]+)/i', $header, $matches)) {
+				$file_version = $matches[1];
+				if (version_compare($file_version, ADVSET_VERSION, '!=')) {
+					$is_valid = false;
+				}
+			} else {
+				$is_valid = false;
+			}
+			
+			// If everything is valid, include cache file
+			if ($is_valid && (@include_once ADVSET_CACHE_FILE) === true) {
+				return;
 			}
 		}
 	}
