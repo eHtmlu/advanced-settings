@@ -1,0 +1,291 @@
+<?php
+/**
+ * Developer Category
+ * 
+ * Registers the developer category and its features
+ */
+
+// Exit if accessed directly
+if (!defined('ABSPATH')) exit;
+
+
+
+advset_register_feature([
+    'id' => 'developer.show_query_num',
+    'category' => 'developer',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enabled' => [
+                'type' => 'toggle',
+                'label' => __('Display total number of executed SQL queries and page loading time', 'advanced-settings'),
+                'descriptionHtml' => __('Only admin users can see this', 'advanced-settings'),
+            ],
+        ],
+    ],
+    'execution_handler' => function($settings) {
+        add_action('wp_footer', function() {
+            global $wpdb;
+            
+            if (!current_user_can('manage_options')) return;
+
+            echo '<div style="font-size:10px;text-align:center">'.
+                $wpdb->num_queries.' '.__('SQL queries have been executed to show this page in ').
+                timer_stop().__('seconds').
+            '</div>';
+        });
+    },
+    'priority' => 10,
+]);
+
+
+
+
+advset_register_feature([
+    'id' => 'developer.scripts_settings',
+    'category' => 'developer',
+    'experimental' => true,
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Script settings', 'advanced-settings'),
+                'description' => __('These script settings are currently under review and may be changed or removed in the future.', 'advanced-settings'),
+            ],
+            'info' => [
+                'type' => 'info',
+                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the script settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-scripts')),
+                'visible' => ['enable' => true]
+            ],
+        ]
+    ],
+    'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.scripts_settings--actions-scripts.php';
+
+        add_action('admin_menu', function() {
+            add_options_page(
+                __('Scripts', 'advanced-settings'),
+                __('Scripts', 'advanced-settings'),
+                'manage_options',
+                'advanced-settings-scripts',
+                function() {
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.scripts_settings--admin-scripts.php';
+                }
+            );
+        });
+    },
+    'priority' => 10,
+]);
+
+
+advset_register_feature([
+    'id' => 'developer.styles_settings',
+    'category' => 'developer',
+    'experimental' => true,
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Styles settings', 'advanced-settings'),
+                'description' => __('These styles settings are currently under review and may be changed or removed in the future.', 'advanced-settings'),
+            ],
+            'info' => [
+                'type' => 'info',
+                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the styles settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-styles')),
+                'visible' => ['enable' => true]
+            ],
+        ]
+    ],
+    'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.styles_settings--actions-styles.php';
+
+        add_action('admin_menu', function() {
+            add_options_page(
+                __('Styles', 'advanced-settings'),
+                __('Styles', 'advanced-settings'),
+                'manage_options',
+                'advanced-settings-styles',
+                function() {
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.styles_settings--admin-styles.php';
+                }
+            );
+        });
+    },
+    'priority' => 10,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'developer.post_types_settings',
+    'category' => 'developer',
+    'experimental' => true,
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Post types settings', 'advanced-settings'),
+                'description' => __('These post types settings are currently under review and may be changed or removed in the future.', 'advanced-settings'),
+            ],
+            'info' => [
+                'type' => 'info',
+                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the post types settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-post-types')),
+                'visible' => ['enable' => true]
+            ],
+        ],
+    ],
+    'execution_handler' => function($settings) {
+        add_action('init', function() {
+
+            $post_types = (array) get_option( 'advset_post_types', array() );
+        
+            if( is_admin() && current_user_can('manage_options') && isset($_GET['delete_posttype']) ) {
+                unset($post_types[$_GET['delete_posttype']]);
+                update_option( 'advset_post_types', $post_types );
+            }
+        
+            if( is_admin() && current_user_can('manage_options') && isset($_POST['advset_action_posttype']) ) {
+        
+                extract($_POST);
+        
+                $labels = array(
+                    'name' => $label,
+                    #'singular_name' => @$singular_name,
+                    #'add_new' => @$add_new,
+                    #'add_new_item' => @$add_new_item,
+                    #'edit_item' => @$edit_item,
+                    #'new_item' => @$new_item,
+                    #'all_items' => @$all_items,
+                    #'view_item' => @$view_item,
+                    #'search_items' => @$search_items,
+                    #'not_found' =>  @$not_found,
+                    #'not_found_in_trash' => @$not_found_in_trash,
+                    #'parent_item_colon' => @$parent_item_colon,
+                    #'menu_name' => @$menu_name
+                );
+        
+                $typename = sanitize_key( $type );
+        
+                $post_types[$type] = array(
+                    'labels'              => $labels,
+                    'public'              => (bool) (isset($public) ? $public : false),
+                    'publicly_queryable'  => (bool) (isset($publicly_queryable) ? $publicly_queryable : false),
+                    'show_ui'             => (bool) (isset($show_ui) ? $show_ui : false),
+                    'show_in_menu'        => (bool) (isset($show_in_menu) ? $show_in_menu : false),
+                    'query_var'           => (bool) (isset($query_var) ? $query_var : false),
+                    #'rewrite'             => array( 'slug' => 'book' ),
+                    #'capability_type'     => 'post',
+                    'has_archive'         => (bool) (isset($has_archive) ? $has_archive : false),
+                    'hierarchical'        => (bool) (isset($hierarchical) ? $hierarchical : false),
+                    #'menu_position'       => (int)@$menu_position,
+                    'supports'            => (array) (empty($supports) ? [] : $supports),
+                    'taxonomies'          => (array) (empty($taxonomies) ? [] : $taxonomies),
+                );
+        
+                update_option( 'advset_post_types', $post_types );
+        
+            }
+            #print_r($post_types);
+            if( sizeof($post_types)>0 )
+                foreach( $post_types as $post_type=>$args ) {
+                    register_post_type( $post_type, $args );
+                    if( in_array( 'thumbnail', $args['supports'] ) ) {
+                        add_theme_support( 'post-thumbnails', array( $post_type, 'post' ) );
+                        /*global $_wp_theme_features;
+        
+                        if( !is_array($_wp_theme_features[ 'post-thumbnails' ]) )
+                            $_wp_theme_features[ 'post-thumbnails' ] = array();
+        
+                        $_wp_theme_features[ 'post-thumbnails' ][0][]= $post_type;*/
+        
+                        #print_r($_wp_theme_features[ 'post-thumbnails' ]);
+                    }
+                }
+        
+        });
+
+        add_action('admin_menu', function() {
+            add_options_page(
+                __('Post Types', 'advanced-settings'),
+                __('Post Types', 'advanced-settings'),
+                'manage_options',
+                'advanced-settings-post-types',
+                function() {
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.post_types_settings--admin-post-types.php';
+                }
+            );
+        });
+    },
+    'priority' => 10,
+]);
+
+
+
+
+advset_register_feature([
+    'id' => 'developer.filters_actions_settings',
+    'category' => 'developer',
+    'experimental' => true,
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Filters and actions settings', 'advanced-settings'),
+                'description' => __('These filters and actions settings are currently under review and may be changed or removed in the future.', 'advanced-settings'),
+            ],
+            'info' => [
+                'type' => 'info',
+                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the filters and actions settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-filters')),
+                'visible' => ['enable' => true]
+            ],
+        ],
+    ],
+    'execution_handler' => function($settings) {
+        $remove_filters = get_option( 'advset_remove_filters' );
+        $is_advset_filter_page = isset($_GET['page']) && $_GET['page'] === 'advanced-settings-filters';
+        if($is_advset_filter_page === false && is_array($remove_filters) ) {
+            if( isset($remove_filters) && is_array($remove_filters) )
+                foreach( $remove_filters as $tag=>$array )
+                    if( is_array($array) )
+                        foreach( $array as $function=>$_ )
+                            //echo "$tag=>".$function.'<br />';
+                            remove_filter( $tag, $function );
+        }
+
+        add_action('admin_menu', function() {
+            add_options_page(
+                __('Filters/Actions', 'advanced-settings'),
+                __('Filters/Actions', 'advanced-settings'),
+                'manage_options',
+                'advanced-settings-filters',
+                function() {
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.filters_actions_settings--admin-filters.php';
+                }
+            );
+        });
+
+        add_action('wp_ajax_advset_filters', function() {
+            //echo $_POST['tag'].' - '.$_POST['function'];
+
+            // security
+            if( !current_user_can('manage_options') )
+                return false;
+
+            $remove_filters = (array) get_option( 'advset_remove_filters' );
+            $tag = (string)$_POST['tag'];
+            $function = (string)$_POST['function'];
+
+            if( $_POST['enable']=='true' )
+                unset($remove_filters[$tag][$function]);
+            else if ( $_POST['enable']=='false' )
+                $remove_filters[$tag][$function] = 1;
+
+            update_option( 'advset_remove_filters', $remove_filters );
+
+            //echo $_POST['enable'];
+
+            return true;
+        });
+    },
+    'priority' => 10,
+]);
+
