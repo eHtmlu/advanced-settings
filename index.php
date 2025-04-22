@@ -85,7 +85,7 @@ if( is_admin() ) {
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
 
 	// Settings tracking
-	require_once __DIR__ . '/class.tracksettings.php';
+	require_once __DIR__ . '/includes/class.tracksettings.php';
 	Advanced_Settings_Track_Settings::get_instance();
 
 	// update settings
@@ -257,7 +257,7 @@ define('ADVSET_CACHE_FILE', WP_CONTENT_DIR . '/cache/advanced-settings/active-fe
  * Register deactivation hook for cleanup
  */
 register_deactivation_hook(__FILE__, function() {
-    require_once ADVSET_DIR . '/cache-manager.php';
+    require_once ADVSET_DIR . '/includes/cache-manager.php';
     AdvSet_CacheManager::cleanup_cache();
 });
 
@@ -290,7 +290,7 @@ add_action('init', 'advset_load_admin_ui');
 
 // Function to initialize management of categories and features (only when needed)
 function advset_init_categories_and_features() {
-	require_once ADVSET_DIR . '/feature-manager.php';
+	require_once ADVSET_DIR . '/includes/feature-manager.php';
 
 	// Load categories and features
 	require_once ADVSET_DIR . '/feature-setup/categories.php';
@@ -327,11 +327,11 @@ function advset_load_api_endpoints() {
 
 	// Regenerate cache file when settings are saved
 	add_action('advset_after_save_settings', function() {
-		require_once ADVSET_DIR . '/cache-manager.php';
+		require_once ADVSET_DIR . '/includes/cache-manager.php';
 		AdvSet_CacheManager::generate_cache_file();
 	});
 
-	require_once ADVSET_DIR . '/api-endpoints.php';
+	require_once ADVSET_DIR . '/includes/api-endpoints.php';
 }
 add_action('rest_api_init', 'advset_load_api_endpoints');
 
@@ -377,7 +377,7 @@ add_action('plugins_loaded', function() {
 
 	// If we get here, cache is invalid or missing
 	// Load cache manager and try to regenerate/execute
-	require_once ADVSET_DIR . '/cache-manager.php';
+	require_once ADVSET_DIR . '/includes/cache-manager.php';
 
 	// Try to generate cache file
 	if (!AdvSet_CacheManager::generate_cache_file() || !(@include_once ADVSET_CACHE_FILE)) {
