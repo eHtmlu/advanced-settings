@@ -8,6 +8,10 @@
 // Exit direct requests
 if (!defined('ABSPATH')) exit;
 
+
+
+
+
 /**
  * Add admin bar icon for administrators
  */
@@ -37,7 +41,16 @@ function advset_admin_bar_icon() {
         ]
     ]);
 }
-add_action('admin_bar_menu', 'advset_admin_bar_icon', 100);
+function advset_admin_bar_icon_register() {
+    // Ensure to position the icon right after the wp menu
+    add_action('admin_bar_menu', 'advset_admin_bar_icon', 10);
+}
+// Ensure to be the first after core menu registrations
+add_action('add_admin_bar_menus', 'advset_admin_bar_icon_register', -PHP_INT_MAX);
+
+
+
+
 
 /**
  * Enqueue admin UI scripts and styles
@@ -80,6 +93,10 @@ function advset_admin_ui_scripts() {
 add_action('admin_enqueue_scripts', 'advset_admin_ui_scripts');
 add_action('wp_enqueue_scripts', 'advset_admin_ui_scripts');
 
+
+
+
+
 /**
  * Add wpApiSettings if not already set
  */
@@ -107,6 +124,10 @@ function advset_api_settings() {
 }
 add_action('wp_enqueue_scripts', 'advset_api_settings', 1000);
 add_action('admin_enqueue_scripts', 'advset_api_settings', 1000);
+
+
+
+
 
 /**
  * Add modal HTML to admin footer
