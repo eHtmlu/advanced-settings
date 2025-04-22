@@ -1,7 +1,7 @@
 <?php defined('ABSPATH') or exit;
 
 // Cancel if required variables are not defined
-if (!isset($old_version) || !isset($new_version)) {
+if (!isset($old_version) || !defined('ADVSET_VERSION')) {
     return;
 }
 
@@ -61,4 +61,4 @@ function advset_updates_execute($previous_installed_version, $current_installed_
     }
 }
 
-advset_updates_execute($old_version, $new_version);
+advset_updates_execute($old_version, ADVSET_VERSION);

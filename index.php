@@ -52,38 +52,21 @@ if ( ! function_exists( 'is_admin_area' ) ) {
 
 
 /**
- * Updates verison information in database and checks if a version migration is required
- * 
- * (optimized for high performance)
+ * Updates version information in database and checks if a version migration is required
  */
 function advset_check_for_version_migrations() {
-    $current_filemtime = filemtime(__FILE__);
-    $cache = get_option('advset_version_cache', []);
-
-    if ( isset($cache['version'], $cache['filemtime']) && $cache['filemtime'] === $current_filemtime ) {
-        $new_version = $cache['version'];
-    } else {
-        if (!function_exists('get_plugin_data')) {
-            require_once ABSPATH . 'wp-admin/includes/plugin.php';
-        }
-        $plugin_data = get_plugin_data(__FILE__);
-        $new_version = $plugin_data['Version'];
-
-        update_option('advset_version_cache', ['version' => $new_version, 'filemtime' => $current_filemtime], true);
-
-		if (get_option('advset_version__first_install', false) === false) {
-			update_option('advset_version__first_install', $new_version);
-		}
+    if (get_option('advset_version__first_install', false) === false) {
+        update_option('advset_version__first_install', ADVSET_VERSION);
     }
 
     $old_version = get_option('advset_version', '1.0.0');
 
-    if (version_compare($old_version, $new_version, '<')) {
-		require_once __DIR__ . '/updates/init.php';
-        update_option('advset_version', $new_version, true);
+    if (version_compare($old_version, ADVSET_VERSION, '<')) {
+        require_once __DIR__ . '/updates/init.php';
+        update_option('advset_version', ADVSET_VERSION, true);
     }
 }
-add_action('init', 'advset_check_for_version_migrations', 1);
+add_action('plugins_loaded', 'advset_check_for_version_migrations', 10);
 
 
 
