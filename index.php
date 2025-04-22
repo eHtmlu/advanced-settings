@@ -70,8 +70,6 @@ add_action('init', 'advset_check_for_version_migrations', 1);
 
 if( is_admin() ) {
 
-	define('ADVSET_URL', 'https://wordpress.org/plugins/advanced-settings/');
-
 	# Add plugin option in Plugins page
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
 
