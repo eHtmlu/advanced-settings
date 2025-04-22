@@ -20,7 +20,6 @@ function advset_page() {
 	switch (isset($_GET['tab']) ? $_GET['tab'] : null) {
 		case 'admin-advset': include ADVSET_DIR.'/admin-advset.php'; break;
 		case 'admin-code': include ADVSET_DIR.'/admin-code.php'; break;
-		case 'admin-get-in-touch': include ADVSET_DIR.'/admin-get-in-touch.php'; break;
 		case 'admin-system':
 		default: include ADVSET_DIR.'/admin-system.php'; break;
 	}
@@ -168,37 +167,11 @@ function advset_page_header() {
 		.expert-setting {
 			color: #c60;
 		}
-		.heart {
-			font-size: 2rem;
-			display: inline-block;
-			animation: heartbeat 1.5s ease-in-out infinite;
-		}
-		@keyframes heartbeat {
-			0% {
-				transform: scale(1);
-			}
-			15% {
-				transform: scale(1.15);
-			}
-			30% {
-				transform: scale(1);
-			}
-			45% {
-				transform: scale(1.1);
-			}
-			60% {
-				transform: scale(1);
-			}
-			100% {
-				transform: scale(1);
-			}
-		}
 	</style>
 	<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; align-items: flex-start; ">
 		<div style="flex-grow: 1; ">
 			<h1><?php _e('Settings'); echo ' &rsaquo; '; _e('Advanced'); ?></h1>
 		</div>
-		<div style="border: #3c3 solid 2px; background: #fff; padding: 1rem; border-radius: .5rem; display: flex; gap: 1rem; font-size: 1rem; line-height: 1.4; "><span class="heart">💚</span><span>This plugin is currently being extensively revised.<br />If you have any questions or wishes, just <a href="?page=advanced-settings&tab=admin-get-in-touch">get in touch</a>.</span></div>
 	</div>
 	<nav class="nav-tab-wrapper">
 		<a href="?page=advanced-settings" class="nav-tab <?php echo $active_tab === '' ? 'nav-tab-active' : ''; ?>"><?php echo __('System') ?></a>
