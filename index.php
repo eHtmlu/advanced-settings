@@ -55,16 +55,16 @@ if ( ! function_exists( 'is_admin_area' ) ) {
  * Updates version information in database and checks if a version migration is required
  */
 function advset_check_for_version_migrations() {
-    if (get_option('advset_version__first_install', false) === false) {
-        update_option('advset_version__first_install', ADVSET_VERSION);
-    }
-
     $old_version = get_option('advset_version', '1.0.0');
 
     if (version_compare($old_version, ADVSET_VERSION, '<')) {
         require_once __DIR__ . '/updates/init.php';
-        update_option('advset_version', ADVSET_VERSION, true);
-    }
+		update_option('advset_version', ADVSET_VERSION, true);
+
+		if (get_option('advset_version__first_install', false) === false) {
+			update_option('advset_version__first_install', ADVSET_VERSION);
+		}
+	}
 }
 add_action('plugins_loaded', 'advset_check_for_version_migrations', 10);
 
