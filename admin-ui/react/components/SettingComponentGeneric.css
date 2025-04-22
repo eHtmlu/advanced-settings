@@ -27,7 +27,7 @@
 }
 
 
-.advset-generic-field-description {
+.advset-generic-field-description:not(:where(.advset-generic-field-info-text)) {
     font-size: var(--advset-font-size-small);
     font-style: italic;
     margin-block: 0;
@@ -373,3 +373,13 @@
 .advset-generic-field-textual--range input {
     padding-inline: 0;
 }
+
+
+.advset-generic-field-info > :first-child {
+    margin-top: 0;
+}
+
+.advset-generic-field-info > :last-child {
+    margin-bottom: 0;
+}
+
