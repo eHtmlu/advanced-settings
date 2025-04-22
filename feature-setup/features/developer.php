@@ -59,6 +59,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.scripts--actions-scripts.php';
 
         add_action('admin_menu', function() {
@@ -96,6 +97,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.styles--actions-styles.php';
 
         add_action('admin_menu', function() {
@@ -134,6 +136,8 @@ advset_register_feature([
         ],
     ],
     'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
+
         add_action('init', function() {
 
             $post_types = (array) get_option( 'advset_post_types', array() );
@@ -232,6 +236,8 @@ advset_register_feature([
         ],
     ],
     'execution_handler' => function($settings) {
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
+
         $remove_filters = get_option( 'advset_remove_filters' );
         $is_advset_filter_page = isset($_GET['page']) && $_GET['page'] === 'advanced-settings-filters';
         if($is_advset_filter_page === false && is_array($remove_filters) ) {
