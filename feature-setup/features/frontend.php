@@ -24,7 +24,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
 
         add_action('wp_head', function() {
             global $post;
@@ -84,7 +84,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         remove_action( 'wp_head', 'wp_shortlink_wp_head');
     },
     'priority' => 10,
@@ -107,7 +107,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         remove_action( 'wp_head', 'rsd_link');
     },
     'priority' => 10,
@@ -129,7 +129,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         remove_action( 'wp_head', 'wp_generator');
     },
     'priority' => 10,
@@ -174,7 +174,7 @@ advset_register_feature([
         return empty($settings['enable']) ? null : $settings;
     },
     'execution_handler' => function($settings) {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         add_action('wp_head', function() use($settings) {
             $from = $settings['add_from'] ?? 'both';
             if ((is_single() || is_page()) && ($from === 'excerpt' || $from === 'both')) {
@@ -370,7 +370,7 @@ advset_register_feature([
     ],
     'execution_handler' => function() {
         add_filter('get_comments_number', function($count) {
-            if ( ! is_admin_area() ) {
+            if ( ! advset_is_admin_area() ) {
                 global $id;
                 $comments = get_comments('status=approve&post_id=' . $id);
                 $comments_by_type = separate_comments($comments);
@@ -629,7 +629,7 @@ advset_register_feature([
         return empty($settings['enable']) || empty($settings['ga_code']) ? false : true;
     },
     'execution_handler' => function($settings) {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         add_action('wp_footer', function() use($settings) {
             $ga_code = $settings['ga_code'];
             echo "<script async src=\"https://www.googletagmanager.com/gtag/js?id=$ga_code\"></script>
@@ -703,7 +703,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         ob_start(function($content) {
             return trim( preg_replace( '/\s+(?![^<>]*<\/pre>)/', ' ', $content ) );
         });
@@ -728,7 +728,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        if ( is_admin_area() ) return;
+        if ( advset_is_admin_area() ) return;
         ob_start(function($content) {
             return trim( preg_replace( '/<!--[^\[\>\<](.|\s)*?-->/', '', $content ) );
         });

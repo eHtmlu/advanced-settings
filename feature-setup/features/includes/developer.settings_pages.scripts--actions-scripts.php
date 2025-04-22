@@ -11,7 +11,7 @@ $advset_removed_scripts = [];
 $advset_extras = '';
 
 // track_enqueued_scripts
-if( !is_admin_area() ) :
+if( !advset_is_admin_area() ) :
 
 	// url script filter -> add extra data script plugin
 	add_filter( 'script_loader_src', function($src) {

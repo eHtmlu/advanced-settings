@@ -196,11 +196,9 @@ add_action('plugins_loaded', function() {
  * Helper functions
  */
 
-// from https://stevegrunwell.com/blog/quick-tip-is_login_page-function-for-wordpress/
-if ( ! function_exists( 'is_admin_area' ) ) {
-	function is_admin_area() {
-		return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
-	}
+// Check if we are in the admin area or on the login page
+function advset_is_admin_area() {
+	return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
 }
 
 
