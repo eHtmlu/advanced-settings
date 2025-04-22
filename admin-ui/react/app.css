@@ -164,8 +164,40 @@
     display: none;
 }
 
+/* Badge styles */
+.advset-item-badges {
+    display: flex;
+    gap: .5em;
+    margin-bottom: 1em;
+}
 
+.advset-badge {
+    display: block;
+    padding: .25em .5em;
+    border-radius: .25em;
+    line-height: 1;
+    cursor: help;
+}
 
+.advset-badge-deprecated {
+    background-color: #fff3f3;
+    color: #dc3232;
+    border: 1px solid #ffcece;
+}
+
+.advset-badge-experimental {
+    background-color: #f0f6fc;
+    color: #0366d6;
+    border: 1px solid #c8e1ff;
+}
+
+.advset-badge > span {
+    font-size: var(--advset-font-size-tiny);
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    display: block;
+}
 
 /* ===== Custom Scrollbar ===== */
 .advset-results-container::-webkit-scrollbar {

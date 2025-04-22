@@ -443,6 +443,8 @@ function advset_get_features_callback() {
             'category' => $feature['category'],
             'ui_component' => isset($feature['ui_component']) ? $feature['ui_component'] : '',
             'ui_config' => $ui_config(),
+            'deprecated' => isset($feature['deprecated']) ? $feature['deprecated'] : null,
+            'experimental' => isset($feature['experimental']) ? $feature['experimental'] : null,
         ];
     }
 

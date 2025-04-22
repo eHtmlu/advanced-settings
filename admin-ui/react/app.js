@@ -117,14 +117,41 @@ function ItemCard(props) {
         );
     }
 
+    // Create badges for deprecated and experimental features
+    const badges = [];
+    if (item.deprecated) {
+        badges.push(
+            React.createElement('span', {
+                key: 'deprecated',
+                className: 'advset-badge advset-badge-deprecated',
+                title: 'This feature is deprecated and may be removed in a future version'
+            }, React.createElement('span', {}, 'Deprecated'))
+        );
+    }
+    if (item.experimental) {
+        badges.push(
+            React.createElement('span', {
+                key: 'experimental',
+                className: 'advset-badge advset-badge-experimental',
+                title: 'This is an experimental feature and may change in future versions'
+            }, React.createElement('span', {}, 'Experimental'))
+        );
+    }
+
+    // Create item classes
+    const itemClasses = ['advset-item'];
+    if (item.deprecated) itemClasses.push('advset-item-deprecated');
+    if (item.experimental) itemClasses.push('advset-item-experimental');
+
     return React.createElement('div', { 
-        className: 'advset-item',
+        className: itemClasses.join(' '),
         'data-id': item.id
     },
-        /* React.createElement('div', { className: 'advset-item-header' },
-            React.createElement('span', { className: 'advset-item-path' }, item.id.replace(/\./g, ' → ')),
-            React.createElement('h3', null, item.title),
-        ), */
+        React.createElement('div', { className: 'advset-item-header' },
+            badges.length > 0 && React.createElement('div', { 
+                className: 'advset-item-badges' 
+            }, badges)
+        ),
         React.createElement('div', { className: 'advset-item-control' },
             React.createElement(Component, {
                 id: `advset-${item.id.replace(/\./g, '-')}`,
@@ -185,6 +212,53 @@ const AdvSetModalApp = {
     },
 
     /**
+     * Filter items based on settings and search query
+     * 
+     * @param {Array} items - The items to filter
+     * @param {string} searchQuery - Optional search query
+     * @returns {Array} - Filtered items
+     */
+    filterItems(items, searchQuery = '') {
+        const showDeprecated = this.state.settings['advset.show_deprecated_features']?.enabled;
+        const showExperimental = this.state.settings['advset.show_experimental_expert_features']?.enabled;
+        
+        return items.filter(item => {
+            // Filter by feature flags
+            if (item.deprecated && !showDeprecated && typeof this.state.settings[item.id] === 'undefined') {
+                return false;
+            }
+
+            if (item.experimental && !showExperimental && typeof this.state.settings[item.id] === 'undefined') {
+                return false;
+            }
+
+            // If no search query, include the item
+            if (!searchQuery) {
+                return true;
+            }
+
+            // Search in ui_config fields
+            const searchTexts = [];
+            
+            if (item.ui_config?.fields) {
+                Object.values(item.ui_config.fields).forEach(field => {
+                    if (field.label) searchTexts.push(field.label);
+                    if (field.description) searchTexts.push(field.description);
+                    if (field.options) {
+                        Object.values(field.options).forEach(option => {
+                            if (option.label) searchTexts.push(option.label);
+                            if (option.description) searchTexts.push(option.description);
+                        });
+                    }
+                });
+            }
+            
+            const searchText = searchTexts.join(' ').toLowerCase();
+            return searchText.includes(searchQuery.toLowerCase());
+        });
+    },
+
+    /**
      * Load all features from the API
      */
     async loadAllFeatures() {
@@ -207,9 +281,13 @@ const AdvSetModalApp = {
 
             this.setState({ 
                 allItems: data.features,
-                items: data.features, // Initially show all items
                 categories: data.categories,
-                settings: data.settings || {} // Add settings from API response
+                settings: data.settings || {}, // Add settings from API response
+            });
+
+            // Apply initial filtering
+            this.setState({
+                items: this.filterItems(data.features),
             });
             
             // Dispatch event to indicate data is loaded
@@ -231,39 +309,9 @@ const AdvSetModalApp = {
      * @param {string} query - The search query
      */
     performLocalSearch(query) {
-        if (!query) {
-            // If query is empty, show all items
-            this.setState({ items: this.state.allItems });
-            return;
-        }
-        
-        const searchQuery = query.toLowerCase();
-        
-        // Filter items locally
-        const filteredItems = this.state.allItems.filter(item => {
-            // Combine all searchable texts
-            const searchTexts = [];
-            
-            // Add texts from ui_config fields
-            if (item.ui_config?.fields) {
-                Object.values(item.ui_config.fields).forEach(field => {
-                    if (field.label) searchTexts.push(field.label);
-                    if (field.description) searchTexts.push(field.description);
-                    if (field.options) {
-                        Object.values(field.options).forEach(option => {
-                            if (option.label) searchTexts.push(option.label);
-                            if (option.description) searchTexts.push(option.description);
-                        });
-                    }
-                });
-            }
-            
-            // Join all texts and search
-            const searchText = searchTexts.join(' ').toLowerCase();
-            return searchText.includes(searchQuery);
+        this.setState({ 
+            items: this.filterItems(this.state.allItems, query)
         });
-        
-        this.setState({ items: filteredItems });
     },
 
     /**
@@ -325,6 +373,9 @@ const AdvSetModalApp = {
                 [settingId]: value
             }
         });
+
+        // Reapply filtering with current search query
+        this.performLocalSearch(this.state.searchQuery);
         
         // Save the setting to the server
         this.saveSetting(settingId, value);
@@ -365,6 +416,8 @@ const AdvSetModalApp = {
                     settings: data.settings
                 });
             }
+
+            this.performLocalSearch(this.state.searchQuery);
         } catch (error) {
             console.error('Error saving setting:', error);
             this.showError('Failed to save setting. Please try again later.');
