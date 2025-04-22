@@ -148,19 +148,20 @@ function advset_check_if( $option_name, $echo=true ) {
 
 # ADMIN PAGE TABS
 function advset_page_header() {
-	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : '';
 	?>
+	<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; align-items: flex-start; ">
+		<div style="flex-grow: 1; ">
+			<h1><?php _e('Advanced Settings'); echo ' &rsaquo; ' . get_admin_page_title(); ?></h1>
+		</div>
+	</div>
+	<p>
+		<?php echo sprintf(__('This settings page is part of the Advanced Settings plugin.<br />This page can be deactivated in the <a%s>general settings</a>.', 'advanced-settings'), ' href="javascript:void(0);" onclick="advset_open_modal(); return false;"'); ?>
+	</p>
 	<style>
+
 		.expert-setting {
 			color: #c60;
 		}
-	</style>
-	<div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; align-items: flex-start; ">
-		<div style="flex-grow: 1; ">
-			<h1><?php _e('Settings'); echo ' &rsaquo; '; _e('Advanced'); ?></h1>
-		</div>
-	</div>
-	<style>
 
 		.deprecated {
 			background: #900;
