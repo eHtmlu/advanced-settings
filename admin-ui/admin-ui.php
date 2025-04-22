@@ -52,6 +52,26 @@ add_action('add_admin_bar_menus', 'advset_admin_bar_icon_register', -PHP_INT_MAX
 
 
 
+
+
+/**
+ * Add plugin action links
+ */
+if (is_admin()) {
+	add_filter( 'plugin_action_links', function($links, $file) {
+		if ( $file === plugin_basename( ADVSET_FILE ) ) {
+			$links[] = '<a href="javascript:void(0);" onclick="advset_open_modal(); return false;">' . __('Settings') . '</a>';
+		}
+		return $links;
+	}, 10, 2 );
+}
+
+
+
+
+
+
+
 /**
  * Enqueue admin UI scripts and styles
  */

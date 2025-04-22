@@ -14,7 +14,7 @@ Requires PHP: 5.3
 if (!defined('ABSPATH')) exit;
 
 define('ADVSET_DIR', dirname(__FILE__));
-
+define('ADVSET_FILE', __FILE__);
 
 
 
@@ -64,26 +64,6 @@ function advset_check_for_version_migrations() {
     }
 }
 add_action('init', 'advset_check_for_version_migrations', 1);
-
-
-
-
-if( is_admin() ) {
-
-	# Add plugin option in Plugins page
-	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
-
-}
-
-# Add plugin option in Plugins page
-function advset_plugin_action_links( $links, $file ) {
-	if ( $file == plugin_basename( basename(dirname(__FILE__)).'/index.php' ) ) {
-		$links[] = '<a href="options-general.php?page=advanced-settings">'.__('Settings').'</a>';
-	}
-
-	return $links;
-}
-
 
 
 
