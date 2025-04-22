@@ -33,7 +33,7 @@ function advset_admin_bar_icon() {
     // Add the main menu item with inline SVG
     $wp_admin_bar->add_menu([
         'id'    => 'advset-admin-icon',
-        'title' => '<span class="ab-icon">' . $icon_svg . '</span><span class="ab-label">Advanced Settings</span>',
+        'title' => '<span class="ab-icon">' . $icon_svg . '</span><span class="screen-reader-text">Advanced Settings</span>',
         'href'  => 'javascript:void(0);',
         'meta'  => [
             'class' => 'advset-admin-icon',

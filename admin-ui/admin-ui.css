@@ -35,13 +35,18 @@
 }
 
 /* ===== Admin Bar Icon ===== */
-.advset-admin-icon .ab-icon {
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-icon {
     position: relative;
     top: 2px;
+    margin-right: 0;
 }
 
-.advset-admin-icon .ab-icon svg {
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-icon svg {
     fill: currentColor;
+}
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-item:not(:hover):not(:focus) .ab-icon svg {
+    opacity: 0.6;
 }
 
 /* ===== Reset for modal and inner elements ===== */
