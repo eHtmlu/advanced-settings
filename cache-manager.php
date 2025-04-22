@@ -106,12 +106,11 @@ class AdvSet_CacheManager {
         $content .= " * ------------------\n";
         $content .= " * Name:      Advanced Settings\n";
         $content .= " * Version:   " . ADVSET_VERSION . "\n";
-        $content .= " * Generated: " . wp_date('Y-m-d H:i:s P') . "\n";
         $content .= " * \n";
         $content .= " * Cache Status:\n";
         $content .= " * -------------\n";
+        $content .= " * Generated: " . wp_date('Y-m-d H:i:s P') . "\n";
         $content .= " * Settings Hash:   " . md5(serialize($settings)) . "\n";
-        $content .= " * Active Features: " . count($active_features) . "\n";
         $content .= " * Cache Location:  " . ADVSET_CACHE_FILE . "\n";
         $content .= " * \n";
         $content .= " * Troubleshooting:\n";
