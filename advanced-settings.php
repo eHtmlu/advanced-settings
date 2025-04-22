@@ -47,7 +47,7 @@ function advset_check_for_version_migrations() {
     $old_version = get_option('advset_version', '1.0.0');
 
     if (version_compare($old_version, ADVSET_VERSION, '<')) {
-        require_once __DIR__ . '/updates/init.php';
+        require_once __DIR__ . '/migrations/init.php';
 		update_option('advset_version', ADVSET_VERSION, true);
 
 		if (get_option('advset_version__first_install', false) === false) {
