@@ -8,6 +8,8 @@ Author URI: https://ehtmlu.com/
 Version: 2.9.0
 Requires at least: 5.0.0
 Requires PHP: 5.3
+Text Domain: advanced-settings
+Domain Path: /languages
 */
 
 // Exit direct requests
