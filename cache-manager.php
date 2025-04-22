@@ -140,7 +140,6 @@ class AdvSet_CacheManager {
                 $source = self::get_function_source($handler);
                 if ($source) {
                     // Add the function with settings
-                    $const_name = 'ADVSET_' . strtoupper(str_replace('.', '_', $feature_id)) . '_SETTINGS';
                     $content .= "call_user_func(" . preg_replace('/\n    /', "\n", $source) . ", " . preg_replace('/\n( +)?/', "\n$1$1", var_export($feature['settings'], true)) . ");\n";
                 }
             }
