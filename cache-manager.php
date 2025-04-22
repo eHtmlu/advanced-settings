@@ -149,7 +149,9 @@ class AdvSet_CacheManager {
         $content .= "return true;\n";
         
         // Try to write the file
-        @mkdir(dirname(ADVSET_CACHE_FILE), 0755, true);
+        if (!file_exists(dirname(ADVSET_CACHE_FILE))) {
+            mkdir(dirname(ADVSET_CACHE_FILE), 0755, true);
+        }
         $result = file_put_contents(ADVSET_CACHE_FILE, $content);
         
         return $result !== false;
