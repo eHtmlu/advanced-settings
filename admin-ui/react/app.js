@@ -29,7 +29,7 @@ function App(props) {
     
     // Get visible categories (those with items)
     const visibleCategories = categories.filter(category => 
-        itemsByCategory[category.id]?.length > 0
+        itemsByCategory[category.id]?.length > 0 || !category.title
     );
     
     return React.createElement('div', { className: 'advset-react-app' },
@@ -41,6 +41,7 @@ function App(props) {
                         key: category.id,
                         className: 'advset-category-menu-item'
                     },
+                    category.title ?
                         React.createElement('a', {
                             href: `#category-${category.id}`,
                             onClick: (e) => {
@@ -55,7 +56,12 @@ function App(props) {
                             React.createElement('span', {
                                 className: 'advset-category-text'
                             }, category.title || category.id)
-                        )
+                        ) : React.createElement('div', {
+                            className: 'advset-category-separator',
+                            style: {
+                                borderTop: '1px solid #ccc',
+                            }
+                        })
                     )
                 )
             )
@@ -64,7 +70,7 @@ function App(props) {
         // Results area with categorized items
         React.createElement('div', { className: 'advset-results-container' },
             visibleCategories.map(category => 
-                React.createElement('div', { 
+                category.title && React.createElement('div', { 
                     key: category.id,
                     id: `category-${category.id}`,
                     className: 'advset-category-section'
