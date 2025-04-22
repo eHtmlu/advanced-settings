@@ -41,7 +41,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.settings.scripts',
+    'id' => 'developer.settings_pages.scripts',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -59,7 +59,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function($settings) {
-        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.scripts_settings--actions-scripts.php';
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.scripts--actions-scripts.php';
 
         add_action('admin_menu', function() {
             add_options_page(
@@ -68,7 +68,7 @@ advset_register_feature([
                 'manage_options',
                 'advanced-settings-scripts',
                 function() {
-                    include ADVSET_DIR.'/feature-setup/features/includes/developer.scripts_settings--admin-scripts.php';
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.scripts--admin-scripts.php';
                 }
             );
         });
@@ -78,7 +78,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.settings.styles',
+    'id' => 'developer.settings_pages.styles',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -96,7 +96,7 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function($settings) {
-        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.styles_settings--actions-styles.php';
+        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.styles--actions-styles.php';
 
         add_action('admin_menu', function() {
             add_options_page(
@@ -105,7 +105,7 @@ advset_register_feature([
                 'manage_options',
                 'advanced-settings-styles',
                 function() {
-                    include ADVSET_DIR.'/feature-setup/features/includes/developer.styles_settings--admin-styles.php';
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.styles--admin-styles.php';
                 }
             );
         });
@@ -116,7 +116,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.settings.post_types',
+    'id' => 'developer.settings_pages.post_types',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -202,7 +202,7 @@ advset_register_feature([
                 'manage_options',
                 'advanced-settings-post-types',
                 function() {
-                    include ADVSET_DIR.'/feature-setup/features/includes/developer.post_types_settings--admin-post-types.php';
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.post_types--admin-post-types.php';
                 }
             );
         });
@@ -214,7 +214,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.settings.hooks',
+    'id' => 'developer.settings_pages.hooks',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -249,7 +249,7 @@ advset_register_feature([
                 'manage_options',
                 'advanced-settings-filters',
                 function() {
-                    include ADVSET_DIR.'/feature-setup/features/includes/developer.filters_actions_settings--admin-filters.php';
+                    include ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.hooks--admin-filters.php';
                 }
             );
         });
