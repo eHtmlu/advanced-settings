@@ -13,8 +13,28 @@ Requires PHP: 5.3
 // Exit direct requests
 if (!defined('ABSPATH')) exit;
 
+
+
+
+
+
+/**
+ * Define constants
+ */
+
 define('ADVSET_DIR', dirname(__FILE__));
 define('ADVSET_FILE', __FILE__);
+
+// Define plugin version if not already defined
+if (!defined('ADVSET_VERSION')) {
+	$plugin_data_loaded = isset($plugin_data['Version'], $plugin_data['TextDomain']) && $plugin_data['TextDomain'] === 'advanced-settings';
+	$plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__);
+    define('ADVSET_VERSION', $plugin_data['Version']);
+}
+
+// Define cache file path
+define('ADVSET_CACHE_FILE', WP_CONTENT_DIR . '/cache/advanced-settings/active-features.php');
+
 
 
 
@@ -69,31 +89,6 @@ add_action('init', 'advset_check_for_version_migrations', 1);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Define constants
- */
-
-// Define plugin version if not already defined
-if (!defined('ADVSET_VERSION')) {
-	$plugin_data_loaded = isset($plugin_data['Version'], $plugin_data['TextDomain']) && $plugin_data['TextDomain'] === 'advanced-settings';
-	$plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__);
-    define('ADVSET_VERSION', $plugin_data['Version']);
-}
-
-// Define cache file path
-define('ADVSET_CACHE_FILE', WP_CONTENT_DIR . '/cache/advanced-settings/active-features.php');
 
 
 
