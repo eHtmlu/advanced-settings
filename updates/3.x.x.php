@@ -57,7 +57,6 @@ return [
                 return array_filter(['enable' => true, 'add_from' => empty($advset_options['description']) ? 'excerpt' : null]);
             }],
             'remove_generator' => ['frontend.meta.remove_generator'],
-            'remove_wlw' => ['frontend.meta.remove_wlwmanifest'],
             'remove_rsd' => ['frontend.meta.remove_rsd'],
             'remove_shortlink' => ['frontend.meta.remove_shortlink'],
             'config_wp_title' => ['frontend.title.improve_format'],

@@ -118,29 +118,6 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.meta.remove_wlwmanifest',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Remove wlwmanifest meta tag', 'advanced-settings'),
-                'description' => __('This meta tag is used by Windows Live Writer to edit posts. Use it only if you are using Windows Live Writer.', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        if ( is_admin_area() ) return;
-        remove_action( 'wp_head', 'wlwmanifest_link');
-    },
-    'priority' => 10,
-]);
-
-
-
-
-
-advset_register_feature([
     'id' => 'frontend.meta.remove_generator',
     'category' => 'frontend',
     'ui_config' => fn() => [
