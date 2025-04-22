@@ -15,15 +15,9 @@ if (!defined('ABSPATH')) exit;
 
 define('ADVSET_DIR', dirname(__FILE__));
 
-# THE ADMIN PAGE
-function advset_page() {
-	switch (isset($_GET['tab']) ? $_GET['tab'] : null) {
-		case 'admin-advset': include ADVSET_DIR.'/admin-advset.php'; break;
-		case 'admin-code': include ADVSET_DIR.'/admin-code.php'; break;
-		case 'admin-system':
-		default: include ADVSET_DIR.'/admin-system.php'; break;
-	}
-}
+
+
+
 
 
 
@@ -77,9 +71,6 @@ add_action('init', 'advset_check_for_version_migrations', 1);
 if( is_admin() ) {
 
 	define('ADVSET_URL', 'https://wordpress.org/plugins/advanced-settings/');
-
-	# Admin menu
-	add_action('admin_menu', 'advset_menu');
 
 	# Add plugin option in Plugins page
 	add_filter( 'plugin_action_links', 'advset_plugin_action_links', 10, 2 );
@@ -153,11 +144,7 @@ function advset_check_if( $option_name, $echo=true ) {
 	}
 }
 
-# ADMIN MENU
-function advset_menu() {
-	$title = __('Advanced') . ' …';
-	add_options_page($title, $title, 'manage_options', 'advanced-settings', 'advset_page');
-}
+
 
 # ADMIN PAGE TABS
 function advset_page_header() {
@@ -173,11 +160,6 @@ function advset_page_header() {
 			<h1><?php _e('Settings'); echo ' &rsaquo; '; _e('Advanced'); ?></h1>
 		</div>
 	</div>
-	<nav class="nav-tab-wrapper">
-		<a href="?page=advanced-settings" class="nav-tab <?php echo $active_tab === '' ? 'nav-tab-active' : ''; ?>"><?php echo __('System') ?></a>
-		<a href="?page=advanced-settings&tab=admin-code" class="nav-tab <?php echo $active_tab === 'admin-code' ? 'nav-tab-active' : ''; ?>"><?php echo __('HTML Code') ?></a>
-		<a style="float: right; " href="?page=advanced-settings&tab=admin-advset" class="nav-tab <?php echo $active_tab === 'admin-advset' ? 'nav-tab-active' : ''; ?>"><?php echo __('Config') ?></a>
-	</nav>
 	<style>
 
 		.deprecated {
