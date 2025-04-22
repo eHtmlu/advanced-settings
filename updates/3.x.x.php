@@ -29,12 +29,12 @@ return [
             'max_image_size_w' => ['editing.image.downsize_on_upload', function($value) use($advset_options) {
                 $w = $value;
                 $h = $advset_options['max_image_size_h'];
-                return array_filter(['enable' => true, 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
+                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
             }],
             'max_image_size_h' => ['editing.image.downsize_on_upload', function($value) use($advset_options) {
                 $w = $advset_options['max_image_size_w'];
                 $h = $value;
-                return array_filter(['enable' => true, 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
+                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
             }],
             'show_query_num' => ['developer.debug.show_queries'],
             'core_upgrade_skip_new_bundled' => ['system.updates.skip_bundled_themes'],
@@ -51,20 +51,20 @@ return [
             'remove_default_wp_favicon' => ['system.favicon.remove_default'],
             'favicon' => ['frontend.favicon.auto_from_theme'],
             'description' => ['frontend.meta.auto_description', function($value) use($advset_options) {
-                return array_filter(['enable' => true, 'add_from' => empty($advset_options['single_metas']) ? 'blog_description' : null]);
+                return array_filter(['enable' => !empty($advset_options['description']) || !empty($advset_options['single_metas']), 'add_from' => empty($advset_options['single_metas']) ? 'blog_description' : null]);
             }],
             'single_metas' => ['frontend.meta.auto_description', function($value) use($advset_options) {
-                return array_filter(['enable' => true, 'add_from' => empty($advset_options['description']) ? 'excerpt' : null]);
+                return array_filter(['enable' => !empty($advset_options['description']) || !empty($advset_options['single_metas']), 'add_from' => empty($advset_options['description']) ? 'excerpt' : null]);
             }],
             'remove_generator' => ['frontend.meta.remove_generator'],
             'remove_rsd' => ['frontend.meta.remove_rsd'],
             'remove_shortlink' => ['frontend.meta.remove_shortlink'],
             'config_wp_title' => ['frontend.title.improve_format'],
             'excerpt_limit' => ['frontend.excerpt.word_limit', function($value) {
-                return array_filter(['enable' => true, 'limit' => empty($value) ? null : (string) $value]);
+                return array_filter(['enable' => !empty($value), 'limit' => empty($value) ? null : (string) $value]);
             }],
             'excerpt_more_text' => ['frontend.excerpt.read_more', function($value) {
-                return array_filter(['enable' => true, 'text' => empty($value) ? null : (string) $value]);
+                return array_filter(['enable' => !empty($value), 'text' => empty($value) ? null : (string) $value]);
             }],
             'remove_wptexturize' => ['frontend.content.disable_wptexturize'],
             'remove_pingbacks_trackbacks_count' => ['frontend.comments.exclude_pingbacks_from_count'],
@@ -73,10 +73,10 @@ return [
             'compress' => ['frontend.code.minify_html'],
             'remove_comments' => ['frontend.code.remove_comments'],
             'analytics' => ['frontend.analytics.google', function($value) {
-                return array_filter(['enable' => true, 'ga_code' => empty($value) ? null : (string) $value]);
+                return array_filter(['enable' => !empty($value), 'ga_code' => empty($value) ? null : (string) $value]);
             }],
             'feedburner' => ['frontend.feed.feedburner', function($value) {
-                return array_filter(['enable' => true, 'feedburner' => empty($value) ? null : (string) $value]);
+                return array_filter(['enable' => !empty($value), 'feedburner' => empty($value) ? null : (string) $value]);
             }],
 
             'show_deprecated_features' => ['advset.features.show_deprecated'],
