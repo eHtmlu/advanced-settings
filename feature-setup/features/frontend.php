@@ -41,7 +41,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.auto_theme_favicon',
+    'id' => 'frontend.favicon.auto_from_theme',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -163,7 +163,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.meta.description.auto_description',
+    'id' => 'frontend.meta.auto_description',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -217,11 +217,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.disable_author_pages',
+    'id' => 'frontend.author.disable_pages',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable author pages', 'advanced-settings'),
             ],
@@ -251,11 +251,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.disable_wptexturize',
+    'id' => 'frontend.content.disable_wptexturize',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable wptexturize filter', 'advanced-settings'),
                 'description' => __('transformations of quotes to smart quotes, apostrophes, dashes, ellipses, the trademark symbol, and the multiplication symbol', 'advanced-settings'),
@@ -271,7 +271,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.add_thumbs',
+    'id' => 'frontend.thumbnails.enable_support',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -297,7 +297,7 @@ define( 'ADVSET_THUMBS', !current_theme_supports('post-thumbnails') );
 
 
 advset_register_feature([
-    'id' => 'frontend.auto_thumbs',
+    'id' => 'frontend.thumbnails.auto_from_first_image',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -317,7 +317,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.post.excerpt.limit',
+    'id' => 'frontend.excerpt.word_limit',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -349,7 +349,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.post.excerpt.more',
+    'id' => 'frontend.excerpt.read_more',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -381,7 +381,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.comments.remove_pingbacks_trackbacks_count',
+    'id' => 'frontend.comments.exclude_pingbacks_from_count',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -410,11 +410,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.protect_emails',
+    'id' => 'frontend.email.protect',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Protect email addresses from spam bots', 'advanced-settings'),
                 'description' => __('Converts email addresses to encoded versions to prevent spam harvesting.', 'advanced-settings'),
@@ -434,15 +434,15 @@ advset_register_feature([
                     ],
                 ],
                 'default' => 'entities',
-                'visible' => ['enabled' => true]
+                'visible' => ['enable' => true]
             ],
         ]
     ],
     'handler_cleanup' => function($value) {
-        return empty($value['enabled']) ? null : $value;
+        return empty($value['enable']) ? null : $value;
     },
     'execution_handler' => function($settings) {
-        if ( is_admin() || wp_doing_ajax() || empty($settings['enabled']) ) return;
+        if ( is_admin() || wp_doing_ajax() ) return;
 
         add_action('parse_request', function() use($settings) {
             if (defined('REST_REQUEST')) return;
@@ -526,7 +526,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.adjust_wp_title',
+    'id' => 'frontend.title.improve_format',
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
@@ -569,7 +569,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.post.add_author_bio',
+    'id' => 'frontend.post.show_author_bio',
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
@@ -606,7 +606,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.user.allow_html_description',
+    'id' => 'frontend.user.allow_html_bio',
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
@@ -628,12 +628,12 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.google_analytics',
+    'id' => 'frontend.analytics.google',
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Google Analytics', 'advanced-settings'),
             ],
@@ -641,15 +641,15 @@ advset_register_feature([
                 'type' => 'text',
                 'label' => __('Google Analytics Code', 'advanced-settings'),
                 'description' => __('Enter your Google Analytics code here.', 'advanced-settings'),
-                'visible' => ['enabled' => true]
+                'visible' => ['enable' => true]
             ],
         ]
     ],
     'handler_cleanup' => function($settings) {
-        return empty($settings['enabled']) ? null : $settings;
+        return empty($settings['enable']) ? null : $settings;
     },
     'execution_condition' => function($settings) {
-        return empty($settings['enabled']) || empty($settings['ga_code']) ? false : true;
+        return empty($settings['enable']) || empty($settings['ga_code']) ? false : true;
     },
     'execution_handler' => function($settings) {
         if ( is_admin_area() ) return;
@@ -670,12 +670,12 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.feedburner',
+    'id' => 'frontend.feed.feedburner',
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('FeedBurner', 'advanced-settings'),
             ],
@@ -683,12 +683,15 @@ advset_register_feature([
                 'type' => 'text',
                 'label' => __('FeedBurner URL', 'advanced-settings'),
                 'description' => __('Enter your FeedBurner URL here.', 'advanced-settings'),
-                'visible' => ['enabled' => true]
+                'visible' => ['enable' => true]
             ],
         ]
     ],
+    'handler_cleanup' => function($settings) {
+        return empty($settings['enable']) ? null : $settings;
+    },
     'execution_condition' => function($settings) {
-        return empty($settings['enabled']) || empty($settings['feedburner']) ? false : true;
+        return empty($settings['enable']) || empty($settings['feedburner']) ? false : true;
     },
     'execution_handler' => function($settings) {
         add_action( 'feed_link', function( $output, $feed ) use($settings) {
@@ -711,7 +714,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.html.compress',
+    'id' => 'frontend.code.minify_html',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -736,7 +739,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.html.remove_comments',
+    'id' => 'frontend.code.remove_comments',
     'category' => 'frontend',
     'ui_config' => fn() => [
         'fields' => [
@@ -755,7 +758,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
 
 
 

@@ -11,11 +11,11 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'dashboard.hide.fontend_admin_bar',
+    'id' => 'dashboard.adminbar.remove_from_frontend',
     'category' => 'dashboard',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Hide top admin menu in the frontend', 'advanced-settings'),
             ],
@@ -30,11 +30,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.hide.update-message',
+    'id' => 'dashboard.notices.remove_update_nag',
     'category' => 'dashboard',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Hide the WordPress update message in the Dashboard', 'advanced-settings'),
             ],
@@ -52,11 +52,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.hide.welcome-panel',
+    'id' => 'dashboard.welcome_panel.remove',
     'category' => 'dashboard',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Hide the Welcome Panel', 'advanced-settings'),
             ],
@@ -73,7 +73,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.custom-logo',
+    'id' => 'dashboard.adminbar.custom_logo',
     'category' => 'dashboard',
     'ui_config' => fn() => [
         'fields' => [

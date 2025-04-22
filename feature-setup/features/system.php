@@ -11,11 +11,11 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'system.remove_default_wp_favicon',
+    'id' => 'system.favicon.remove_default',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Remove default WordPress favicon', 'advanced-settings'),
             ],
@@ -37,11 +37,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.disable_comment_system',
+    'id' => 'system.comments.disable_system',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable comment system', 'advanced-settings'),
             ],
@@ -66,11 +66,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.disable_auto_save',
+    'id' => 'system.posts.disable_autosave',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable auto save', 'advanced-settings'),
             ],
@@ -85,11 +85,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.core_upgrade_skip_new_bundled',
+    'id' => 'system.updates.skip_bundled_themes',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Prevent installation of new default WordPress themes during core updates', 'advanced-settings'),
                 'descriptionHtml' => sprintf(__('By default, themes like %s are added automatically every year.', 'advanced-settings'), (function() {
@@ -135,11 +135,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.updates.notifications.email.core',
+    'id' => 'system.notifications.disable_core_updates',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable core update email notifications', 'advanced-settings'),
                 'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
@@ -155,11 +155,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.updates.notifications.email.plugins',
+    'id' => 'system.notifications.disable_plugin_updates',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable plugin update email notifications', 'advanced-settings'),
                 'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),
@@ -175,11 +175,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.updates.notifications.email.themes',
+    'id' => 'system.notifications.disable_theme_updates',
     'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
-            'disable' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Disable theme update email notifications', 'advanced-settings'),
                 'descriptionHtml' => sprintf(__('You can change the admin email (which is the recipient) in %s.', 'advanced-settings'), '<a href="' . admin_url('options-general.php') . '">' . __('General Settings') . '</a>'),

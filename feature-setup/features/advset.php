@@ -11,11 +11,11 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'advset.show_deprecated_features',
+    'id' => 'advset.features.show_deprecated',
     'category' => 'advset',
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Show all deprecated features', 'advanced-settings'),
                 'description' => __('By default, only deprecated features that are in use are shown.', 'advanced-settings'),
@@ -28,11 +28,11 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'advset.show_experimental_expert_features',
+    'id' => 'advset.features.show_experimental',
     'category' => 'advset',
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Show all experimental features', 'advanced-settings'),
                 'description' => __('By default, only experimental features that are in use are shown.', 'advanced-settings'),
@@ -46,7 +46,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'advset.tracksettings_choice',
+    'id' => 'advset.user_tracking.feature_usage',
     'category' => 'advset',
     'ui_config' => fn() => [
         'fields' => [

@@ -11,11 +11,11 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'developer.show_query_num',
+    'id' => 'developer.debug.show_queries',
     'category' => 'developer',
     'ui_config' => fn() => [
         'fields' => [
-            'enabled' => [
+            'enable' => [
                 'type' => 'toggle',
                 'label' => __('Display total number of executed SQL queries and page loading time', 'advanced-settings'),
                 'descriptionHtml' => __('Only admin users can see this', 'advanced-settings'),
@@ -41,7 +41,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.scripts_settings',
+    'id' => 'developer.settings.scripts',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -78,7 +78,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.styles_settings',
+    'id' => 'developer.settings.styles',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -116,7 +116,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.post_types_settings',
+    'id' => 'developer.settings.post_types',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -190,14 +190,6 @@ advset_register_feature([
                     register_post_type( $post_type, $args );
                     if( in_array( 'thumbnail', $args['supports'] ) ) {
                         add_theme_support( 'post-thumbnails', array( $post_type, 'post' ) );
-                        /*global $_wp_theme_features;
-        
-                        if( !is_array($_wp_theme_features[ 'post-thumbnails' ]) )
-                            $_wp_theme_features[ 'post-thumbnails' ] = array();
-        
-                        $_wp_theme_features[ 'post-thumbnails' ][0][]= $post_type;*/
-        
-                        #print_r($_wp_theme_features[ 'post-thumbnails' ]);
                     }
                 }
         
@@ -222,7 +214,7 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.filters_actions_settings',
+    'id' => 'developer.settings.hooks',
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
@@ -247,7 +239,6 @@ advset_register_feature([
                 foreach( $remove_filters as $tag=>$array )
                     if( is_array($array) )
                         foreach( $array as $function=>$_ )
-                            //echo "$tag=>".$function.'<br />';
                             remove_filter( $tag, $function );
         }
 
@@ -280,8 +271,6 @@ advset_register_feature([
                 $remove_filters[$tag][$function] = 1;
 
             update_option( 'advset_remove_filters', $remove_filters );
-
-            //echo $_POST['enable'];
 
             return true;
         });

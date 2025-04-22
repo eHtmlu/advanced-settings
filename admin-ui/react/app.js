@@ -225,8 +225,8 @@ const AdvSetModalApp = {
      * @returns {Array} - Filtered items
      */
     filterItems(items, searchQuery = '') {
-        const showDeprecated = this.state.settings['advset.show_deprecated_features']?.enabled;
-        const showExperimental = this.state.settings['advset.show_experimental_expert_features']?.enabled;
+        const showDeprecated = this.state.settings['advset.features.show_deprecated']?.enable;
+        const showExperimental = this.state.settings['advset.features.show_experimental']?.enable;
         
         return items.filter(item => {
             // Filter by feature flags

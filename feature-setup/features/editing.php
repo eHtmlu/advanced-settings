@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'editing.jpeg_quality',
+    'id' => 'editing.image.jpeg_quality',
     'category' => 'editing',
     'ui_config' => fn() => [
         'fields' => [
