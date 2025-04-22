@@ -111,19 +111,19 @@ return [
                 case 'scripts':
                     $scripts_options = get_option('advset_scripts', []);
                     if (!empty($scripts_options) && !(count($scripts_options) === 1 && isset($scripts_options['advset_group']))) {
-                        $new_settings['developer.settings.scripts'] = ['enable' => true];
+                        $new_settings['developer.settings_pages.scripts'] = ['enable' => true];
                     }
                     break;
                 case 'styles':
                     $styles_options = get_option('advset_styles', []);
                     if (!empty($styles_options) && !(count($styles_options) === 1 && isset($styles_options['advset_group']))) {
-                        $new_settings['developer.settings.styles'] = ['enable' => true];
+                        $new_settings['developer.settings_pages.styles'] = ['enable' => true];
                     }
                     break;
                 case 'post_types':
                     $post_types_options = get_option('advset_post_types', []);
                     if (!empty($post_types_options) && !(count($post_types_options) === 1 && isset($post_types_options['advset_group']))) {
-                        $new_settings['developer.settings.post_types'] = ['enable' => true];
+                        $new_settings['developer.settings_pages.post_types'] = ['enable' => true];
                     }
                     break;
                 case 'hooks':
@@ -136,7 +136,7 @@ return [
                     // Check if there are active filters in the subarrays
                     foreach ($remove_filters as $tag => $functions) {
                         if ($tag !== 'advset_group' && !empty($functions)) {
-                            $new_settings['developer.settings.hooks'] = ['enable' => true];
+                            $new_settings['developer.settings_pages.hooks'] = ['enable' => true];
                             break;
                         }
                     }
