@@ -79,7 +79,7 @@ register_deactivation_hook(__FILE__, function() {
 
 // Include admin UI for administrators
 function advset_load_admin_ui() {
-    if (is_user_logged_in() && current_user_can('manage_options')) {
+    if (current_user_can('manage_options')) {
         require_once ADVSET_DIR . '/admin-ui/admin-ui.php';
     }
 }
