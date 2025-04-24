@@ -145,14 +145,45 @@
     font-weight: 600;
 }
 
+/* Notifications Container */
+.advset-notifications {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    max-width: 400px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Message Base Styles */
+.advset-message {
+    padding: .75em 1em;
+    border-radius: .25em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity .3s, transform .3s;
+    pointer-events: auto;
+}
+
+.advset-message.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 /* Error Message */
 .advset-error-message {
     background-color: #f8d7da;
     color: #721c24;
-    padding: .5em 1em;
-    border-radius: .25em;
-    margin-bottom: 1em;
-    display: none;
+}
+
+/* Success Message */
+.advset-success-message {
+    background-color: #d4edda;
+    color: #155724;
 }
 
 /* Badge styles */

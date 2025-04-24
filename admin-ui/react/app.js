@@ -38,6 +38,9 @@ function App(props) {
 
     
     return React.createElement('div', { className: 'advset-react-app' },
+        // Notifications container
+        React.createElement('div', { className: 'advset-notifications' }),
+        
         // Category sidebar
         visibleCategories.length > 0 && React.createElement('div', { className: 'advset-category-sidebar' },
             React.createElement('ul', { className: 'advset-category-menu' },
@@ -410,6 +413,59 @@ const AdvSetModalApp = {
     },
     
     /**
+     * Show an error message to the user
+     * 
+     * @param {string} message - The error message to display
+     */
+    showError(message) {
+        this.showNotification(message, 'error');
+    },
+
+    /**
+     * Show a success message to the user
+     * 
+     * @param {string} message - The success message to display
+     */
+    showSuccess(message) {
+        this.showNotification(message, 'success');
+    },
+
+    /**
+     * Show a notification message
+     * 
+     * @param {string} message - The message to display
+     * @param {string} type - The type of message ('error' or 'success')
+     */
+    showNotification(message, type) {
+        const container = this.container.querySelector('.advset-notifications');
+        if (!container) return;
+
+        const element = document.createElement('div');
+        element.className = `advset-message advset-${type}-message`;
+        element.textContent = message;
+        
+        container.appendChild(element);
+        
+        // Trigger reflow to ensure animation works
+        element.offsetHeight;
+        
+        // Show the notification
+        element.classList.add('is-visible');
+        
+        // Remove after delay
+        setTimeout(() => {
+            element.classList.remove('is-visible');
+            
+            // Wait for animation to finish before removing
+            setTimeout(() => {
+                if (element.parentNode) {
+                    element.parentNode.removeChild(element);
+                }
+            }, 300);
+        }, 5000);
+    },
+
+    /**
      * Save a setting to the server
      * 
      * @param {string} settingId - The ID of the setting
@@ -446,35 +502,12 @@ const AdvSetModalApp = {
             }
 
             this.performLocalSearch(this.state.searchQuery);
+            this.showSuccess('Setting saved successfully');
         } catch (error) {
             console.error('Error saving setting:', error);
             this.showError('Failed to save setting. Please try again later.');
         }
     },
-    
-    /**
-     * Show an error message to the user
-     * 
-     * @param {string} message - The error message to display
-     */
-    showError(message) {
-        // Create error element if it doesn't exist
-        let errorElement = document.querySelector('.advset-error-message');
-        if (!errorElement) {
-            errorElement = document.createElement('div');
-            errorElement.className = 'advset-error-message';
-            this.container.prepend(errorElement);
-        }
-        
-        // Set the error message
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-        
-        // Hide after 5 seconds
-        setTimeout(() => {
-            errorElement.style.display = 'none';
-        }, 5000);
-    }
 };
 
 // Export for use in other files
