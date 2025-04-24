@@ -10,8 +10,6 @@ if (!defined('ABSPATH')) exit;
 
 
 
-
-
 advset_register_feature([
     'id' => 'frontend.meta.facebook_og_metas',
     'category' => 'frontend',
@@ -38,6 +36,7 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
+
 
 
 advset_register_feature([
@@ -71,7 +70,6 @@ advset_register_feature([
 
 
 
-
 advset_register_feature([
     'id' => 'frontend.meta.remove_shortlink',
     'category' => 'frontend',
@@ -89,8 +87,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
-
 
 
 
@@ -115,8 +111,6 @@ advset_register_feature([
 
 
 
-
-
 advset_register_feature([
     'id' => 'frontend.meta.remove_generator',
     'category' => 'frontend',
@@ -134,8 +128,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
-
 
 
 
@@ -190,9 +182,6 @@ advset_register_feature([
 
 
 
-
-
-
 advset_register_feature([
     'id' => 'frontend.author.disable_pages',
     'category' => 'frontend',
@@ -222,8 +211,6 @@ advset_register_feature([
     },
     'priority' => 20,
 ]);
-
-
 
 
 
@@ -353,7 +340,6 @@ advset_register_feature([
         });
     },
 ]);
-
 
 
 
@@ -499,9 +485,6 @@ advset_register_feature([
 
 
 
-
-
-
 advset_register_feature([
     'id' => 'frontend.title.improve_format',
     'category' => 'frontend',
@@ -541,10 +524,6 @@ advset_register_feature([
 
 
 
-
-
-
-
 advset_register_feature([
     'id' => 'frontend.post.show_author_bio',
     'category' => 'frontend',
@@ -580,8 +559,6 @@ advset_register_feature([
 
 
 
-
-
 advset_register_feature([
     'id' => 'frontend.user.allow_html_bio',
     'category' => 'frontend',
@@ -599,8 +576,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
-
 
 
 
@@ -641,8 +616,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
-
 
 
 
@@ -687,9 +660,6 @@ advset_register_feature([
 
 
 
-
-
-
 advset_register_feature([
     'id' => 'frontend.code.minify_html',
     'category' => 'frontend',
@@ -713,8 +683,6 @@ advset_register_feature([
 
 
 
-
-
 advset_register_feature([
     'id' => 'frontend.code.remove_comments',
     'category' => 'frontend',
@@ -735,8 +703,5 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
-
-
 
 

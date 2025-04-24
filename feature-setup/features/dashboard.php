@@ -50,7 +50,6 @@ advset_register_feature([
 
 
 
-
 advset_register_feature([
     'id' => 'dashboard.welcome_panel.remove',
     'category' => 'dashboard',
@@ -104,6 +103,5 @@ advset_register_feature([
     },
     'priority' => 30,
 ]);
-
 
 

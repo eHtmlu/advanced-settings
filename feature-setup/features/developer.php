@@ -22,7 +22,7 @@ advset_register_feature([
             ],
         ],
     ],
-    'execution_handler' => function($settings) {
+    'execution_handler' => function() {
         add_action('wp_footer', function() {
             global $wpdb;
             
@@ -36,7 +36,6 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
-
 
 
 
@@ -58,7 +57,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'execution_handler' => function($settings) {
+    'execution_handler' => function() {
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.scripts--actions-scripts.php';
 
@@ -76,6 +75,7 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
+
 
 
 advset_register_feature([
@@ -96,7 +96,7 @@ advset_register_feature([
             ],
         ]
     ],
-    'execution_handler' => function($settings) {
+    'execution_handler' => function() {
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.styles--actions-styles.php';
 
@@ -135,7 +135,7 @@ advset_register_feature([
             ],
         ],
     ],
-    'execution_handler' => function($settings) {
+    'execution_handler' => function() {
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
 
         add_action('init', function() {
@@ -216,7 +216,6 @@ advset_register_feature([
 
 
 
-
 advset_register_feature([
     'id' => 'developer.settings_pages.hooks',
     'category' => 'developer',
@@ -235,7 +234,7 @@ advset_register_feature([
             ],
         ],
     ],
-    'execution_handler' => function($settings) {
+    'execution_handler' => function() {
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
 
         $remove_filters = get_option( 'advset_remove_filters' );
@@ -283,4 +282,5 @@ advset_register_feature([
     },
     'priority' => 10,
 ]);
+
 

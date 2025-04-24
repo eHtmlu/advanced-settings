@@ -35,7 +35,6 @@ advset_register_feature([
 
 
 
-
 advset_register_feature([
     'id' => 'system.comments.disable_system',
     'category' => 'system',
@@ -134,6 +133,7 @@ advset_register_feature([
 ]);
 
 
+
 advset_register_feature([
     'id' => 'system.notifications.disable_core_updates',
     'category' => 'system',
@@ -191,3 +191,5 @@ advset_register_feature([
     },
     'priority' => 40,
 ]);
+
+
