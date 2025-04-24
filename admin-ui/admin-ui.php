@@ -98,17 +98,40 @@ function advset_admin_ui_scripts() {
         filemtime(ADVSET_DIR . '/admin-ui/admin-ui.js'),
         true
     );
-    wp_enqueue_script('advset-admin-ui');
-    
-    // Localize script with data
-    wp_localize_script('advset-admin-ui', 'advsetAdminUI', [
+
+    // Prepare data for JavaScript
+    $js_data = [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
         'reactAppUrl' => plugins_url('react/app.js', __FILE__),
         'reactAppCssUrl' => plugins_url('react/app.css', __FILE__),
         'wpReactUrl' => includes_url('js/dist/vendor/react.min.js'),
-        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js')
-    ]);
+        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js'),
+        'showUserGuide' => get_option('advset_guide_shown') === false,
+    ];
+
+    wp_localize_script('advset-admin-ui', 'advsetAdminUI', $js_data);
+    wp_enqueue_script('advset-admin-ui');
+
+    // Load user guide assets if needed
+    if ($js_data['showUserGuide']) {
+        wp_register_style(
+            'advset-user-guide',
+            plugins_url('user-guide.css', __FILE__),
+            ['advset-admin-ui'],
+            filemtime(ADVSET_DIR . '/admin-ui/user-guide.css')
+        );
+        wp_enqueue_style('advset-user-guide');
+
+        wp_register_script(
+            'advset-user-guide',
+            plugins_url('user-guide.js', __FILE__),
+            ['advset-admin-ui', 'wp-i18n'],
+            filemtime(ADVSET_DIR . '/admin-ui/user-guide.js'),
+            true
+        );
+        wp_enqueue_script('advset-user-guide');
+    }
 }
 add_action('admin_enqueue_scripts', 'advset_admin_ui_scripts');
 add_action('wp_enqueue_scripts', 'advset_admin_ui_scripts');
@@ -191,3 +214,32 @@ function advset_admin_modal_html() {
 }
 add_action('admin_footer', 'advset_admin_modal_html');
 add_action('wp_footer', 'advset_admin_modal_html');
+
+
+
+
+
+
+
+/**
+ * Handle AJAX request to mark guide as shown
+ */
+function advset_mark_guide_shown() {
+    // Verify nonce and capabilities
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'advset-admin-ui-nonce')) {
+        wp_send_json_error('Invalid nonce');
+    }
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Insufficient permissions');
+    }
+
+    update_option('advset_guide_shown', true);
+    wp_send_json_success();
+}
+add_action('wp_ajax_advset_mark_guide_shown', 'advset_mark_guide_shown');
+
+
+
+
+
+

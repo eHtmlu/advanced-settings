@@ -74,3 +74,28 @@ advset_register_feature([
 ]);
 
 
+
+advset_register_feature([
+    'id' => 'advset.features.user_guide',
+    'category' => 'advset',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Show user guide', 'advanced-settings'),
+                'description' => __('Enable to show the user guide again on next page load.', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'handler_cleanup' => function($settings) {
+        return empty($settings['enable']) ? null : $settings;
+    },
+    'execution_handler' => function($settings) {
+        if (!empty($settings['enable'])) {
+            delete_option('advset_guide_shown');
+        }
+    },
+    'priority' => 10,
+]);
+
+

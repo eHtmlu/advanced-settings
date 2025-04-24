@@ -65,6 +65,7 @@ add_action('plugins_loaded', 'advset_check_for_version_migrations', 10);
  * Register deactivation hook for cleanup
  */
 register_deactivation_hook(__FILE__, function() {
+	delete_option('advset_guide_shown');
     require_once ADVSET_DIR . '/includes/cache-manager.php';
     AdvSet_CacheManager::cleanup_cache();
 });
