@@ -13,6 +13,7 @@
     
     const closeBtn = modal.querySelector('.advset-modal-close');
     const modalBody = modal.querySelector('.advset-modal-body');
+    const searchInput = modal.querySelector('.advset-modal-search input');
     
     // State
     let reactAppInitialized = false;
@@ -66,12 +67,10 @@
      * Setup search input event
      */
     function setupSearchInput() {
-        const searchInput = modal.querySelector('.advset-modal-search input');
         if (searchInput) {
-            let searchTimeout;
             searchInput.addEventListener('input', function(e) {
                 document.dispatchEvent(new CustomEvent('advset-search', {
-                    detail: { query: e.target.value }
+                    detail: { query: searchInput.value }
                 }));
             });
         }
@@ -201,6 +200,13 @@
                 .then(module => {
                     // Initialize the React app using the imported module
                     if (module.AdvSetModalApp) {
+                        document.addEventListener('advset-data-loaded', function() {
+                            if (searchInput?.value) {
+                                document.dispatchEvent(new CustomEvent('advset-search', {
+                                    detail: { query: searchInput.value }
+                                }));
+                            }
+                        });
                         module.AdvSetModalApp.init(modalContent);
                         reactAppInitialized = true;
                     } else {
