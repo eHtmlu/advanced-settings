@@ -29,8 +29,7 @@ advset_register_feature([
             if (!current_user_can('manage_options')) return;
 
             echo '<div style="font-size:10px;text-align:center">'.
-                $wpdb->num_queries.' '.__('SQL queries have been executed to show this page in ').
-                timer_stop().__('seconds').
+                sprintf(__('%s SQL queries have been executed to show this page in %s seconds.', 'advanced-settings'), $wpdb->num_queries, timer_stop()).
             '</div>';
         });
     },

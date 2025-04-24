@@ -97,7 +97,7 @@ function advset_save_settings_callback($request) {
     
     return new WP_REST_Response([
         'success' => true,
-        'message' => $result['changed'] ? 'Settings updated successfully' : 'Settings are unchanged',
+        'message' => $result['changed'] ? __('Settings updated successfully', 'advanced-settings') : __('Settings are unchanged', 'advanced-settings'),
         'settings' => (object) $result['settings'],
     ], 200);
 }

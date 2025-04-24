@@ -118,7 +118,7 @@ class AdvSet_SettingsManager {
         }
         
         if (!empty($errors)) {
-            return new WP_Error('validation_error', 'Some settings could not be updated', [
+            return new WP_Error('validation_error', __('Some settings could not be updated', 'advanced-settings'), [
                 'errors' => $errors,
             ]);
         }
@@ -139,7 +139,7 @@ class AdvSet_SettingsManager {
         $updated = update_option('advanced_settings_settings', $new_settings);
         
         if (!$updated) {
-            return new WP_Error('save_failed', 'Failed to save settings');
+            return new WP_Error('save_failed', __('Failed to save settings', 'advanced-settings'));
         }
 
         // Generate cache file
