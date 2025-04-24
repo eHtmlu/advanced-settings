@@ -47,7 +47,7 @@ advset_register_feature([
             'enable' => [
                 'type' => 'toggle',
                 'label' => __('Automatically add a favicon from theme directory', 'advanced-settings'),
-                'description' => __('whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme directory', 'advanced-settings'),
+                'description' => __('Whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme directory', 'advanced-settings'),
             ],
         ]
     ],

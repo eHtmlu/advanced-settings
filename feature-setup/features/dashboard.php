@@ -80,7 +80,7 @@ advset_register_feature([
                 'type' => 'text',
                 'label' => __('Custom logo URL', 'advanced-settings'),
                 'placeholder' => 'https://www.example.com/your-custom-logo.png',
-                'description' => __('paste your custom dashboard logo here', 'advanced-settings'),
+                'description' => __('Paste your custom dashboard logo here', 'advanced-settings'),
             ],
         ]
     ],

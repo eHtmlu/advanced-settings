@@ -201,7 +201,7 @@ function advset_admin_modal_html() {
             </header>
             <div class="advset-modal-body">
                 <div class="advset-modal-body-content"></div>
-                <div class="advset-modal-body-processindicator" aria-label="<?php _e('loading settings …', 'advanced-settings'); ?>">
+                <div class="advset-modal-body-processindicator" aria-label="<?php _e('Loading settings …', 'advanced-settings'); ?>">
                     <?php echo $loading_svg; ?>
                 </div>
             </div>
