@@ -146,27 +146,3 @@
     background: var(--advset-color-primary);
     color: #fff;
 }
-
-/* .advset-tooltip__button--primary:hover,
-.advset-tooltip__button--primary:focus-visible {
-    background: transparent;
-    color: var(--advset-color-primary);
-} */
-
-/* .advset-tooltip__close {
-    background: transparent;
-    border: 2px solid var(--advset-color-primary);
-    border-radius: 6px;
-    padding: .4em .9em;
-    cursor: pointer;
-    font-size: var(--advset-font-size-small);
-    color: var(--advset-color-primary);
-    font-weight: 600;
-    transition: all .3s;
-}
-
-.advset-tooltip__close:hover,
-.advset-tooltip__close:focus-visible {
-    background: var(--advset-color-primary);
-    color: #fff;
-} */
