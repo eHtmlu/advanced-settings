@@ -15,6 +15,7 @@
     };
 
     let userGuideStep = 0;
+    let userGuideClosed = false;
     const modal = document.getElementById('advset-admin-modal');
 
     // Initialize
@@ -50,21 +51,23 @@
      */
     function showUserGuideStep() {
         removeExistingTooltips();
+        if (userGuideClosed) return;
 
         if (userGuideStep === 1) {
             const adminBarIcon = document.querySelector('#wp-admin-bar-advset-admin-icon .ab-item');
             if (!adminBarIcon) return;
 
-            const tooltip = createTooltip(
-                __('Click here to open Advanced Settings', 'advanced-settings'),
-                '1/2',
-                false
-            );
-
-            const iconRect = adminBarIcon.getBoundingClientRect();
-            tooltip.style.top = (iconRect.bottom + window.scrollY + 8) + 'px';
-            tooltip.style.left = (iconRect.left + (iconRect.width / 2)) + 'px';
-            document.body.appendChild(tooltip);
+            createTooltip({
+                content: __('Click here to open Advanced Settings', 'advanced-settings'),
+                progress: '1/2',
+                isLast: false,
+                onBeforeNextClick: function() {
+                    advset_open_modal();
+                },
+                bindTo: adminBarIcon,
+                parent: document.body,
+                arrowPosition: 'top-left',
+            });
 
             adminBarIcon.addEventListener('click', function() {
                 document.dispatchEvent(new CustomEvent('advset-guide-next'));
@@ -74,42 +77,79 @@
             const searchInput = modal.querySelector('.advset-modal-search input');
             if (!searchInput) return;
 
-            const tooltip = createTooltip(
-                __('Use this search field to quickly find settings', 'advanced-settings'),
-                '2/2',
-                true
-            );
+            createTooltip({
+                content: __('Use this search field to quickly find settings', 'advanced-settings'),
+                progress: '2/2',
+                isLast: true,
+                bindTo: searchInput,
+                parent: modal,
+                arrowPosition: 'top-center',
+                delay: 500,
+                onCloseClick: function() {
+                    searchInput.focus();
+                },
+            });
 
-            const searchRect = searchInput.getBoundingClientRect();
-            const modalRect = modal.getBoundingClientRect();
-            
-            // Position relative to modal
-            tooltip.style.top = (searchRect.bottom - modalRect.top + 8) + 'px';
-            tooltip.style.left = (searchRect.left - modalRect.left + (searchRect.width / 2)) + 'px';
-            modal.appendChild(tooltip);
+            searchInput.addEventListener('input', function() {
+                document.dispatchEvent(new CustomEvent('advset-guide-close'));
+            }, { once: true });
         }
     }
 
     /**
      * Create a tooltip element
      */
-    function createTooltip(content, progress, isLast) {
+    function createTooltip({content, progress, isLast, onBeforeNextClick, onCloseClick, bindTo, parent, arrowPosition, delay}) {
         const tooltip = document.createElement('div');
-        tooltip.className = 'advset-setup advset-tooltip';
+        const arrowPositionClass = arrowPosition ? `advset-tooltip--${arrowPosition}-arrow` : '';
+        tooltip.className = `advset-setup advset-tooltip ${arrowPositionClass}`;
         
         tooltip.innerHTML = `
             <div class="advset-tooltip__content">${content}</div>
             <div class="advset-tooltip__footer">
                 <div class="advset-tooltip__progress">${progress}</div>
-                <button type="button" class="advset-tooltip__close">
-                    ${isLast ? __('Finish', 'advanced-settings') : __('Skip Guide', 'advanced-settings')}
-                </button>
+                <div class="advset-tooltip__buttons">
+                    <button type="button" class="advset-tooltip__button advset-tooltip__skip${isLast ? ' advset-tooltip__button--primary' : ''}">
+                        ${isLast ? __('Finish', 'advanced-settings') : __('Skip Guide', 'advanced-settings')}
+                    </button>
+                    ${!isLast ? `
+                        <button type="button" class="advset-tooltip__button advset-tooltip__button--primary advset-tooltip__next">
+                            ${__('Next', 'advanced-settings')}
+                        </button>
+                    ` : ''}
+                </div>
             </div>
         `;
 
-        tooltip.querySelector('.advset-tooltip__close').addEventListener('click', function() {
+        tooltip.querySelector('.advset-tooltip__skip').addEventListener('click', function() {
+            userGuideClosed = true;
             document.dispatchEvent(new CustomEvent('advset-guide-close'));
+            if (onCloseClick) onCloseClick();
         });
+
+        if (!isLast) {
+            tooltip.querySelector('.advset-tooltip__next').addEventListener('click', function() {
+                if (onBeforeNextClick) onBeforeNextClick();
+                document.dispatchEvent(new CustomEvent('advset-guide-next'));
+            });
+        }
+
+        function updateTooltipPosition() {
+            const bindRect = bindTo.getBoundingClientRect();
+            const parentRect = parent === document.body ? {top: 0, left: 0} : parent.getBoundingClientRect();
+            tooltip.style.setProperty('--bindto-y', Math.round(bindRect.bottom - parentRect.top) + 'px');
+            tooltip.style.setProperty('--bindto-x', Math.round((bindRect.left + (bindRect.width / 2)) - parentRect.left) + 'px');
+        }
+
+        const observer = new ResizeObserver(updateTooltipPosition);
+        observer.observe(bindTo);
+
+        parent?.appendChild(tooltip);
+        updateTooltipPosition();
+
+        setTimeout(() => {
+            tooltip.classList.add('advset-tooltip--visible');
+        }, delay || 0);
 
         return tooltip;
     }
