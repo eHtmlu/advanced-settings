@@ -180,36 +180,36 @@
     }
     
     /**
-     * Initialize the React app
+     * Initialize React app
      */
     function initializeReactApp() {
-        if (!reactAppInitialized) {
-            const modalContent = modal.querySelector('.advset-modal-body-content');
-            if (modalContent) {
-                // Load React app CSS
-                const cssLink = document.createElement('link');
-                cssLink.rel = 'stylesheet';
-                cssLink.href = advsetAdminUI.reactAppCssUrl;
-                document.head.appendChild(cssLink);
-                
-                // Load React and ReactDOM
-                loadReact().then(() => {
-                    // Import the React app module directly
-                    import(advsetAdminUI.reactAppUrl)
-                        .then(module => {
-                            // Initialize the React app using the imported module
-                            if (module.AdvSetModalApp) {
-                                module.AdvSetModalApp.init(modalContent);
-                                reactAppInitialized = true;
-                            } else {
-                                console.error('React app not loaded properly');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Failed to load React app module:', error);
-                        });
+        if (reactAppInitialized) return;
+        
+        const modalContent = modal.querySelector('.advset-modal-body-content');
+        if (!modalContent) return;
+        
+        // Load React app CSS
+        const cssLink = document.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = advsetAdminUI.reactAppCssUrl;
+        document.head.appendChild(cssLink);
+        
+        // Load React and ReactDOM
+        loadReact().then(() => {
+            // Import the React app module directly
+            import(advsetAdminUI.reactAppUrl)
+                .then(module => {
+                    // Initialize the React app using the imported module
+                    if (module.AdvSetModalApp) {
+                        module.AdvSetModalApp.init(modalContent);
+                        reactAppInitialized = true;
+                    } else {
+                        console.error('React app not loaded properly');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load React app module:', error);
                 });
-            }
-        }
+        });
     }
 })(); 
