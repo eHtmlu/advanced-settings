@@ -249,29 +249,37 @@
 }
 
 /* ===== Loading Animation ===== */
-.advset-modal-body-loading {
+.advset-modal-body-processindicator {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
+    background-color: #fff;
     align-items: center;
     justify-content: center;
     z-index: 10;
-    transition: opacity var(--advset-transition-duration);
+    display: none;
+    opacity: 0;
+    transition-property: opacity display overlay transform;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
 }
 
-.advset-modal-body-loading svg {
+.advset-modal-body-processindicator--processing {
+    display: flex;
+    opacity: 1;
+}
+
+@starting-style {
+    .advset-modal-body-processindicator {
+        opacity: 0;
+    }
+}
+
+.advset-modal-body-processindicator svg {
     width: 10em;
     height: 10em;
-}
-
-.advset-modal-body-loading--hidden {
-    opacity: 0;
-    pointer-events: none;
-    display: none;
 }
 
 /* ===== Animations ===== */

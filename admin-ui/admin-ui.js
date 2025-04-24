@@ -80,9 +80,9 @@
      * Show loading animation
      */
     function showLoading() {
-        const loadingElement = modal.querySelector('.advset-modal-body-loading');
+        const loadingElement = modal.querySelector('.advset-modal-body-processindicator');
         if (loadingElement) {
-            loadingElement.classList.remove('advset-modal-body-loading--hidden');
+            loadingElement.classList.add('advset-modal-body-processindicator--processing');
         }
     }
     
@@ -90,9 +90,9 @@
      * Hide loading animation
      */
     function hideLoading() {
-        const loadingElement = modal.querySelector('.advset-modal-body-loading');
+        const loadingElement = modal.querySelector('.advset-modal-body-processindicator');
         if (loadingElement) {
-            loadingElement.classList.add('advset-modal-body-loading--hidden');
+            loadingElement.classList.remove('advset-modal-body-processindicator--processing');
         }
     }
     
