@@ -292,7 +292,6 @@ advset_register_feature([
             'limit' => [
                 'type' => 'number',
                 'label' => __('Number of words', 'advanced-settings'),
-                'default' => 55,
                 'visible' => ['enable' => true]
             ],
         ]
