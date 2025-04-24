@@ -2,7 +2,7 @@
 /*
 Plugin Name: Advanced Settings
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
-Description: Advanced settings for WordPress.
+Description: Offers settings that you might expect to find in the WordPress core.
 Author: Helmut Wandl
 Author URI: https://ehtmlu.com/
 Version: 3.0.0
