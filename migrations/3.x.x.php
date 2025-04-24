@@ -78,7 +78,7 @@ return [
             'feedburner' => ['frontend.feed.feedburner', function($value) {
                 return array_filter(['enable' => !empty($value), 'feedburner' => empty($value) ? null : (string) $value]);
             }],
-
+            // advset
             'show_deprecated_features' => ['advset.features.show_deprecated'],
             'show_experimental_expert_features' => ['advset.features.show_experimental'],
             'advset_tracksettings_choice' => ['advset.user_tracking.feature_usage', function($value) {
@@ -145,7 +145,10 @@ return [
         }
 
         update_option('advanced_settings_settings', $new_settings);
-        update_option('advset_old_settings', $old_settings);
+
+        delete_option('advset_advset');
+        delete_option('advset_code');
+        delete_option('advset_system');
     },
 
 ];
