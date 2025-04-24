@@ -275,28 +275,39 @@
 }
 
 /* ===== Animations ===== */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+.advset-modal {
+    display: none;
+    opacity: 0;
+    transition-property: opacity display overlay transform;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
+    transform: translateY(1em) scale(.95);
 }
 
 .advset-modal[open] {
-    animation: fadeIn var(--advset-transition-duration) ease-out;
+    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
-.advset-modal.closing {
-    animation: fadeOut var(--advset-transition-duration) ease-out;
+.advset-modal::backdrop {
+    transition-property: opacity display overlay;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
+    opacity: 0;
 }
 
 .advset-modal[open]::backdrop {
-    animation: fadeIn var(--advset-transition-duration) ease-out;
+    opacity: 1;
 }
 
-.advset-modal.closing::backdrop {
-    animation: fadeOut var(--advset-transition-duration) ease-out;
+@starting-style {
+    .advset-modal[open] {
+        opacity: 0;
+        transform: translateY(1em) scale(.95);
+    }
+    .advset-modal[open]::backdrop {
+        opacity: 0;
+    }
 }

@@ -119,17 +119,9 @@
      */
     function closeModal() {
         if (modal) {
-            // Add closing class to trigger animation
-            modal.classList.add('closing');
-            
             // Dispatch modal closed event for React integration
             document.dispatchEvent(new CustomEvent('advset-modal-closed'));
-            
-            // Wait for animation to complete before actually closing
-            setTimeout(() => {
-                modal.close();
-                modal.classList.remove('closing');
-            }, 300); // Match the animation duration
+            modal.close();
         }
     }
     
