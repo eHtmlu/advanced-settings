@@ -122,7 +122,7 @@
 
 .advset-tooltip__button {
     background: transparent;
-    border: 2px solid var(--advset-color-primary);
+    border: 1px solid var(--advset-color-primary);
     border-radius: 6px;
     padding: .4em .9em;
     cursor: pointer;
