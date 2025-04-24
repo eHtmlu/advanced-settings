@@ -95,7 +95,7 @@
      */
     function createTooltip(content, progress, isLast) {
         const tooltip = document.createElement('div');
-        tooltip.className = 'advset-tooltip';
+        tooltip.className = 'advset-setup advset-tooltip';
         
         tooltip.innerHTML = `
             <div class="advset-tooltip__content">${content}</div>

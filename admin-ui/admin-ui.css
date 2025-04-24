@@ -50,19 +50,22 @@
 }
 
 /* ===== Reset for modal and inner elements ===== */
-.advset-modal {
+.advset-setup {
     all: revert;
     font-size: initial;
     font-weight: initial;
     letter-spacing: initial;
     line-height: initial;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    line-height: 1.4;
+    color: var(--advset-color-base);
 }
 
-.advset-modal *:not(:where(svg, path)),
-.advset-modal *::before,
-.advset-modal *::after,
-.advset-modal *::placeholder,
-.advset-modal input:where(
+.advset-setup *:not(:where(svg, path)),
+.advset-setup *::before,
+.advset-setup *::after,
+.advset-setup *::placeholder,
+.advset-setup input:where(
     [type=color],
     [type=date],
     [type=datetime-local],
@@ -78,7 +81,7 @@
     [type=url],
     [type=week]
 ),
-.advset-modal input:has(:focus,:focus-visible):where(
+.advset-setup input:has(:focus,:focus-visible):where(
     [type=color],
     [type=date],
     [type=datetime-local],
@@ -94,8 +97,8 @@
     [type=url],
     [type=week]
 ),
-.advset-modal select,
-.advset-modal textarea {
+.advset-setup select,
+.advset-setup textarea {
     all: revert;
     color: inherit;
     font-family: inherit;
@@ -105,7 +108,7 @@
     letter-spacing: inherit;
 }
 
-.advset-modal strong {
+.advset-setup strong {
     font-weight: 700;
 }
 
@@ -119,10 +122,7 @@
     width: 60em;
     height: 80vh;
     background-color: #fff;
-    color: var(--advset-color-base);
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    line-height: 1.4;
 }
 
 .advset-modal a:hover,

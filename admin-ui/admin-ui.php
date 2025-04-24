@@ -186,7 +186,7 @@ function advset_admin_modal_html() {
     }
     
     ?>
-    <dialog id="advset-admin-modal" class="advset-modal" aria-labelledby="advset-modal-title">
+    <dialog id="advset-admin-modal" class="advset-setup advset-modal" aria-labelledby="advset-modal-title">
         <div class="advset-modal-content">
             <header class="advset-modal-header">
                 <div class="advset-modal-header-top">
