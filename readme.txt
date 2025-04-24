@@ -4,10 +4,10 @@ Author: eHtmlu
 Contributors: eHtmlu, webarthur
 Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
-Tags: settings, options, performance, speed, admin
+Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
-Tested up to: 6.7
-Stable tag: 2.9.0
+Tested up to: 6.8
+Stable tag: 3.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,68 +15,92 @@ Adds settings that you might expect to find in the WordPress core.
 
 == Description ==
 
-This plugin offers settings that you might expect to find in the WordPress core.
+Advanced Settings is a powerful WordPress plugin that provides settings you would expect to find in the WordPress core. It is lightweight, performant and offers a modern, fast and user-friendly interface.
 
-💚 This plugin is currently being extensively revised, but it remains high performing, lightweight and largely backwards compatible. If you have any questions or wishes, just get in touch, for example by creating a topic on the [plugin support page](https://wordpress.org/support/plugin/advanced-settings/#new-topic-0).
+--
+
+== 🚀 PERFORMANCE ==
+
+**Advanced Settings 3 is optimized for extreme performance. It only loads what's necessary. You won't be able to measure any difference in loading speed, as it usually only loads a few lines of code.**
+
+--
+
+== 🩷 REQUEST A FEATURE ==
+
+**Advanced Settings 3 is designed to help as many people as possible. If you have a feature in mind that you'd like to see included in this plugin, let us know.**
+
+--
+
+== ⚙️ FEATURES ==
+
+**Advanced Settings 3 is brand new and the range of features is only just beginning to grow. Nevertheless, the plugin always remains extremely fast thanks to the sophisticated cache system, which only loads those features that are actually in use.**
+
+Here you will find a list of the features currently implemented:
+
+= Dashboard =
+
+* Customize dashboard logo
+* Hide WordPress update message in dashboard
+* Hide the top admin bar for all users in the frontend
+* Hide the welcome panel in the dashboard
 
 = System =
 
-* Hide the WordPress update message in the Dashboard
-* Add dashboard logo
+* Hide default WordPress favicon
 * Disable comment system
-* Disable Posts Auto Saving
-* Disable author pages
-* Automatically generate the Post Thumbnail (from the first image in post)
-* Set JPEG quality
-* Resize image at upload to max size
-* Display total number of executed SQL queries and page loading time
+* Disable posts auto saving
 * Prevent installation of new default WordPress themes during core updates
-* Prevent sending email notifications for core updates
-* Prevent sending email notifications for plugin updates
-* Prevent sending email notifications for theme updates
+* Disable email notifications for core updates
+* Disable email notifications for plugin updates
+* Disable email notifications for theme updates
 
-= HTML Code =
+= Frontend =
 
-* Fix incorrect Facebook thumbnails including OG metas
-* Hide top admin menu
-* Remove default WordPress favicon
-* Automatically add a FavIcon (whenever there is a favicon.ico, favicon.png or favicon.svg file in the template folder)
-* Add a description meta tag using the blog description (SEO)
-* Add description and keywords meta tags in each posts (SEO)
-* Remove header WordPress generator meta tag
-* Remove header RSD (Weblog Client Link) meta tag
-* Remove header shortlink meta tag
-* Configure site title to use just the wp_title() function (better for hardcode programming)
-* Limit the excerpt length
-* Add a read more link after excerpt
+* Disable author pages
+
+
+* Automatically add FavIcon (when favicon.ico, favicon.png or favicon.svg exists in template folder)
+* Automatically add description meta tag using blog description and post excerpt (SEO)
+* Remove WordPress generator meta tag
+* Remove RSD (Weblog Client Link) meta tag
+* Remove shortlink meta tag
+* Limit excerpt length
+* Add "Read more" link after excerpt
 * Remove wptexturize filter
-* Remove Trackbacks and Pingbacks from Comment Count
-* Insert author bio in each post
-* Allow more complex HTML in user profile
-* Compress all HTML code
-* Remove HTML comments (it doesn't remove conditional IE comments like: <!--[if IE]>)
-* Add Google Analytics code
-* Add FeedBurner code
+* Remove trackbacks and pingbacks from comment count
+* Compress HTML code
+* Remove HTML comments (except conditional IE comments)
+* Disable author pages
+* Add thumbnail support
+* Automatically generate post thumbnail (from first image in post)
+* Protect email addresses from spam bots
+* Add Facebook Open Graph meta tags
 
-= Config =
+= Editing =
+
+* Set JPEG quality
+* Downsize images on upload to max size
+
+= Developer =
+
+* Display SQL queries and page load time
+
+= Configuration =
 
 * Show/hide deprecated features
-* Show/hide experimental expert features
+* Show/hide experimental features
 * Configure tracking consent for feature usage statistics
+* Configure visibility of user guide
 
 Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/eHtmlu/advanced-settings)
-
 
 == Installation ==
 
 1. Upload the plugin to your WordPress plugins directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
+2. Activate the plugin through the WordPress plugin menu
 3. Go to Settings > Advanced in the WordPress admin menu
 4. Use the tab navigation to access different settings sections
 5. Configure your desired settings in each section
-
-Note: Some features are marked as deprecated. These can be shown/hidden in the Config tab.
-
 
 == Screenshots ==
 
@@ -87,24 +111,32 @@ Note: Some features are marked as deprecated. These can be shown/hidden in the C
 
 == Changelog ==
 
+= 3.0.0 - 2025-04-25 =
+* Complete redesign of admin interface with modern design
+* New React-based user interface
+* Improved performance through caching system
+* New modular organization of features and categories
+* Improved user guidance with interactive manual
+* Numerous code optimizations and bugfixes
+
 = 2.9.0 - 2025-03-13 =
-* New feature to remove the default WordPress favicon
+* New feature to remove default WordPress favicon
 * New feature to prevent auto core update emails
 * New feature to prevent auto plugin update emails
 * New feature to prevent auto theme update emails
-* New config feature to show deprecated features (by default hidden now)
-* New config feature to show experimental expert features (by default hidden now)
+* New config feature to show deprecated features (hidden by default)
+* New config feature to show experimental expert features (hidden by default)
 * Code optimizations
 
 = 2.8.0 - 2025-03-10 =
-* Add "Config" tab with settings for the plugin itself
+* Added "Config" tab with settings for the plugin itself
 * Performance optimizations
 
 = 2.7.0 - 2025-03-10 =
 * Added support for SVG favicons in "Automatically add a FavIcon" setting
 * Fixed a few issues
 * Several code optimizations
-* Add tracking consent modal and tracking itself
+* Added tracking consent modal and tracking itself
 
 = 2.6.0 - 2025-02-27 =
 * Changed navigation from multiple menu items to a single menu item with tab navigation
