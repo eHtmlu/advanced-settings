@@ -112,6 +112,11 @@
     font-weight: 700;
 }
 
+.advset-setup a:focus {
+    box-shadow: initial;
+    outline: none;
+}
+
 /* ===== Modal Dialog ===== */
 .advset-modal {
     border: none;
