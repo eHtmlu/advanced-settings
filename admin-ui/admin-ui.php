@@ -204,9 +204,6 @@ function advset_admin_modal_html() {
                 <div class="advset-modal-body-loading" aria-label="<?php _e('loading settings …', 'advanced-settings'); ?>">
                     <?php echo $loading_svg; ?>
                 </div>
-                <div class="advset-no-results" style="display: none;">
-                    <p><?php _e('No results found', 'advanced-settings'); ?></p>
-                </div>
             </div>
         </div>
     </dialog>

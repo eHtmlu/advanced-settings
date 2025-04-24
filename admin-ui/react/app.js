@@ -16,7 +16,7 @@ ComponentRegistry.register('generic', SettingComponentGeneric);
  * Main App Component
  */
 function App(props) {
-    const { items, categories, onSettingChange, onCategoryClick, settings } = props;
+    const { items, categories, onSettingChange, onCategoryClick, settings, searchQuery } = props;
     
     // Group items by category
     const itemsByCategory = {};
@@ -28,15 +28,20 @@ function App(props) {
     });
     
     // Get visible categories (those with items)
-    const visibleCategories = categories.filter(category => 
+    const visibleCategoriesIncludingSeparator = categories.filter(category => 
         itemsByCategory[category.id]?.length > 0 || !category.title
     );
+
+    const visibleCategories = visibleCategoriesIncludingSeparator.filter(category => 
+        !!category.title
+    );
+
     
     return React.createElement('div', { className: 'advset-react-app' },
         // Category sidebar
-        React.createElement('div', { className: 'advset-category-sidebar' },
+        visibleCategories.length > 0 && React.createElement('div', { className: 'advset-category-sidebar' },
             React.createElement('ul', { className: 'advset-category-menu' },
-                visibleCategories.map(category => 
+                visibleCategoriesIncludingSeparator.map(category => 
                     React.createElement('li', { 
                         key: category.id,
                         className: 'advset-category-menu-item'
@@ -96,6 +101,28 @@ function App(props) {
                             })
                         )
                     )
+                )
+            ),
+
+            searchQuery !== '' && React.createElement('div', { className: 'advset-category-section advset-feature-request' },
+                React.createElement('h2', {
+                    className: 'advset-category-title',
+                    style: {
+                        justifyContent: 'center'
+                    }
+                },
+                    React.createElement('span', {
+                        className: 'advset-category-text',
+                    }, 'Feature request')
+                ),
+                React.createElement('div', {
+                    className: 'advset-feature-request-content'
+                },
+                    React.createElement('h3', {}, 'Do you have a feature in mind?'),
+                    React.createElement('p', {}, 'Feature requests are very welcome!'),
+                    React.createElement('a', {
+                        href: 'mailto:ehtmlu' + '@gmail.com?subject=Feature request for Advanced Settings&body=' + encodeURIComponent('Hello,\n\nI would like to request a feature for Advanced Settings. I searched for "' + searchQuery + '" but did not find what I was looking for.\n\nThe feature I have in mind would ...\n\n\n\n'),
+                    }, 'Contact us')
                 )
             )
         )
@@ -343,12 +370,6 @@ const AdvSetModalApp = {
     render() {
         const { searchQuery, items, isLoading, categories } = this.state;
         
-        // Update the no results element
-        const noResultsElement = document.querySelector('.advset-no-results');
-        if (noResultsElement) {
-            noResultsElement.style.display = items.length ? 'none' : 'block';
-        }
-        
         // Render the React app
         if (window.React && window.ReactDOM) {
             const appElement = React.createElement(App, {
@@ -356,7 +377,8 @@ const AdvSetModalApp = {
                 categories: categories,
                 onSettingChange: this.handleSettingChange.bind(this),
                 onCategoryClick: this.scrollToCategory.bind(this),
-                settings: this.state.settings
+                settings: this.state.settings,
+                searchQuery: searchQuery,
             });
             
             ReactDOM.render(appElement, this.container);

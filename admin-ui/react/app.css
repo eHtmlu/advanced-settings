@@ -155,15 +155,6 @@
     display: none;
 }
 
-/* No Results */
-.advset-no-results {
-    text-align: center;
-    padding: 2em;
-    color: #50575e;
-    font-size: var(--advset-font-size-medium);
-    display: none;
-}
-
 /* Badge styles */
 .advset-item-badges {
     display: flex;
@@ -218,4 +209,18 @@
     background: #a8a8a8;
 }
 
+
+.advset-feature-request-content {
+    padding: 5em 1em;
+    max-width: 30em;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.advset-feature-request-content h3 {
+    margin: 0;
+    font-size: var(--advset-font-size-large);
+    font-weight: 600;
+    color: var(--advset-color-primary);
+}
 
