@@ -47,7 +47,7 @@ function advset_get_features_callback() {
 
     // Prepare response
     $response = [
-        'settings' => get_option('advanced_settings_settings', (object) []),
+        'settings' => (object) get_option('advanced_settings_settings', []),
         'features' => [],
         'categories' => array_values($categories),
     ];
