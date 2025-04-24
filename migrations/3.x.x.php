@@ -24,17 +24,17 @@ return [
             'disable_author_pages' => ['frontend.author.disable_pages'],
             'auto_thumbs' => ['frontend.thumbnails.auto_from_first_image'],
             'jpeg_quality' => ['editing.image.jpeg_quality', function($value) {
-                return array_filter(['jpeg_quality' => empty($value) ? null : (string) $value]);
+                return array_filter(['jpeg_quality' => empty($value) ? null : (int) $value]);
             }],
             'max_image_size_w' => ['editing.image.downsize_on_upload', function($value) use($advset_options) {
                 $w = $value;
                 $h = $advset_options['max_image_size_h'];
-                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
+                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (int) $w, 'max_height' => empty($h) ? null : (int) $h]);
             }],
             'max_image_size_h' => ['editing.image.downsize_on_upload', function($value) use($advset_options) {
                 $w = $advset_options['max_image_size_w'];
                 $h = $value;
-                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (string) $w, 'max_height' => empty($h) ? null : (string) $h]);
+                return array_filter(['enable' => !empty($w) || !empty($h), 'max_width' => empty($w) ? null : (int) $w, 'max_height' => empty($h) ? null : (int) $h]);
             }],
             'show_query_num' => ['developer.debug.show_queries'],
             'core_upgrade_skip_new_bundled' => ['system.updates.skip_bundled_themes'],
@@ -61,7 +61,7 @@ return [
             'remove_shortlink' => ['frontend.meta.remove_shortlink'],
             'config_wp_title' => ['frontend.title.improve_format'],
             'excerpt_limit' => ['frontend.excerpt.word_limit', function($value) {
-                return array_filter(['enable' => !empty($value), 'limit' => empty($value) ? null : (string) $value]);
+                return array_filter(['enable' => !empty($value), 'limit' => empty($value) ? null : (int) $value]);
             }],
             'excerpt_more_text' => ['frontend.excerpt.read_more', function($value) {
                 return array_filter(['enable' => !empty($value), 'text' => empty($value) ? null : (string) $value]);

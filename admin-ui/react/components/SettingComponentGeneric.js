@@ -182,7 +182,7 @@ export function SettingComponentGeneric(props) {
                                 type: inputType,
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-textual-input',
-                                ...(typeof fieldValue === 'string' ? { value: fieldValue } : {value: ''}),
+                                ...(typeof fieldValue === 'string' || typeof fieldValue === 'number' ? { value: fieldValue } : {value: ''}),
                                 ...(
                                     ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
                                         ...(typeof field.min !== 'undefined' && { min: field.min }),

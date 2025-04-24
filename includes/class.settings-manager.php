@@ -166,7 +166,7 @@ class AdvSet_SettingsManager {
      * @param array $config The field configuration
      * @return bool Whether the value is valid
      */
-    private function validate_field_type($type, $value, $config = []) {
+    private function validate_field_type($type, &$value, $config = []) {
         switch ($type) {
             case 'toggle':
             case 'checkbox':
@@ -258,12 +258,16 @@ class AdvSet_SettingsManager {
                 if (!is_numeric($value)) {
                     return false;
                 }
+
+                // Convert value to float for validation
+                $value_float = (float) $value;
+
                 // Check min value
-                if (isset($config['min']) && is_numeric($config['min']) && $value < $config['min']) {
+                if (isset($config['min']) && is_numeric($config['min']) && $value_float < $config['min']) {
                     return false;
                 }
                 // Check max value
-                if (isset($config['max']) && is_numeric($config['max']) && $value > $config['max']) {
+                if (isset($config['max']) && is_numeric($config['max']) && $value_float > $config['max']) {
                     return false;
                 }
                 // Check step value
@@ -271,11 +275,19 @@ class AdvSet_SettingsManager {
                     // Calculate if value is a multiple of step
                     $step = $config['step'];
                     $min = isset($config['min']) ? $config['min'] : 0;
-                    $diff = $value - $min;
+                    $diff = $value_float - $min;
                     if (abs(round($diff / $step) - ($diff / $step)) > 0.000001) {
                         return false;
                     }
                 }
+
+                // Convert value to int if step is integer and value has no decimal places
+                if ((!isset($config['step']) || (int)$config['step'] == $config['step']) && (int)$value_float == $value_float) {
+                    $value = (int)$value_float;
+                } else {
+                    $value = $value_float;
+                }
+
                 return true;
                 
             case 'color':
