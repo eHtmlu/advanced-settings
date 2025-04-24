@@ -91,9 +91,14 @@ advset_register_feature([
         return empty($settings['enable']) ? null : $settings;
     },
     'execution_handler' => function($settings) {
-        if (!empty($settings['enable'])) {
+        add_action('init', function() {
             delete_option('advset_guide_shown');
-        }
+            advset_save_settings([
+                'advset.features.user_guide' => [
+                    'enable' => false,
+                ],
+            ]);
+        });
     },
     'priority' => 10,
 ]);
