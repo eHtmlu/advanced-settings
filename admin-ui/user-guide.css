@@ -1,9 +1,11 @@
 /* User Guide Tooltips */
 .advset-tooltip {
-    --arrow-size: .5em;
+    --arrow-size: .75em;
     --border-size: 2px;
-    --border-radius: .5em;
-    --arrow-offset: calc(0em + var(--border-radius));
+    --border-radius: .25em;
+    --border-color: color-mix(in srgb, var(--advset-color-primary), #fff 50%);
+    --background-color: color-mix(in srgb, var(--advset-color-primary), #fff 97%);
+    --arrow-offset: calc(1em + var(--border-radius));
     --arrow-offset-without-border: calc(var(--arrow-offset) - var(--border-size));
 
     --tooltip-offset-top: calc(var(--bindto-y) + var(--arrow-size));
@@ -13,8 +15,8 @@
     left: var(--tooltip-offset-left);
 
     position: fixed;
-    background: #fff;
-    border: var(--border-size) solid var(--advset-color-primary);
+    background: var(--background-color);
+    border: var(--border-size) solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 1.2em;
     box-shadow: 0 .25em .5em color-mix(in srgb, var(--advset-color-primary), transparent 85%);
@@ -41,7 +43,7 @@
     position: absolute;
     border-left: var(--arrow-size) solid transparent;
     border-right: var(--arrow-size) solid transparent;
-    border-bottom: var(--arrow-size) solid var(--advset-color-primary);
+    border-bottom: var(--arrow-size) solid var(--border-color);
 }
 
 .advset-tooltip::after {
@@ -49,7 +51,7 @@
     position: absolute;
     border-left: calc(var(--arrow-size) - var(--border-size)) solid transparent;
     border-right: calc(var(--arrow-size) - var(--border-size)) solid transparent;
-    border-bottom: calc(var(--arrow-size) - var(--border-size)) solid #fff;
+    border-bottom: calc(var(--arrow-size) - var(--border-size)) solid var(--background-color);
 }
 
 .advset-tooltip--top-left-arrow {
