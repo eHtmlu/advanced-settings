@@ -348,7 +348,7 @@ advset_register_feature([
         return empty($settings['enable']) || empty($settings['text']) ? false : true;
     },
     'execution_handler' => function($settings) {
-        add_filter('excerpt_more', function($more) {
+        add_filter('excerpt_more', function($more) use($settings) {
             return '<a class="excerpt-read-more" href="' . esc_url( get_permalink() ) . '">'.esc_html($settings['text']).'</a>';
         });
     },
