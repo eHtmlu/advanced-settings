@@ -171,6 +171,28 @@ export function SettingComponentGeneric(props) {
             case 'week':
             case 'range':
                 const inputType = field.type;
+                const [timeoutId, setTimeoutId] = React.useState(null);
+                const [localValue, setLocalValue] = React.useState(fieldValue);
+
+                // Update local value when prop value changes
+                React.useEffect(() => {
+                    setLocalValue(fieldValue);
+                }, [fieldValue]);
+
+                const debouncedHandleChange = (newValue) => {
+                    setLocalValue(newValue);
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
+                    const newTimeoutId = setTimeout(() => {
+                        // Only save if the value has actually changed
+                        if (newValue !== fieldValue) {
+                            handleFieldChange(fieldId, newValue);
+                        }
+                    }, 3000);
+                    setTimeoutId(newTimeoutId);
+                };
+
                 return React.createElement('div', {
                     key: fieldId,
                     className: `advset-generic-field advset-generic-field-textual advset-generic-field-textual--${inputType}`
@@ -182,7 +204,7 @@ export function SettingComponentGeneric(props) {
                                 type: inputType,
                                 id: `${id}-${fieldId}`,
                                 className: 'advset-generic-field-textual-input',
-                                ...(typeof fieldValue === 'string' || typeof fieldValue === 'number' ? { value: fieldValue } : {value: ''}),
+                                value: localValue ?? '',
                                 ...(
                                     ['number', 'date', 'time', 'datetime-local', 'month', 'week', 'range'].includes(inputType) ? {
                                         ...(typeof field.min !== 'undefined' && { min: field.min }),
@@ -196,7 +218,16 @@ export function SettingComponentGeneric(props) {
                                     } : {}
                                 ),
                                 ...(field.placeholder ? { placeholder: field.placeholder } : {}),
-                                onChange: (e) => handleFieldChange(fieldId, e.target.value)
+                                onChange: (e) => debouncedHandleChange(e.target.value),
+                                onBlur: (e) => {
+                                    if (timeoutId) {
+                                        clearTimeout(timeoutId);
+                                    }
+                                    // Only save on blur if the value has actually changed
+                                    if (e.target.value !== fieldValue) {
+                                        handleFieldChange(fieldId, e.target.value);
+                                    }
+                                }
                             })
                         )
                     ),
