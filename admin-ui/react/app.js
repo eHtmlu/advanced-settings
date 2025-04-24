@@ -16,7 +16,7 @@ ComponentRegistry.register('generic', SettingComponentGeneric);
  * Main App Component
  */
 function App(props) {
-    const { items, categories, onSettingChange, onCategoryClick, settings, searchQuery } = props;
+    const { items, categories, onSettingChange, onCategoryClick, settings, searchQuery, activeCategory } = props;
     
     // Group items by category
     const itemsByCategory = {};
@@ -55,7 +55,8 @@ function App(props) {
                             onClick: (e) => {
                                 e.preventDefault();
                                 onCategoryClick(category.id);
-                            }
+                            },
+                            className: activeCategory === category.id ? 'is-active' : ''
                         }, 
                             React.createElement('span', {
                                 className: 'advset-category-icon',
@@ -238,6 +239,53 @@ const AdvSetModalApp = {
     },
 
     /**
+     * Setup scroll listener for category sections
+     */
+    setupScrollListener() {
+        // Remove existing listener if any
+        if (this.scrollContainer && this.scrollHandler) {
+            this.scrollContainer.removeEventListener('scroll', this.scrollHandler);
+        }
+
+        const container = this.container.querySelector('.advset-results-container');
+        if (!container) return;
+
+        this.scrollContainer = container;
+        this.checkVisibleCategory = () => {
+            const categories = container.querySelectorAll('.advset-category-section');
+            let activeCategory = null;
+            let smallestTop = -Infinity;
+
+            categories.forEach(category => {
+                const rect = category.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                const top = rect.top - containerRect.top;
+                const bottom = rect.bottom - containerRect.top;
+                const offset = 50;
+
+                // Wenn die Kategorie im oberen Bereich des Containers ist
+                if (top <= offset && top > smallestTop && bottom > offset) {
+                    smallestTop = top;
+                    activeCategory = category.id.replace('category-', '');
+                }
+            });
+
+            if (activeCategory !== this.state.activeCategory) {
+                this.setState({ activeCategory });
+            }
+        };
+
+        // Initial check
+        this.checkVisibleCategory();
+
+        // Create a bound scroll handler
+        this.scrollHandler = this.checkVisibleCategory.bind(this);
+        
+        // Add the scroll listener
+        container.addEventListener('scroll', this.scrollHandler);
+    },
+
+    /**
      * Update the application state and re-render
      * 
      * @param {Object} newState - The new state to merge with existing state
@@ -382,9 +430,13 @@ const AdvSetModalApp = {
                 onCategoryClick: this.scrollToCategory.bind(this),
                 settings: this.state.settings,
                 searchQuery: searchQuery,
+                activeCategory: this.state.activeCategory
             });
             
-            ReactDOM.render(appElement, this.container);
+            ReactDOM.render(appElement, this.container, () => {
+                // Setup scroll listener after React has rendered
+                this.setupScrollListener();
+            });
         } else {
             console.error('React or ReactDOM not loaded');
         }

@@ -45,7 +45,11 @@
 .advset-category-menu-item a:hover,
 .advset-category-menu-item a:focus-visible {
     background-color: var(--advset-color-base-85);
-    color: #1d2327;
+    color: inherit;
+}
+
+.advset-category-menu-item a.is-active {
+    background-color: var(--advset-color-base-85);
 }
 
 .advset-category-menu-item .advset-category-icon {
