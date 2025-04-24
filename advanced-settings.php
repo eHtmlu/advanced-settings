@@ -186,7 +186,7 @@ function advset_show_deprecated_features() {
 }
 
 function advset_cache_manager() {
-	require_once ADVSET_DIR . '/includes/cache-manager.php';
+	require_once ADVSET_DIR . '/includes/class.cache-manager.php';
 	return AdvSet_CacheManager::getInstance();
 }
 
@@ -195,7 +195,7 @@ function advset_cleanup_cache() {
 }
 
 function advset_settings_manager() {
-	require_once ADVSET_DIR . '/includes/settings-manager.php';
+	require_once ADVSET_DIR . '/includes/class.settings-manager.php';
 	return AdvSet_SettingsManager::getInstance();
 }
 
@@ -204,7 +204,7 @@ function advset_save_settings($settings, $return_change_status = false) {
 }
 
 function advset_feature_manager() {
-	require_once ADVSET_DIR . '/includes/feature-manager.php';
+	require_once ADVSET_DIR . '/includes/class.feature-manager.php';
 	return AdvSet_FeatureManager::getInstance();
 }
 
