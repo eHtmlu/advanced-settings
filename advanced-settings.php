@@ -66,8 +66,7 @@ add_action('plugins_loaded', 'advset_check_for_version_migrations', 10);
  */
 register_deactivation_hook(__FILE__, function() {
 	delete_option('advset_guide_shown');
-    require_once ADVSET_DIR . '/includes/cache-manager.php';
-    AdvSet_CacheManager::cleanup_cache();
+    advset_cleanup_cache();
 });
 
 
@@ -91,51 +90,11 @@ add_action('init', 'advset_load_admin_ui');
 
 
 /**
- * Categories and features
- */
-
-// Function to initialize management of categories and features (only when needed)
-function advset_init_categories_and_features() {
-	require_once ADVSET_DIR . '/includes/feature-manager.php';
-
-	// Load categories and features
-	require_once ADVSET_DIR . '/feature-setup/categories.php';
-	require_once ADVSET_DIR . '/feature-setup/features.php';
-
-
-	// Register categories in the init hook at the earliest, as translations must not be loaded earlier.
-	if (did_action('init')) {
-		do_action('advset_register_categories');
-	} else {
-		add_action('init', function() {
-			do_action('advset_register_categories');
-		});
-	}
-
-	// Register features immediately because we are already in or after the plugins_loaded hook
-	do_action('advset_register_features');
-}
-
-
-
-
-
-/**
  * API
  */
 
 // Load API endpoints
 function advset_load_api_endpoints() {
-
-	// Initialize categories and features
-	advset_init_categories_and_features();
-
-	// Regenerate cache file when settings are saved
-	add_action('advset_after_save_settings', function() {
-		require_once ADVSET_DIR . '/includes/cache-manager.php';
-		AdvSet_CacheManager::generate_cache_file();
-	});
-
 	require_once ADVSET_DIR . '/includes/api-endpoints.php';
 }
 add_action('rest_api_init', 'advset_load_api_endpoints');
@@ -194,14 +153,10 @@ add_action('plugins_loaded', function() {
 		}
 	}
 
-	// If we get here, cache is invalid or missing
-	// Load cache manager and try to regenerate/execute
-	require_once ADVSET_DIR . '/includes/cache-manager.php';
-
 	// Try to generate cache file
-	if (!AdvSet_CacheManager::generate_cache_file() || !(@include_once ADVSET_CACHE_FILE)) {
+	if (!advset_cache_manager()->generate_cache_file() || !(@include_once ADVSET_CACHE_FILE)) {
 		// Fallback: Execute features directly
-		AdvSet_CacheManager::execute_active_features_fallback();
+		advset_cache_manager()->execute_active_features_fallback();
 	}
 });
 
@@ -219,15 +174,66 @@ function advset_is_admin_area() {
 }
 
 // Get settings
-function advset_settings($id = null) {
+function advset_settings($id = null, $default = null) {
 	$settings = get_option('advanced_settings_settings', []);
-	return $id ? (isset($settings[$id]) ? $settings[$id] : null) : $settings;
+	return $id ? (isset($settings[$id]) ? $settings[$id] : $default) : $settings;
 }
 
 // Check if deprecated features are enabled
 function advset_show_deprecated_features() {
-	$show_deprecated = advset_settings('advset.features.show_deprecated');
+	$show_deprecated = advset_settings('advset.features.show_deprecated', false);
 	return $show_deprecated && !empty($show_deprecated['enable']);
+}
+
+function advset_cache_manager() {
+	require_once ADVSET_DIR . '/includes/cache-manager.php';
+	return AdvSet_CacheManager::getInstance();
+}
+
+function advset_cleanup_cache() {
+	return advset_cache_manager()->cleanup_cache();
+}
+
+function advset_settings_manager() {
+	require_once ADVSET_DIR . '/includes/settings-manager.php';
+	return AdvSet_SettingsManager::getInstance();
+}
+
+function advset_save_settings($settings, $return_change_status = false) {
+	return advset_settings_manager()->save_settings($settings, $return_change_status);
+}
+
+function advset_feature_manager() {
+	require_once ADVSET_DIR . '/includes/feature-manager.php';
+	return AdvSet_FeatureManager::getInstance();
+}
+
+function advset_register_category($category) {
+	return advset_feature_manager()->register_category($category);
+}
+
+function advset_register_feature($feature) {
+	return advset_feature_manager()->register_feature($feature);
+}
+
+function advset_get_categories() {
+	return advset_feature_manager()->get_categories();
+}
+
+function advset_get_features() {
+	return advset_feature_manager()->get_features();
+}
+
+function advset_get_category($id) {
+	return advset_feature_manager()->get_category($id);
+}
+
+function advset_get_feature($id) {
+	return advset_feature_manager()->get_feature($id);
+}
+
+function advset_get_features_by_category($category_id) {
+	return advset_feature_manager()->get_features_by_category($category_id);
 }
 
 

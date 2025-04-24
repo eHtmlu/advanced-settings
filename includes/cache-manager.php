@@ -9,13 +9,26 @@
 if (!defined('ABSPATH')) exit;
 
 class AdvSet_CacheManager {
+
+    private function __construct() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static function getInstance() {
+        static $instance = null;
+        if ($instance === null) {
+            $instance = new self();
+        }
+        return $instance;
+    }
+
     /**
      * Get the source code of a function
      * 
      * @param callable $function The function to get the source from
      * @return string The function source code
      */
-    private static function get_function_source($function) {
+    private function get_function_source($function) {
         try {
             $reflector = new ReflectionFunction($function);
             $filename = $reflector->getFileName();
@@ -75,9 +88,8 @@ class AdvSet_CacheManager {
      * 
      * @return bool Whether the file was successfully generated
      */
-    public static function generate_cache_file() {
+    public function generate_cache_file() {
         $settings = get_option('advanced_settings_settings', []);
-        advset_init_categories_and_features();
         
         // Get all features that should be executed
         $active_features = [];
@@ -137,7 +149,7 @@ class AdvSet_CacheManager {
             if (is_string($handler)) {
                 $content .= "" . $handler . "();\n";
             } else {
-                $source = self::get_function_source($handler);
+                $source = $this->get_function_source($handler);
                 if ($source) {
                     // Add the function with settings
                     $content .= "call_user_func(" . preg_replace('/\n    /', "\n", $source) . ", " . preg_replace('/\n( +)?/', "\n$1$1", var_export($feature['settings'], true)) . ");\n";
@@ -160,9 +172,8 @@ class AdvSet_CacheManager {
     /**
      * Execute active features directly (fallback)
      */
-    public static function execute_active_features_fallback() {
+    public function execute_active_features_fallback() {
         $settings = get_option('advanced_settings_settings', []);
-        advset_init_categories_and_features();
         
         foreach ($settings as $feature_id => $feature_settings) {
             $feature = advset_get_feature($feature_id);
@@ -177,7 +188,7 @@ class AdvSet_CacheManager {
     /**
      * Clean up cache on plugin deactivation
      */
-    public static function cleanup_cache() {
+    public function cleanup_cache() {
         if (file_exists(ADVSET_CACHE_FILE)) {
             unlink(ADVSET_CACHE_FILE);
         }
