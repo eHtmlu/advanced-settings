@@ -58,7 +58,7 @@
             if (!adminBarIcon) return;
 
             createTooltip({
-                content: __('Click here to open Advanced Settings', 'advanced-settings'),
+                content: __('Click here to open Advanced Settings 3', 'advanced-settings'),
                 progress: '1/2',
                 isLast: false,
                 onBeforeNextClick: function() {
@@ -148,6 +148,7 @@
         updateTooltipPosition();
 
         setTimeout(() => {
+            updateTooltipPosition();
             tooltip.classList.add('advset-tooltip--visible');
         }, delay || 0);
 

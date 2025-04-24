@@ -1,10 +1,10 @@
 /* User Guide Tooltips */
 .advset-tooltip {
     --arrow-size: .75em;
-    --border-size: 2px;
+    --border-size: 1px;
     --border-radius: .25em;
     --border-color: color-mix(in srgb, var(--advset-color-primary), #fff 50%);
-    --background-color: color-mix(in srgb, var(--advset-color-primary), #fff 97%);
+    --background-color: color-mix(in srgb, var(--advset-color-primary), #fff 98%);
     --arrow-offset: calc(1em + var(--border-radius));
     --arrow-offset-without-border: calc(var(--arrow-offset) - var(--border-size));
 
@@ -24,6 +24,7 @@
     max-width: 30em;
     opacity: 0;
     transition: opacity .3s ease-out;
+    margin-left: -1px;
 }
 
 .advset-tooltip:not(.advset-tooltip--visible) {
