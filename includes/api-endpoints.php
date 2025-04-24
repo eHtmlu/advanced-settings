@@ -555,16 +555,14 @@ function advset_cleanup_feature_value($value, $feature) {
 }
 
 /**
- * Save settings
+ * Save settings directly without going through the REST API
  * 
- * @param WP_REST_Request $request The request object
- * @return WP_REST_Response|WP_Error Response or error
+ * @param array $settings The settings to save
+ * @return array|WP_Error Array with success status and message on success, WP_Error on failure
  */
-function advset_save_settings_callback($request) {
-    $settings = $request->get_param('settings');
-    
+function advset_save_settings($settings, $return_change_status = false) {
     if (!is_array($settings)) {
-        return new WP_Error('invalid_settings', 'Settings must be an object', ['status' => 400]);
+        return new WP_Error('invalid_settings', 'Settings must be an object');
     }
     
     $errors = [];
@@ -653,33 +651,66 @@ function advset_save_settings_callback($request) {
     
     if (!empty($errors)) {
         return new WP_Error('validation_error', 'Some settings could not be updated', [
-            'status' => 400,
-            'errors' => $errors
+            'errors' => $errors,
         ]);
     }
     
     // Check if settings have actually changed
     if (serialize($new_settings) === serialize($current_settings)) {
-        return new WP_REST_Response([
-            'success' => true,
-            'message' => 'Settings are unchanged',
-            'settings' => (object) $new_settings
-        ], 200);
+        if ($return_change_status) {
+            return [
+                'changed' => false,
+                'settings' => $new_settings,
+            ];
+        } else {
+            return $current_settings;
+        }
     }
     
     // Try to save the settings
     $updated = update_option('advanced_settings_settings', $new_settings);
     
     if (!$updated) {
-        return new WP_Error('save_failed', 'Failed to save settings', ['status' => 500]);
+        return new WP_Error('save_failed', 'Failed to save settings');
     }
     
     // Allow plugins to react to saved settings
     do_action('advset_after_save_settings', $new_settings, $current_settings);
     
+    if ($return_change_status) {
+        return [
+            'changed' => true,
+            'settings' => $new_settings,
+        ];
+    } else {
+        return $new_settings;
+    }
+}
+
+/**
+ * Save settings
+ * 
+ * @param WP_REST_Request $request The request object
+ * @return WP_REST_Response|WP_Error Response or error
+ */
+function advset_save_settings_callback($request) {
+    $settings = $request->get_param('settings');
+    
+    // Use the direct save function
+    $result = advset_save_settings($settings, true);
+    
+    // Convert the result to a REST response
+    if (is_wp_error($result)) {
+        return new WP_Error(
+            $result->get_error_code(),
+            $result->get_error_message(),
+            array_merge(['status' => 400], $result->get_error_data() ?: [])
+        );
+    }
+    
     return new WP_REST_Response([
         'success' => true,
-        'message' => 'Settings updated successfully',
-        'settings' => (object) $new_settings
+        'message' => $result['changed'] ? 'Settings updated successfully' : 'Settings are unchanged',
+        'settings' => (object) $result['settings'],
     ], 200);
 }
