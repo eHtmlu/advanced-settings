@@ -103,10 +103,9 @@ Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/e
 
 == Screenshots ==
 
-1. Menu
-2. The admin page
-3. The Filters/Actions admin page
-
+1. Click on the icon in the admin bar to open the advanced settings
+2. Search for the features you are looking for
+3. Send a feature request if you are missing a feature
 
 == Changelog ==
 
