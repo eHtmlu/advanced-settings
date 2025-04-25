@@ -57,8 +57,6 @@ Here you will find a list of the features currently implemented:
 = Frontend =
 
 * Disable author pages
-
-
 * Automatically add FavIcon (when favicon.ico, favicon.png or favicon.svg exists in template folder)
 * Automatically add description meta tag using blog description and post excerpt (SEO)
 * Remove WordPress generator meta tag
@@ -75,6 +73,7 @@ Here you will find a list of the features currently implemented:
 * Automatically generate post thumbnail (from first image in post)
 * Protect email addresses from spam bots
 * Add Facebook Open Graph meta tags
+* Disable emoji image replacement
 
 = Editing =
 
