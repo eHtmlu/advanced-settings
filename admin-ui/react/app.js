@@ -214,7 +214,8 @@ const AdvSetModalApp = {
         isLoading: false,
         categories: [],
         settings: {}, // Store for settings values
-        activeCategory: null // Track active category for scrolling
+        activeCategory: null, // Track active category for scrolling
+        parsedSearchQuery: null // Cache for parsed search query
     },
 
     /**
@@ -296,13 +297,28 @@ const AdvSetModalApp = {
     },
 
     /**
+     * Perform local search on items
+     * 
+     * @param {string} query - The search query
+     */
+    performLocalSearch(query) {
+        const parsedSearchQuery = query ? parseSearchQuery(query) : null;
+        
+        this.setState({ 
+            searchQuery: query,
+            parsedSearchQuery,
+            items: this.filterItems(this.state.allItems, parsedSearchQuery)
+        });
+    },
+
+    /**
      * Filter items based on settings and search query
      * 
      * @param {Array} items - The items to filter
-     * @param {string} searchQuery - Optional search query
+     * @param {Object} parsedSearchQuery - The parsed search query
      * @returns {Array} - Filtered items
      */
-    filterItems(items, searchQuery = '') {
+    filterItems(items, parsedSearchQuery) {
         const showDeprecated = this.state.settings['advset.features.show_deprecated']?.enable;
         const showExperimental = this.state.settings['advset.features.show_experimental']?.enable;
         
@@ -317,7 +333,7 @@ const AdvSetModalApp = {
             }
 
             // If no search query, include the item
-            if (!searchQuery) {
+            if (!parsedSearchQuery) {
                 return true;
             }
 
@@ -338,7 +354,19 @@ const AdvSetModalApp = {
             }
             
             const searchText = searchTexts.join(' ').toLowerCase();
-            return searchText.includes(searchQuery.toLowerCase());
+
+            // Check if item matches all required terms
+            const matchesTerms = parsedSearchQuery.terms.every(term => 
+                searchText.includes(term)
+            );
+
+            // Check if item doesn't contain any excluded terms
+            const matchesExclusions = !parsedSearchQuery.exclusions.some(exclusion => 
+                searchText.includes(exclusion)
+            );
+
+            // Item must match all terms and no exclusions
+            return matchesTerms && matchesExclusions;
         });
     },
 
@@ -385,17 +413,6 @@ const AdvSetModalApp = {
             document.dispatchEvent(new CustomEvent('advset-hide-loading'));
             this.setState({ isLoading: false });
         }
-    },
-
-    /**
-     * Perform local search on items
-     * 
-     * @param {string} query - The search query
-     */
-    performLocalSearch(query) {
-        this.setState({ 
-            items: this.filterItems(this.state.allItems, query)
-        });
     },
 
     /**
@@ -561,6 +578,47 @@ const AdvSetModalApp = {
         }
     },
 };
+
+/**
+ * Parse search query into terms and exclusions
+ * 
+ * @param {string} query - The search query
+ * @returns {Object} - Object containing terms and exclusions
+ */
+function parseSearchQuery(query) {
+    const result = {
+        terms: [],
+        exclusions: []
+    };
+
+    // Remove extra spaces and normalize
+    query = query.trim().replace(/\s+/g, ' ');
+
+    // Extract terms and phrases (with optional minus)
+    const matches = query.match(/-?"[^"]+"|-[^\s]+|[^\s]+/g) || [];
+    
+    matches.forEach(match => {
+        if (match.startsWith('-')) {
+            // Handle exclusions
+            const exclusion = match.startsWith('-"') 
+                ? match.slice(2, -1) // Remove -" and "
+                : match.slice(1);    // Remove -
+            if (exclusion) {
+                result.exclusions.push(exclusion.toLowerCase());
+            }
+        } else {
+            // Handle regular terms
+            const term = match.startsWith('"') 
+                ? match.slice(1, -1) // Remove quotes
+                : match;
+            if (term) {
+                result.terms.push(term.toLowerCase());
+            }
+        }
+    });
+
+    return result;
+}
 
 // Export for use in other files
 export { AdvSetModalApp, App, ItemCard }; 
