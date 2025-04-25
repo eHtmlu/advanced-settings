@@ -1,4 +1,4 @@
-=== Advanced Settings ===
+=== Advanced Settings 3 ===
 Plugin Name: Advanced Settings
 Author: eHtmlu
 Contributors: eHtmlu, webarthur
