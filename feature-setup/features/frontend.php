@@ -458,7 +458,7 @@ advset_register_feature([
                     return implode('', $content);
                 }
                 else {
-                    return preg_replace_callback('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
+                    return preg_replace_callback('/((?:mailto\:)?[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', function($matches) {
                         static $cache = [];
                         $email = $matches[1];
                         
