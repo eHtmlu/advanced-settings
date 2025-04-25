@@ -4,7 +4,7 @@
 if (!defined('ABSPATH')) exit;
 
 // track_enqueued_styles
-if( !is_admin_area() ):
+if( !advset_is_admin_area() ):
 
 	// track
 	if (advset_option('track_enqueued_styles')) {

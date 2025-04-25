@@ -1,0 +1,261 @@
+/**
+ * Advanced Settings React App Styles
+ * 
+ * Main styles for the React-like application
+ */
+
+/* Import component styles */
+@import 'components/SettingComponentGeneric.css';
+
+/* React App Styles */
+.advset-react-app {
+    padding: 0;
+    display: flex;
+    height: 100%;
+}
+
+/* Category Sidebar */
+.advset-category-sidebar {
+    min-width: 10em;
+    flex-shrink: 0;
+    background-color: var(--advset-color-base-95);
+    border-right: 1px solid var(--advset-color-border);
+    position: sticky;
+}
+
+.advset-category-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.advset-category-menu-item {
+    margin: 0;
+}
+
+.advset-category-menu-item a {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    padding: .5em 1em;
+    text-decoration: none;
+    transition: background-color .3s, color .3s;
+}
+
+.advset-category-menu-item a:hover,
+.advset-category-menu-item a:focus-visible {
+    background-color: var(--advset-color-base-85);
+    color: inherit;
+}
+
+.advset-category-menu-item a.is-active {
+    background-color: var(--advset-color-base-85);
+}
+
+.advset-category-menu-item .advset-category-icon {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.advset-category-menu-item .advset-category-icon svg {
+    width: 1.25em;
+    height: 1.25em;
+    fill: currentColor;
+}
+
+.advset-category-menu-item .advset-category-text {
+    font-size: var(--advset-font-size-small);
+    letter-spacing: .03em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Results Container */
+.advset-results-container {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Category Section */
+
+.advset-category-section:last-child {
+    min-height: 100%;
+}
+
+.advset-category-title {
+    display: flex;
+    align-items: center;
+    gap: .25em;
+    position: sticky;
+    top: 0;
+    background-color: var(--advset-color-base);
+    background-clip: padding-box;
+    margin: 0;
+    padding: .5em 1em;
+    color: var(--advset-color-background);
+    border-bottom: 1px solid color-mix(in srgb, var(--advset-color-base), transparent 50%);
+    z-index: 10;
+}
+
+.advset-category-title .advset-category-icon {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.advset-category-title .advset-category-icon svg {
+    fill: currentColor;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.advset-category-title .advset-category-text {
+    font-size: var(--advset-font-size-small);
+    letter-spacing: .03em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.advset-results {
+    display: flex;
+    flex-direction: column;
+    padding: .5em 0 1.5em;
+}
+
+.advset-item {
+    padding: 1em 0;
+    margin: 0 1em;
+}
+
+.advset-item:not(:last-child) {
+    border-bottom: 1px solid var(--advset-color-border);
+}
+
+.advset-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5em;
+}
+
+.advset-item-path {
+    font-size: var(--advset-font-size-tiny);
+    color: var(--advset-color-base-70);
+}
+
+.advset-item-header h3 {
+    margin: 0;
+    font-size: var(--advset-font-size-medium);
+    font-weight: 600;
+}
+
+/* Notifications Container */
+.advset-notifications {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    max-width: 400px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Message Base Styles */
+.advset-message {
+    padding: .75em 1em;
+    border-radius: .25em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity .3s, transform .3s;
+    pointer-events: auto;
+}
+
+.advset-message.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Error Message */
+.advset-error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Success Message */
+.advset-success-message {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Badge styles */
+.advset-item-badges {
+    display: flex;
+    gap: .5em;
+    margin-bottom: 1em;
+}
+
+.advset-badge {
+    display: block;
+    padding: .25em .5em;
+    border-radius: .25em;
+    line-height: 1;
+    cursor: help;
+}
+
+.advset-badge-deprecated {
+    background-color: #fff3f3;
+    color: #dc3232;
+    border: 1px solid #ffcece;
+}
+
+.advset-badge-experimental {
+    background-color: #f0f6fc;
+    color: #0366d6;
+    border: 1px solid #c8e1ff;
+}
+
+.advset-badge > span {
+    font-size: var(--advset-font-size-tiny);
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    display: block;
+}
+
+/* ===== Custom Scrollbar ===== */
+.advset-results-container::-webkit-scrollbar {
+    width: .5em;
+}
+
+.advset-results-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.advset-results-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: .25em;
+}
+
+.advset-results-container::-webkit-scrollbar-thumb:hover,
+.advset-results-container::-webkit-scrollbar-thumb:focus-visible {
+    background: #a8a8a8;
+}
+
+
+.advset-feature-request-content {
+    padding: 5em 1em;
+    max-width: 30em;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.advset-feature-request-content h3 {
+    margin: 0;
+    font-size: var(--advset-font-size-large);
+    font-weight: 600;
+    color: var(--advset-color-primary);
+}
+

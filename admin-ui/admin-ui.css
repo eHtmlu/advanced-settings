@@ -1,0 +1,322 @@
+/**
+ * Advanced Settings Admin UI Styles
+ * 
+ * Main styles for the admin UI, including the admin bar icon and modal dialog
+ */
+
+/* ===== CSS Variables ===== */
+:root {
+    --advset-color-primary: rgb(255, 8, 188);
+    --advset-color-base: hsl(240, 15%, 20%);
+    --advset-color-base-30: hsl(240, 15%, 30%);
+    --advset-color-base-40: hsl(240, 15%, 40%);
+    --advset-color-base-50: hsl(240, 15%, 50%);
+    --advset-color-base-60: hsl(240, 15%, 60%);
+    --advset-color-base-70: hsl(240, 15%, 70%);
+    --advset-color-base-80: hsl(240, 15%, 80%);
+    --advset-color-base-85: hsl(240, 15%, 85%);
+    --advset-color-base-90: hsl(240, 15%, 90%);
+    --advset-color-base-95: hsl(240, 15%, 95%);
+    --advset-color-base-97: hsl(240, 15%, 97%);
+    --advset-color-background: var(--advset-color-base-95);
+    --advset-color-border: hsl(240, 15%, 85%);
+
+
+    --advset-color-text: #1d2327;
+    --advset-color-text-light: #666;
+    --advset-color-error: #d63638;
+    --advset-color-error-bg: #fcf0f1;
+    --advset-transition-duration: 0.3s;
+
+    --advset-font-size-tiny: calc(1em * 0.75); /* 12px */
+    --advset-font-size-small: calc(1em * 0.875); /* 14px */
+    --advset-font-size-medium: 1em; /* 16px */
+    --advset-font-size-large: calc(1em * 1.25); /* 20px */
+}
+
+/* ===== Admin Bar Icon ===== */
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-icon {
+    position: relative;
+    top: 2px;
+    margin-right: 0;
+}
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-icon svg {
+    fill: currentColor;
+}
+
+#wpadminbar > #wp-toolbar > #wp-admin-bar-root-default > #wp-admin-bar-advset-admin-icon .ab-item:not(:hover):not(:focus) .ab-icon svg {
+    opacity: 0.6;
+}
+
+/* ===== Reset for modal and inner elements ===== */
+.advset-setup {
+    all: revert;
+    font-size: initial;
+    font-weight: initial;
+    letter-spacing: initial;
+    line-height: initial;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    line-height: 1.4;
+    color: var(--advset-color-base);
+}
+
+.advset-setup *:not(:where(svg, path)),
+.advset-setup *::before,
+.advset-setup *::after,
+.advset-setup *::placeholder,
+.advset-setup input:where(
+    [type=color],
+    [type=date],
+    [type=datetime-local],
+    [type=datetime],
+    [type=email],
+    [type=month],
+    [type=number],
+    [type=password],
+    [type=search],
+    [type=tel],
+    [type=text],
+    [type=time],
+    [type=url],
+    [type=week]
+),
+.advset-setup input:has(:focus,:focus-visible):where(
+    [type=color],
+    [type=date],
+    [type=datetime-local],
+    [type=datetime],
+    [type=email],
+    [type=month],
+    [type=number],
+    [type=password],
+    [type=search],
+    [type=tel],
+    [type=text],
+    [type=time],
+    [type=url],
+    [type=week]
+),
+.advset-setup select,
+.advset-setup textarea {
+    all: revert;
+    color: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+}
+
+.advset-setup strong {
+    font-weight: 700;
+}
+
+.advset-setup a:focus {
+    box-shadow: initial;
+    outline: none;
+}
+
+/* ===== Modal Dialog ===== */
+.advset-modal {
+    border: none;
+    border-radius: .5em;
+    box-shadow: 0 1em 3em rgba(0, 0, 0, .5);
+    padding: 0;
+    max-width: 90%;
+    width: 60em;
+    height: 80vh;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.advset-modal a:hover,
+.advset-modal a:focus-visible {
+    color: var(--advset-color-primary);
+}
+
+.advset-modal *::placeholder {
+    color: var(--advset-color-base-70);
+}
+
+.advset-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+}
+
+.advset-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ===== Modal Header ===== */
+.advset-modal-header {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--advset-color-border);
+}
+
+.advset-modal-header-top {
+    padding: .75em 1em;
+    display: grid;
+    align-items: center;
+    background-color: var(--advset-color-background);
+    grid-template-columns: 1fr 1.5fr 1fr;
+}
+
+.advset-modal-search input {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 1.1em;
+    line-height: 1.2;
+    padding: .5em 1.2em;
+    margin: 0;
+    border: 1px solid var(--advset-color-base);
+    transition: border-color var(--advset-transition-duration);
+}
+
+.advset-modal-search input:focus {
+    outline: none;
+    border-color: var(--advset-color-primary);
+    box-shadow: 0 0 0 1px var(--advset-color-primary);
+}
+
+.advset-modal-header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.advset-modal-title {
+    margin: 0;
+    /* font-size: var(--advset-font-size-large); */
+    /* letter-spacing: .02em; */
+    font-weight: 600;
+    flex-grow: 1;text-transform: uppercase;
+    color: var(--advset-color-base-70);
+    font-size: var(--advset-font-size-medium);
+    align-self: start;
+    letter-spacing: .05em;
+}
+
+.advset-modal-close {
+    background: transparent;
+    border: none;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .25em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    transition: background-color var(--advset-transition-duration), color var(--advset-transition-duration);
+}
+
+.advset-modal-close svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.advset-modal-close svg path {
+    fill: currentColor;
+}
+
+.advset-modal-close:hover,
+.advset-modal-close:focus-visible {
+    background-color: #f0f0f1;
+    color: var(--advset-color-text);
+}
+
+/* ===== Modal Body ===== */
+.advset-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.advset-modal-body-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ===== Loading Animation ===== */
+.advset-modal-body-processindicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    display: none;
+    opacity: 0;
+    transition-property: opacity display overlay transform;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
+}
+
+.advset-modal-body-processindicator--processing {
+    display: flex;
+    opacity: 1;
+}
+
+@starting-style {
+    .advset-modal-body-processindicator {
+        opacity: 0;
+    }
+}
+
+.advset-modal-body-processindicator svg {
+    width: 10em;
+    height: 10em;
+}
+
+/* ===== Animations ===== */
+
+.advset-modal {
+    display: none;
+    opacity: 0;
+    transition-property: opacity display overlay transform;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
+    transform: translateY(1em) scale(.95);
+}
+
+.advset-modal[open] {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.advset-modal::backdrop {
+    transition-property: opacity display overlay;
+    transition-duration: var(--advset-transition-duration);
+    transition-behavior: allow-discrete;
+    opacity: 0;
+}
+
+.advset-modal[open]::backdrop {
+    opacity: 1;
+}
+
+@starting-style {
+    .advset-modal[open] {
+        opacity: 0;
+        transform: translateY(1em) scale(.95);
+    }
+    .advset-modal[open]::backdrop {
+        opacity: 0;
+    }
+}

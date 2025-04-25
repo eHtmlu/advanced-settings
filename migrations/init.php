@@ -1,11 +1,11 @@
 <?php defined('ABSPATH') or exit;
 
 // Cancel if required variables are not defined
-if (!isset($old_version) || !isset($new_version)) {
+if (!isset($old_version) || !defined('ADVSET_VERSION')) {
     return;
 }
 
-function advset_updates_execute($previous_installed_version, $current_installed_version) {
+function advset_run_version_migration($previous_installed_version, $current_installed_version) {
     $updates_dir = __DIR__ . '/';
     $files = scandir($updates_dir);
     $update_files = [];
@@ -61,4 +61,4 @@ function advset_updates_execute($previous_installed_version, $current_installed_
     }
 }
 
-advset_updates_execute($old_version, $new_version);
+advset_run_version_migration($old_version, ADVSET_VERSION);

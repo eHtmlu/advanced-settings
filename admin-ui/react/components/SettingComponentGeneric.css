@@ -1,0 +1,385 @@
+/**
+ * Component Styles
+ * 
+ * Styles for all UI components used in the Advanced Settings plugin
+ */
+
+
+.advset-generic-field {
+    --label-width: 25%;
+    --label-gap: 1em;
+}
+
+.advset-generic-field-textual-label,
+.advset-generic-field-select-label,
+.advset-generic-field-info-label {
+    width: var(--label-width);
+    flex: 0 0 var(--label-width);
+    /* padding-right: var(--label-gap); */
+}
+
+.advset-generic-field-textual-label + input,
+.advset-generic-field-select-label + select,
+.advset-generic-field-info-label + * {
+    /* width: calc(100% - var(--label-width)); */
+    max-width: calc(100% - var(--label-width));
+    flex: 1 1 calc(100% - var(--label-width));
+}
+
+
+.advset-generic-field-description:not(:where(.advset-generic-field-info-text)) {
+    font-size: var(--advset-font-size-small);
+    font-style: italic;
+    margin-block: 0;
+    margin-left: calc(var(--label-width) + var(--label-gap));
+    color: var(--advset-color-base-70);
+}
+
+
+
+/* ===== Toggle Component ===== */
+.advset-generic-field-toggle {
+    padding-left: 3.5em;
+}
+
+.advset-generic-field-toggle-container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.advset-generic-field-toggle-element {
+    position: relative;
+    display: inline-block;
+    width: 3em;
+    height: 1.5em;
+    margin-right: .5em;
+    margin-left: -3.5em;
+    flex: 0 0 3em;
+}
+
+.advset-generic-field-toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.advset-generic-field-toggle-element-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--advset-color-base-70);
+    transition: .3s;
+    border-radius: .75em;
+}
+
+.advset-generic-field-toggle-element-slider::before {
+    position: absolute;
+    content: "";
+    height: 1em;
+    width: 1em;
+    left: .25em;
+    bottom: .25em;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.advset-generic-field-toggle-input:checked + .advset-generic-field-toggle-element-slider {
+    background-color: var(--advset-color-primary);
+}
+
+.advset-generic-field-toggle-input:focus-visible + .advset-generic-field-toggle-element-slider {
+    box-shadow: 0 0 .125em .125em var(--advset-color-primary);
+}
+
+.advset-generic-field-toggle-input:checked + .advset-generic-field-toggle-element-slider::before {
+    transform: translateX(1.5em);
+}
+
+.advset-generic-field-toggle-label {
+    /* font-size: var(--advset-font-size-small);
+    color: #555; */
+    cursor: pointer;
+}
+
+.advset-generic-field-toggle-description {
+    margin-left: 0;
+}
+
+/* ===== Item Layout Improvements ===== */
+/* .advset-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .25em;
+}
+
+.advset-item-control {
+    margin-top: .5em;
+    padding-top: .5em;
+    border-top: 1px solid #eee;
+} */
+
+/* ===== Error Messages ===== */
+.advset-component-error {
+    color: #d63638;
+    background-color: #fcf0f1;
+    padding: .5em 1em;
+    border-radius: .25em;
+    margin: .25em 0;
+    font-size: var(--advset-font-size-tiny);
+}
+
+.advset-error-message {
+    color: #d63638;
+    background-color: #fcf0f1;
+    padding: .5em 1em;
+    border-radius: .25em;
+    margin-bottom: 1em;
+    font-size: var(--advset-font-size-tiny);
+    border-left: 4px solid #d63638;
+}
+
+
+
+/* ===== Generic Component ===== */
+.advset-generic {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.advset-generic-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.advset-generic-field-radio-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.advset-generic-field-radio-fieldset::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.advset-generic-field-radio-legend {
+    margin: 0;
+    padding: 0;
+    display: block;
+    padding-block: .5em;
+    border-block: 1px solid transparent;
+    width: var(--label-width);
+    float: left;
+    margin-right: var(--label-gap);
+}
+
+.advset-generic-field-radio-options {
+    display: grid;
+}
+
+.advset-generic-field-radio-option {
+    cursor: pointer;
+    padding: .5em 1em .5em 2.75em;
+    border: 1px solid var(--advset-color-base-70);
+    background-color: var(--advset-color-base-97);
+    border-bottom-width: 0;
+}
+
+.advset-generic-field-radio-option:first-child {
+    border-radius: .25em .25em 0 0;
+}
+
+.advset-generic-field-radio-option:last-child {
+    border-radius: 0 0 .25em .25em;
+    border-bottom-width: 1px;
+}
+
+.advset-generic-field-checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.advset-generic-field-radio-option input[type="radio"],
+.advset-generic-field-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    margin-right: 0.5em;
+    vertical-align: baseline;
+    display: inline-block;
+    border: 1px solid var(--advset-color-base);
+    background-color: var(--advset-color-base-97);
+    box-shadow: none;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: all .3s ease-in-out;
+}
+
+.advset-generic-field-radio-option input[type="radio"] {
+    border-radius: 50%;
+    margin-bottom: -0.25em;
+    margin-left: -1.75em;
+    background-color: #fff;
+}
+
+.advset-generic-field-radio-option input[type="radio"]:checked {
+    background-color: var(--advset-color-primary);
+    border-color: var(--advset-color-primary);
+}
+
+.advset-generic-field-radio-option input[type="radio"]:checked::before,
+.advset-generic-field-checkbox input[type="checkbox"]:checked::before {
+    content: none;
+}
+
+.advset-generic-field-radio-option input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--advset-color-background);
+    border-radius: 50%;
+}
+
+.advset-generic-field-checkbox input[type="checkbox"] {
+    border-radius: 0.25rem;
+    margin-bottom: -0.125em;
+}
+
+.advset-generic-field-checkbox input[type="checkbox"]:checked {
+    background-color: var(--advset-color-primary);
+    border-color: var(--advset-color-primary);
+}
+
+.advset-generic-field-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.4rem;
+    height: 0.75rem;
+    background: none;
+    border: 2px solid var(--advset-color-background);
+    border-top: 0;
+    border-left: 0;
+    transform: translate(-50%, -65%) rotate(45deg);
+}
+
+.advset-generic-field-radio-option input[type="radio"]:hover:not(:disabled),
+.advset-generic-field-checkbox input[type="checkbox"]:hover:not(:disabled) {
+    border-color: var(--advset-color-primary);
+}
+
+.advset-generic-field-radio-option input[type="radio"]:focus-visible,
+.advset-generic-field-checkbox input[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--advset-color-primary);
+}
+
+.advset-generic-field-radio-option input[type="radio"]:disabled,
+.advset-generic-field-checkbox input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.advset-generic-field-radio-option-description {
+    margin: 0;
+    color: var(--advset-color-base-70);
+    font-size: var(--advset-font-size-small);
+    font-style: italic;
+}
+
+.advset-generic-field-checkbox-description {
+    margin-left: 0;
+}
+
+.advset-generic-field-select-container {
+    display: flex;
+    align-items: center;
+    gap: var(--label-gap);
+}
+
+.advset-generic-field-select-input-container {
+    width: 100%;
+}
+
+.advset-generic-field-select select {
+    appearance: none;
+    width: 100%;
+    max-width: none;
+    padding: .5em 1em;
+    border: 1px solid var(--advset-color-base-70);
+    border-radius: .25em;
+    background-color: var(--advset-color-base-97);
+    color: var(--advset-color-text);
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.advset-generic-field-textual-container {
+    display: flex;
+    align-items: center;
+    gap: var(--label-gap);
+}
+
+.advset-generic-field-textual-input-container {
+    width: 100%;
+    flex: 1;
+}
+
+.advset-generic-field-textual input,
+.advset-generic-field-textual input:focus {
+    width: 100%;
+    max-width: none;
+    padding: .5em 1em;
+    border: 1px solid var(--advset-color-base-70);
+    border-radius: .25em;
+    background-color: var(--advset-color-base-97);
+    color: var(--advset-color-base);
+    font-size: inherit;
+    box-sizing: border-box;
+    height: calc(2px + 1em + 1lh);
+    outline-color: var(--advset-color-primary);
+    accent-color: var(--advset-color-primary);
+}
+
+.advset-generic-field-textual input:invalid:not(:focus) {
+    border-color: #d63638;
+    outline: 4px solid #d63638;
+}
+
+.advset-generic-field-textual--color input {
+    padding: 0;
+    width: 5em;
+    height: calc(2px + 1em + 1lh);
+}
+
+.advset-generic-field-textual--range input {
+    padding-inline: 0;
+}
+
+
+.advset-generic-field-info > :first-child {
+    margin-top: 0;
+}
+
+.advset-generic-field-info > :last-child {
+    margin-bottom: 0;
+}
+
