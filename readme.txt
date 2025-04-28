@@ -117,6 +117,9 @@ Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/e
 * Improved user guidance with interactive manual
 * Numerous code optimizations and bugfixes
 
+= 2.10.0 - 2025-04-10 =
+* New feature to protect email addresses from spam bots (HTML entities & JavaScript)
+
 = 2.9.0 - 2025-03-13 =
 * New feature to remove default WordPress favicon
 * New feature to prevent auto core update emails
