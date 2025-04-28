@@ -2,7 +2,8 @@
 
 /**
  * This file is a compatibility layer for the old version of the plugin.
- * It will be removed in the future.
+ * It can be removed once all active installations have been updated to at least version 3.0.0.
+ * If this file is not here anymore, an update from an older version will deactivate the plugin and you have to reactivate it manually.
  */
 
 add_action('plugins_loaded', function() {
