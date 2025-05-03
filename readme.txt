@@ -25,7 +25,7 @@ Advanced Settings is a powerful WordPress plugin that provides settings you woul
 
 --
 
-== 🩷 REQUEST A FEATURE ==
+== 🩷 FEATURE REQUESTS ARE WELCOME ==
 
 **Advanced Settings 3 is designed to help as many people as possible. If you have a feature in mind that you'd like to see included in this plugin, let us know.**
 
