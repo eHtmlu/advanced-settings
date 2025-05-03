@@ -29,6 +29,12 @@ define('ADVSET_FILE', __FILE__);
 // Define plugin version if not already defined
 if (!defined('ADVSET_VERSION')) {
     $plugin_data_loaded = isset($plugin_data['Version'], $plugin_data['TextDomain']) && $plugin_data['TextDomain'] === 'advanced-settings';
+	
+    // The get_plugin_data() function is only automatically available here from WordPress version 6.8, so we have to load it manually for older versions.
+    if (!function_exists('get_plugin_data')) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
     $plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__);
     define('ADVSET_VERSION', $plugin_data['Version']);
 }
