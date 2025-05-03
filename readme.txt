@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
 Tested up to: 6.8
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,12 @@ Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/e
 3. Send a feature request if you are missing a feature
 
 == Changelog ==
+
+= 3.0.1 - 2025-05-03 =
+* Fixed a critical bug that occurred with WordPress versions prior to 8.6
+* Fixed a settings loading error that occurred on WordPress installations that are not in the document root
+* Fixed an issue that disabled automatic updates of the plugin if it was active.
+* Code optimizations
 
 = 3.0.0 - 2025-04-25 =
 * Complete redesign of admin interface with modern design
