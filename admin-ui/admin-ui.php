@@ -143,7 +143,7 @@ add_action('wp_enqueue_scripts', 'advset_admin_ui_scripts');
 
 
 /**
- * Ensure wp-api is available for administrators
+ * Ensure wp-api (including wpApiSettings) is available for administrators
  */
 function advset_api_settings() {
     // Only load for administrators
