@@ -379,7 +379,7 @@ const AdvSetModalApp = {
         this.setState({ isLoading: true });
         
         try {
-            const response = await fetch(`/wp-json/advanced-settings/v1/features`, {
+            const response = await fetch(wpApiSettings.root + 'advanced-settings/v1/features', {
                 headers: {
                     'X-WP-Nonce': wpApiSettings.nonce
                 }
@@ -542,7 +542,7 @@ const AdvSetModalApp = {
      */
     async saveSetting(settingId, value) {
         try {
-            const response = await fetch('/wp-json/advanced-settings/v1/settings', {
+            const response = await fetch(wpApiSettings.root + 'advanced-settings/v1/settings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
