@@ -17,6 +17,10 @@ Adds settings that you might expect to find in the WordPress core.
 
 Advanced Settings is a powerful WordPress plugin that provides settings you would expect to find in the WordPress core. It is lightweight, performant and offers a modern, fast and user-friendly interface.
 
+== ⭐️ 2025 - COMPLETELY REVISED ==
+
+Advanced Settings 3 is a brand new and completely revised version. **Most of the reviews refer to a long outdated version (2017 and before)**. Please evaluate the plugin yourself and perhaps you could help with your own review so that the reviews reflect the current state of the plugin again.
+
 --
 
 == 🚀 PERFORMANCE ==
