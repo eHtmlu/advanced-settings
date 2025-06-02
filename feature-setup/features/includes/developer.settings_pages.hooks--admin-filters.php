@@ -45,17 +45,30 @@
 
     <script>
     jQuery('#advset_filters input').click(function(){
+        const checkbox = this;
+        let originalState = checkbox.checked;
+        
         jQuery.post( '<?php echo admin_url('admin-ajax.php'); ?>',
             {
-                'action':'advset_filters',
-                'tag':this.name,
-                'function':this.value,
-                'enable':this.checked
+                'action': 'advset_filters',
+                'tag': checkbox.name,
+                'function': checkbox.value,
+                'enable': checkbox.checked,
+                'nonce': '<?php echo wp_create_nonce('advset_filters_nonce'); ?>',
             },
             function(response){
-                //alert('The server responded: ' + response);
+                if (!response.success) {
+                    alert(response.data);
+                    checkbox.checked = !originalState;
+                    return;
+                }
+
+                originalState = checkbox.checked;
             }
-        );
+        ).fail(function() {
+            alert('Connection error');
+            checkbox.checked = !originalState;
+        });
     });
     </script>
 

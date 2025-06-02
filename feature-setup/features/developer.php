@@ -259,24 +259,30 @@ advset_register_feature([
         });
 
         add_action('wp_ajax_advset_filters', function() {
-            //echo $_POST['tag'].' - '.$_POST['function'];
-
             // security
-            if( !current_user_can('manage_options') )
-                return false;
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error('Unauthorized');
+                return;
+            }
 
-            $remove_filters = (array) get_option( 'advset_remove_filters' );
+            if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'advset_filters_nonce')) {
+                wp_send_json_error('Invalid nonce');
+                return;
+            }
+
+            $remove_filters = (array) get_option('advset_remove_filters');
             $tag = (string)$_POST['tag'];
             $function = (string)$_POST['function'];
 
-            if( $_POST['enable']=='true' )
+            if ($_POST['enable'] == 'true') {
                 unset($remove_filters[$tag][$function]);
-            else if ( $_POST['enable']=='false' )
+            } else if ($_POST['enable'] == 'false') {
                 $remove_filters[$tag][$function] = 1;
+            }
 
-            update_option( 'advset_remove_filters', $remove_filters );
+            update_option('advset_remove_filters', $remove_filters);
 
-            return true;
+            wp_send_json_success();
         });
     },
     'priority' => 10,
