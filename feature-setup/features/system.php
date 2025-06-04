@@ -129,7 +129,7 @@ advset_register_feature([
             define('CORE_UPGRADE_SKIP_NEW_BUNDLED', true);
         }
     },
-    'priority' => 30,
+    'priority' => 20,
 ]);
 
 
