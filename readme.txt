@@ -19,15 +19,15 @@ Advanced Settings is a powerful WordPress plugin that provides settings you woul
 
 **🚀 PERFORMANCE**
 Advanced Settings 3 is optimized for extreme performance. It even loads only necessary PHP.
-[→ details in FAQ](#will%20the%20plugin%20become%20slower%20with%20more%20features%3F)
+[→ details in FAQ](https://wordpress.org/plugins/advanced-settings#will%20the%20plugin%20become%20slower%20with%20more%20features%3F)
 
 **🔒 SECURITY**
 Advanced Settings 3 has been independently reviewed for security vulnerabilities via Patchstack.
-[→ details in FAQ](how%20is%20the%20security%20of%20the%20plugin%20ensured%3F)
+[→ details in FAQ](https://wordpress.org/plugins/advanced-settings#how%20is%20the%20security%20of%20the%20plugin%20ensured%3F)
 
 **✳️ INFO ABOUT BAD REVIEWS**
 2 bad reviews occurred in 2017 because outdated PHP versions were used, but can't happen again.
-[→ details in FAQ](#what%20caused%20the%20two%20bad%20ratings%3F)
+[→ details in FAQ](https://wordpress.org/plugins/advanced-settings#what%20caused%20the%20two%20bad%20ratings%3F)
 
 --
 
