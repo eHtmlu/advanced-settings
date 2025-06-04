@@ -17,29 +17,24 @@ Adds settings that you might expect to find in the WordPress core.
 
 Advanced Settings is a powerful WordPress plugin that provides settings you would expect to find in the WordPress core. It is lightweight, performant and offers a modern, fast and user-friendly interface.
 
-== ⭐️ 2025 - COMPLETELY REVISED ==
+**🚀 PERFORMANCE**
+Advanced Settings 3 is optimized for extreme performance. It even loads only necessary PHP.
+[→ details in FAQ](#will%20the%20plugin%20become%20slower%20with%20more%20features%3F)
 
-Advanced Settings 3 is a brand new and completely revised version. **Most of the reviews refer to a long outdated version (2017 and before)**. Please evaluate the plugin yourself and perhaps you could help with your own review so that the reviews reflect the current state of the plugin again.
+**🔒 SECURITY**
+Advanced Settings 3 has been independently reviewed for security vulnerabilities via Patchstack.
+[→ details in FAQ](how%20is%20the%20security%20of%20the%20plugin%20ensured%3F)
 
---
-
-== 🚀 PERFORMANCE ==
-
-**Advanced Settings 3 is optimized for extreme performance. It only loads what's necessary. You won't be able to measure any difference in loading speed, as it usually only loads a few lines of code.**
-
---
-
-== 🩷 FEATURE REQUESTS ARE WELCOME ==
-
-**Advanced Settings 3 is designed to help as many people as possible. If you have a feature in mind that you'd like to see included in this plugin, let us know.**
+**✳️ INFO ABOUT BAD REVIEWS**
+2 bad reviews occurred in 2017 because outdated PHP versions were used, but can't happen again.
+[→ details in FAQ](#what%20caused%20the%20two%20bad%20ratings%3F)
 
 --
 
-== ⚙️ FEATURES ==
+== FEATURES ==
 
-**Advanced Settings 3 is brand new and the range of features is only just beginning to grow. Nevertheless, the plugin always remains extremely fast thanks to the sophisticated cache system, which only loads those features that are actually in use.**
-
-Here you will find a list of the features currently implemented:
+**🩷 FEATURE REQUESTS ARE WELCOME**
+Advanced Settings 3 was developed to help as many users as possible. If you'd like to see a feature added to this plugin, please let us know. Don't worry, we'll keep the plugin fast and lean; this is a high priority for us. We'll only implement features that don't conflict with this.
 
 = Dashboard =
 
@@ -104,6 +99,38 @@ Contribute on github: [github.com/eHtmlu/advanced-settings](https://github.com/e
 3. Go to Settings > Advanced in the WordPress admin menu
 4. Use the tab navigation to access different settings sections
 5. Configure your desired settings in each section
+
+== Frequently Asked Questions ==
+
+= Will the plugin become slower with more features? =
+
+**Short answer:**
+No, due to the way the plugin is designed, it would still be just as fast even with thousands of features. Don't worry, we don't add thousands of features.
+
+**Detailed answer:**
+Advanced Settings 3 works as follows: Only when you open the plugin's settings window does the plugin recognise which settings are actually available. When saving, only the activated settings are written to a separate cache file. Only this cache file is then taken into account during operation. This means that slowdowns can only occur due to **active** features. However, as some features deactivate WordPress functions, the plugin can actually make WordPress even faster than in the standard configuration.
+
+= How is the security of the plugin ensured? =
+
+**Short answer:**
+The experienced plugin developer is additionally supported by the [Patchstack](https://patchstack.com/) community to ensure the security of the plugin.
+
+**Detailed answer:**
+The plugin is currently maintained by senior web developer Helmut Wandl, who has over 25 years of experience in web development. He is therefore familiar with various common security concepts for many years.
+
+In addition, the plugin is monitored by the [Patchstack](https://patchstack.com/) community, and if security vulnerabilities are discovered, they are reported and fixed by the plugin developer immediately or as soon as possible, depending on the urgency.
+
+= What caused the two bad ratings? =
+
+**Short answer:**
+The bad ratings arose because a plugin update at the time no longer supported a very outdated PHP version, which unfortunately a few users were still using. However, due to a new WordPress feature, this cannot happen again.
+
+**Detailed answer:**
+The plugin developer at the time had decided in 2017 to use PHP features that were introduced with PHP 5.4. Support for the previous version, PHP 5.3, had already been officially discontinued by The PHP Group 3 years earlier. It was therefore natural to assume that all websites actually in use had already been converted to PHP 5.4 or newer. Unfortunately, this was not the case for a few of them.
+
+Nowadays, you can specify in the plugin metadata which PHP version is required as a minimum for the plugin, so that users can only update the plugin if they are using the correct PHP version. While this WordPress feature came too late to prevent the problems and the negative reviews, this problem can fortunately be prevented in the future.
+
+It would be great if you could contribute with your own review to ensure that the ratings reflect the current state of the plugin.
 
 == Screenshots ==
 
