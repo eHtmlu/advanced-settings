@@ -120,6 +120,10 @@ The plugin is currently maintained by senior web developer Helmut Wandl, who has
 
 In addition, the plugin is monitored by the [Patchstack](https://patchstack.com/) community, and if security vulnerabilities are discovered, they are reported and fixed by the plugin developer immediately or as soon as possible, depending on the urgency.
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/94cb997e-8daa-4964-8a6a-bdb0ff9bf461)
+
 = What caused the two bad ratings? =
 
 **Short answer:**
