@@ -235,6 +235,32 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'frontend.oembed.disable',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Disable auto-embed of external content', 'advanced-settings'),
+                'description' => __('Disables WordPress oEmbed, which automatically converts URLs into embedded content.', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        remove_action('wp_head', 'wp_oembed_add_discovery_links');
+        remove_action('wp_head', 'wp_oembed_add_host_js');
+        remove_action('wp_head', 'rest_output_link_wp_head');
+        remove_action('rest_api_init', 'wp_oembed_register_route');
+        remove_filter('the_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
+        remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
+        add_filter('embed_oembed_discover', '__return_false');
+    },
+    'priority' => 20,
+]);
+
+
+
+advset_register_feature([
     'id' => 'frontend.thumbnails.enable_support',
     'category' => 'frontend',
     'ui_config' => fn() => [
