@@ -133,6 +133,26 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'frontend.http_headers.remove_php_version',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Remove PHP version from HTTP headers', 'advanced-settings'),
+                'description' => __('Removes the PHP version from the HTTP headers of the website', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        header_remove('X-Powered-By');
+    },
+    'priority' => 10,
+]);
+
+
+
+advset_register_feature([
     'id' => 'frontend.meta.auto_description',
     'category' => 'frontend',
     'ui_config' => fn() => [
