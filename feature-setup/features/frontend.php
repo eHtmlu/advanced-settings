@@ -119,6 +119,7 @@ advset_register_feature([
             'enable' => [
                 'type' => 'toggle',
                 'label' => __('Remove generator meta tag', 'advanced-settings'),
+                'description' => __('Removes the WordPress version from the head section of the website', 'advanced-settings'),
             ],
         ]
     ],
