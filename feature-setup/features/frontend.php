@@ -153,6 +153,36 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'frontend.http_headers.add_security_headers',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Add security headers', 'advanced-settings'),
+                /* translators: %s is a link to securityheaders.com */
+                'descriptionHtml' => sprintf(__('Adds various security headers to HTTP responses. You can check your website\'s security headers with %s.', 'advanced-settings'), '<a href="https://securityheaders.com/?q=' . rawurlencode(get_home_url()) . '&hide=on&followRedirects=on" target="_blank">securityheaders.com</a>'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if ( advset_is_admin_area() ) return;
+        add_action('send_headers', function() {
+            header('X-Content-Type-Options: nosniff');
+            header('X-Frame-Options: SAMEORIGIN');
+            header('X-XSS-Protection: 1; mode=block');
+            header('Referrer-Policy: strict-origin-when-cross-origin');
+            header('Content-Security-Policy: object-src \'none\';');
+            header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
+            header('Permissions-Policy: accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=(),interest-cohort=()');
+        });
+    },
+    'priority' => 50,
+]);
+
+
+
+advset_register_feature([
     'id' => 'frontend.meta.auto_description',
     'category' => 'frontend',
     'ui_config' => fn() => [
