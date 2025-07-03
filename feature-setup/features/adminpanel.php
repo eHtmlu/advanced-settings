@@ -104,7 +104,8 @@ advset_register_feature([
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
-                'label' => __('Custom admin panel branding', 'advanced-settings'),
+                'label' => __('Custom branding', 'advanced-settings'),
+                'description' => __('Add your own logo and text to the login and admin panel.', 'advanced-settings'),
             ],
             'login_logo' => [
                 'type' => 'text',
@@ -152,6 +153,9 @@ advset_register_feature([
             ],
         ]
     ],
+    'handler_cleanup' => function($settings) {
+        return empty($settings['enable']) ? null : $settings;
+    },
     'execution_handler' => function($settings) {
         if ( empty($settings['enable']) ) {
             return;
