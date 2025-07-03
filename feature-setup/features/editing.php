@@ -11,6 +11,103 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
+    'id' => 'editing.media.enable_svg',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Allow SVG upload for admins', 'advanced-settings'),
+                'description' => __('To keep the plugin lightweight, the SVG security checks in this feature are very limited. Therefore, this feature is only available to administrators.', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if (!current_user_can('administrator')) {
+            return;
+        }
+        
+        add_filter('upload_mimes', function($mimes) {
+            $mimes['svg'] = 'image/svg+xml';
+            $mimes['svgz'] = 'image/svg+xml';
+            return $mimes;
+        });
+        
+        add_filter('wp_handle_upload_prefilter', function($file) {
+            if ($file['type'] !== 'image/svg+xml') {
+                return $file;
+            }
+            
+            $file_content = file_get_contents($file['tmp_name']);
+
+            // 1. Check if the file is empty
+            if (empty($file_content)) {
+                $file['error'] = __('Empty SVG file', 'advanced-settings');
+                return $file;
+            }
+
+            // 2. Remove XML declaration and Doctype for better compatibility
+            $clean_content = preg_replace('/<\?xml\b[^>]*>\s*/i', '', $file_content);
+            $clean_content = preg_replace('/<!DOCTYPE[^>[]*(\[[^]]*\])?[^>]*>\s*/is', '', $clean_content);
+            
+            // 3. XXE-Protection (critical!)
+            $entity_loader_state = libxml_disable_entity_loader(true);
+            libxml_use_internal_errors(true);
+            libxml_clear_errors();
+            
+            $svg = @simplexml_load_string($clean_content);
+            
+            if ($svg === false) {
+                $errors = libxml_get_errors();
+                $first_error = !empty($errors[0]) ? $errors[0]->message : __('Unknown error', 'advanced-settings');
+                libxml_clear_errors();
+                /* translators: %s is the first error message from libxml */
+                $file['error'] = sprintf(__('Invalid SVG: %s', 'advanced-settings'), esc_html($first_error));
+                return $file;
+            }
+
+            // 4. Simple, but effective security checks
+            $unsafe_patterns = [
+                '/<script/i', 
+                '/\bon\w+\s*=/i', 
+                '/javascript:\s*[a-z]+/i',
+                '/<!ENTITY/i',
+                '/<object/i',
+                '/<iframe/i',
+                '/<embed/i',
+                '/href\s*=\s*["\']\s*javascript:/i',
+                '/xlink:href\s*=\s*["\']\s*javascript:/i',
+                '/style\s*=\s*["\'][^"]*expression\s*\(/i',
+                '/style\s*=\s*["\'][^"]*url\s*\(\s*javascript:/i',
+                '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is',
+            ];
+            
+            foreach ($unsafe_patterns as $pattern) {
+                if (preg_match($pattern, $file_content)) {
+                    $file['error'] = __('SVG security check failed: Potential dangerous element detected.', 'advanced-settings') . ' ' . $pattern;
+                    return $file;
+                }
+            }
+    
+            // 5. Additional protection against Base64-Encoded malicious code
+            if (preg_match('/base64\s*[,;]/i', $file_content)) {
+                $file['error'] = __('SVG security check failed: Base64 encoding not allowed.', 'advanced-settings');
+                return $file;
+            }
+
+            // Reset libxml state
+            libxml_disable_entity_loader($entity_loader_state);
+            libxml_clear_errors();
+
+            return $file;
+        });
+    },
+    'priority' => 10,
+]);
+
+
+
+advset_register_feature([
     'id' => 'editing.image.jpeg_quality',
     'category' => 'editing',
     'ui_config' => fn() => [
