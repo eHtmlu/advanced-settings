@@ -72,6 +72,32 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'dashboard.widgets.remove_default',
+    'category' => 'dashboard',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Remove default dashboard widgets', 'advanced-settings'),
+                'description' => __('Hide Quick Draft, Activity, and other default dashboard widgets', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_action('wp_dashboard_setup', function() {
+            remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
+            remove_meta_box('dashboard_primary', 'dashboard', 'side');
+            remove_meta_box('dashboard_activity', 'dashboard', 'normal');
+            remove_meta_box('dashboard_right_now', 'dashboard', 'normal');
+            remove_meta_box('dashboard_site_health', 'dashboard', 'normal');
+        });
+    },
+    'priority' => 40,
+]);
+
+
+
+advset_register_feature([
     'id' => 'dashboard.adminbar.custom_logo',
     'category' => 'dashboard',
     'ui_config' => fn() => [
