@@ -65,8 +65,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.xmlrpc.disable',
-    'category' => 'frontend',
+    'id' => 'system.xmlrpc.disable',
+    'category' => 'system',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
