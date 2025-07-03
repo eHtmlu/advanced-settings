@@ -65,6 +65,26 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'frontend.xmlrpc.disable',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Disable XML-RPC', 'advanced-settings'),
+                'description' => __('Disables XML-RPC functionality for security', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_filter('xmlrpc_enabled', '__return_false');
+    },
+    'priority' => 30,
+]);
+
+
+
+advset_register_feature([
     'id' => 'system.posts.disable_autosave',
     'category' => 'system',
     'ui_config' => fn() => [
