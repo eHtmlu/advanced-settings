@@ -64,6 +64,7 @@ advset_register_feature([
                     ],
                 ],
                 'default' => '',
+                'description' => __('By default, we do not track plugin usage. If you agree to share your plugin usage with the developers, we will collect anonymous data about your usage. This data will be used to improve the plugin and to provide you with a better experience.', 'advanced-settings'),
             ],
         ]
     ],
