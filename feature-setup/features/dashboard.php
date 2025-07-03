@@ -98,36 +98,109 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.adminbar.custom_logo',
+    'id' => 'dashboard.branding.customize',
     'category' => 'dashboard',
     'ui_config' => fn() => [
         'fields' => [
-            'url' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Custom dashboard branding', 'advanced-settings'),
+            ],
+            'login_logo' => [
                 'type' => 'text',
-                'label' => __('Custom logo URL', 'advanced-settings'),
+                'label' => __('Login logo', 'advanced-settings'),
                 'placeholder' => 'https://www.example.com/your-custom-logo.png',
-                'description' => __('Paste your custom dashboard logo here', 'advanced-settings'),
+                'description' => __('Paste the URL of your custom logo here.', 'advanced-settings'),
+                'visible' => ['enable' => true],
+            ],
+            'login_logo_max_height' => [
+                'type' => 'number',
+                'label' => __('Login logo max height', 'advanced-settings'),
+                'placeholder' => '84',
+                'min' => 0,
+                'max' => 1000,
+                'step' => 1,
+                'description' => __('The maximum height of the login logo in pixels.', 'advanced-settings'),
+                'visible' => ['enable' => true],
+            ],
+            'login_headertext' => [
+                'type' => 'text',
+                'label' => __('Login logo alt text', 'advanced-settings'),
+                'placeholder' => __( 'Powered by WordPress' ),
+                'description' => __('The alt text for the login logo.', 'advanced-settings'),
+                'visible' => ['enable' => true],
+            ],
+            'login_headerurl' => [
+                'type' => 'text',
+                'label' => __('Login logo link to', 'advanced-settings'),
+                'placeholder' => __( 'https://wordpress.org/' ),
+                'description' => __('The URL to which the login logo should link to.', 'advanced-settings'),
+                'visible' => ['enable' => true],
+            ],
+            'admin_bar_logo' => [
+                'type' => 'text',
+                'label' => __('Admin bar logo', 'advanced-settings'),
+                'placeholder' => 'https://www.example.com/your-custom-logo.png',
+                'description' => __('Leave empty to use the login logo for the admin bar as well.', 'advanced-settings'),
+                'visible' => ['enable' => true],
+            ],
+            'footer_text' => [
+                'type' => 'text',
+                'label' => __('Footer text', 'advanced-settings'),
+                'placeholder' => 'Powered by Your Company',
+                'visible' => ['enable' => true],
             ],
         ]
     ],
     'execution_handler' => function($settings) {
-        add_action('wp_before_admin_bar_render', function() use($settings) {
-            if (!is_admin()) return;
-            
-            echo '
-                <style>
-                #wpadminbar #wp-admin-bar-wp-logo > .ab-item .ab-icon:before {
-                    background-image: url('.$settings['url'].') !important;
-                    background-position: center;
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    color:rgba(0, 0, 0, 0);
-                }
-                </style>
-            ';
-        });
+        if ( empty($settings['enable']) ) {
+            return;
+        }
+        if ( !empty($settings['footer_text']) ) {
+            add_filter('admin_footer_text', function() use($settings) {
+                return $settings['footer_text'];
+            });
+        }
+        if ( !empty($settings['login_logo']) ) {
+            add_action('login_head', function() use($settings) {
+                echo '<style>
+                    #login h1 a {
+                        background-image: url("' . esc_url($settings['login_logo']) . '");
+                        background-position: center;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        width: 100%;
+                        ' . (empty($settings['login_logo_max_height']) ? '' : 'height: ' . esc_attr($settings['login_logo_max_height']) . 'px;') . '
+                    }
+                </style>';
+            });
+        }
+        if ( !empty($settings['login_headertext']) ) {
+            add_filter('login_headertext', function() use($settings) {
+                return $settings['login_headertext'];
+            });
+        }
+        $admin_bar_logo_url = $settings['admin_bar_logo'] ?? ($settings['login_logo'] ?? null);
+        if ( !empty($admin_bar_logo_url) ) {
+            add_action('wp_before_admin_bar_render', function() use($admin_bar_logo_url) {
+                echo '<style>
+                    #wpadminbar #wp-admin-bar-wp-logo > .ab-item .ab-icon:before {
+                        background-image: url("' . esc_url($admin_bar_logo_url) . '") !important;
+                        background-position: center;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        color:rgba(0, 0, 0, 0);
+                    }
+                </style>';
+            });
+        }
+        if ( !empty($settings['login_headerurl']) ) {
+            add_filter('login_headerurl', function() use($settings) {
+                return esc_url($settings['login_headerurl']);
+            });
+        }
     },
-    'priority' => 30,
+    'priority' => 50,
 ]);
 
 

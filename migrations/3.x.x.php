@@ -151,4 +151,22 @@ return [
         delete_option('advset_system');
     },
 
+    '3.1.0' => function() {
+        $settings = get_option('advanced_settings_settings', []);
+
+        // Add admin bar logo to branding feature
+        if ( !empty($settings['dashboard.adminbar.custom_logo']['url']) ) {
+            $settings['dashboard.branding.customize'] = [
+                'enable' => true,
+                'admin_bar_logo' => $settings['dashboard.adminbar.custom_logo']['url'],
+            ];
+        }
+
+        // Remove old admin bar logo option
+        unset($settings['dashboard.adminbar.custom_logo']);
+
+        // Update settings
+        update_option('advanced_settings_settings', $settings);
+    },
+
 ];
