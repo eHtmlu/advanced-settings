@@ -85,6 +85,34 @@ advset_register_feature([
 
 
 advset_register_feature([
+    'id' => 'system.rest.disable_public',
+    'category' => 'system',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Disable public REST API', 'advanced-settings'),
+                'description' => __('Disables REST API access for non-authenticated users', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_filter('rest_authentication_errors', function($result) {
+            if (!empty($result)) {
+                return $result;
+            }
+            if (!is_user_logged_in()) {
+                return new WP_Error('rest_forbidden', 'REST API restricted to authenticated users.', ['status' => 401]);
+            }
+            return $result;
+        });
+    },
+    'priority' => 40,
+]);
+
+
+
+advset_register_feature([
     'id' => 'system.posts.disable_autosave',
     'category' => 'system',
     'ui_config' => fn() => [
