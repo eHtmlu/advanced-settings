@@ -45,7 +45,7 @@ advset_register_feature([
             remove_action( 'admin_notices', 'update_nag', 3 );
         }, 2 );
     },
-    'priority' => 10,
+    'priority' => 20,
 ]);
 
 
@@ -66,7 +66,7 @@ advset_register_feature([
             remove_action( 'welcome_panel', 'wp_welcome_panel' );
         }, 2 );
     },
-    'priority' => 20,
+    'priority' => 30,
 ]);
 
 
