@@ -1,8 +1,8 @@
 <?php
 /**
- * Dashboard Category
+ * Admin Panel Category
  * 
- * Registers the dashboard category and its features
+ * Registers the adminpanel category and its features
  */
 
 // Exit if accessed directly
@@ -11,13 +11,13 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'dashboard.adminbar.remove_from_frontend',
-    'category' => 'dashboard',
+    'id' => 'adminpanel.adminbar.remove_from_frontend',
+    'category' => 'adminpanel',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
-                'label' => __('Hide top admin menu in the frontend', 'advanced-settings'),
+                'label' => __('Hide top admin bar in the frontend', 'advanced-settings'),
             ],
         ]
     ],
@@ -30,8 +30,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.notices.remove_update_nag',
-    'category' => 'dashboard',
+    'id' => 'adminpanel.notices.remove_update_nag',
+    'category' => 'adminpanel',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
@@ -51,8 +51,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.welcome_panel.remove',
-    'category' => 'dashboard',
+    'id' => 'adminpanel.welcome_panel.remove',
+    'category' => 'adminpanel',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
@@ -72,8 +72,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.widgets.remove_default',
-    'category' => 'dashboard',
+    'id' => 'adminpanel.widgets.remove_default',
+    'category' => 'adminpanel',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
@@ -98,13 +98,13 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'dashboard.branding.customize',
-    'category' => 'dashboard',
+    'id' => 'adminpanel.branding.customize',
+    'category' => 'adminpanel',
     'ui_config' => fn() => [
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
-                'label' => __('Custom dashboard branding', 'advanced-settings'),
+                'label' => __('Custom admin panel branding', 'advanced-settings'),
             ],
             'login_logo' => [
                 'type' => 'text',

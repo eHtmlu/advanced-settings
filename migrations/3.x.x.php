@@ -165,6 +165,14 @@ return [
         // Remove old admin bar logo option
         unset($settings['dashboard.adminbar.custom_logo']);
 
+        // Rename dashboard features to adminpanel features
+        foreach ($settings as $feature_id => $feature_settings) {
+            if ( strpos($feature_id, 'dashboard.') === 0 ) {
+                $settings['adminpanel.' . substr($feature_id, 10)] = $feature_settings;
+                unset($settings[$feature_id]);
+            }
+        }
+
         // Update settings
         update_option('advanced_settings_settings', $settings);
     },
