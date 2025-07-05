@@ -165,6 +165,12 @@ return [
         // Remove old admin bar logo option
         unset($settings['dashboard.adminbar.custom_logo']);
 
+        // Move old auto save setting to editing category
+        if ( !empty($settings['system.posts.disable_autosave']) ) {
+            $settings['editing.posts.disable_autosave'] = $settings['system.posts.disable_autosave'];
+            unset($settings['system.posts.disable_autosave']);
+        }
+
         // Rename dashboard features to adminpanel features
         foreach ($settings as $feature_id => $feature_settings) {
             if ( strpos($feature_id, 'dashboard.') === 0 ) {

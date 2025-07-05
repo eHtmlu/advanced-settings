@@ -11,6 +11,25 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
+    'id' => 'editing.posts.disable_autosave',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Disable auto save', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        define('AUTOSAVE_INTERVAL', 60 * 60 * 24 * 365 * 100); // save interval => 100 years
+    },
+    'priority' => 10,
+]);
+
+
+
+advset_register_feature([
     'id' => 'editing.posts.limit_revisions',
     'category' => 'editing',
     'ui_config' => fn() => [

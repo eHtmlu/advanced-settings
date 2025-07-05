@@ -113,25 +113,6 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'system.posts.disable_autosave',
-    'category' => 'system',
-    'ui_config' => fn() => [
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Disable auto save', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        define('AUTOSAVE_INTERVAL', 60 * 60 * 24 * 365 * 100); // save interval => 100 years
-    },
-    'priority' => 20,
-]);
-
-
-
-advset_register_feature([
     'id' => 'system.updates.skip_bundled_themes',
     'category' => 'system',
     'ui_config' => fn() => [
