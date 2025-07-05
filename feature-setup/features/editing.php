@@ -78,7 +78,7 @@ advset_register_feature([
             });
         }
     },
-    'priority' => 10,
+    'priority' => 20,
 ]);
 
 
@@ -175,7 +175,7 @@ advset_register_feature([
             return $file;
         });
     },
-    'priority' => 20,
+    'priority' => 30,
 ]);
 
 
@@ -233,7 +233,7 @@ advset_register_feature([
             return $upload;
         });
     },
-    'priority' => 30,
+    'priority' => 40,
 ]);
 
 
@@ -260,7 +260,7 @@ advset_register_feature([
             return (int) $settings['jpeg_quality'];
         });
     },
-    'priority' => 40,
+    'priority' => 50,
 ]);
 
 
