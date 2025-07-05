@@ -59,7 +59,7 @@ advset_register_feature([
             $wp_admin_bar->remove_menu('comments');
         } );
     },
-    'priority' => 10,
+    'priority' => 20,
 ]);
 
 
@@ -158,7 +158,7 @@ advset_register_feature([
             define('CORE_UPGRADE_SKIP_NEW_BUNDLED', true);
         }
     },
-    'priority' => 20,
+    'priority' => 50,
 ]);
 
 
@@ -178,7 +178,7 @@ advset_register_feature([
     'execution_handler' => function() {
         add_filter('auto_core_update_send_email', '__return_false');
     },
-    'priority' => 20,
+    'priority' => 60,
 ]);
 
 
@@ -198,7 +198,7 @@ advset_register_feature([
     'execution_handler' => function() {
         add_filter('auto_plugin_update_send_email', '__return_false');
     },
-    'priority' => 30,
+    'priority' => 70,
 ]);
 
 
@@ -218,7 +218,7 @@ advset_register_feature([
     'execution_handler' => function() {
         add_filter('auto_theme_update_send_email', '__return_false');
     },
-    'priority' => 40,
+    'priority' => 80,
 ]);
 
 
