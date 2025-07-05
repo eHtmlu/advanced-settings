@@ -59,7 +59,7 @@ advset_register_feature([
             });
         }
     },
-    'priority' => 50,
+    'priority' => 10,
 ]);
 
 
@@ -156,33 +156,6 @@ advset_register_feature([
             return $file;
         });
     },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'editing.image.jpeg_quality',
-    'category' => 'editing',
-    'ui_config' => fn() => [
-        'fields' => [
-            'jpeg_quality' => [
-                'type' => 'number',
-                'label' => __('JPEG Quality', 'advanced-settings'),
-                'descriptionHtml' => __('Defines the quality for JPEG images on a scale of 1 to 100 when they are resized.', 'advanced-settings'),
-                'min' => 1,
-                'max' => 100,
-            ],
-        ]
-    ],
-    'handler_cleanup' => function($settings) {
-        return empty($settings['jpeg_quality']) ? null : $settings;
-    },
-    'execution_handler' => function($settings) {
-        add_filter('jpeg_quality', function($quality) use($settings) {
-            return (int) $settings['jpeg_quality'];
-        });
-    },
     'priority' => 20,
 ]);
 
@@ -241,7 +214,34 @@ advset_register_feature([
             return $upload;
         });
     },
-    'priority' => 20,
+    'priority' => 30,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'editing.image.jpeg_quality',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'fields' => [
+            'jpeg_quality' => [
+                'type' => 'number',
+                'label' => __('JPEG Quality', 'advanced-settings'),
+                'descriptionHtml' => __('Defines the quality for JPEG images on a scale of 1 to 100 when they are resized.', 'advanced-settings'),
+                'min' => 1,
+                'max' => 100,
+            ],
+        ]
+    ],
+    'handler_cleanup' => function($settings) {
+        return empty($settings['jpeg_quality']) ? null : $settings;
+    },
+    'execution_handler' => function($settings) {
+        add_filter('jpeg_quality', function($quality) use($settings) {
+            return (int) $settings['jpeg_quality'];
+        });
+    },
+    'priority' => 40,
 ]);
 
 
