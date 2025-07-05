@@ -11,6 +11,60 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
+    'id' => 'editing.posts.limit_revisions',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Limit post revisions', 'advanced-settings'),
+                'description' => __('Reduce database size by limiting the number of saved revisions', 'advanced-settings'),
+            ],
+            'limit' => [
+                'type' => 'number',
+                'label' => __('Revisions to keep', 'advanced-settings'),
+                'description' => __('0 means revisions are disabled.', 'advanced-settings'),
+                'min' => 0,
+                'default' => 5,
+                'visible' => ['enable' => true],
+            ],
+            'type' => [
+                'type' => 'radio',
+                'label' => __('Post types', 'advanced-settings'),
+                'description' => __('Select the post types that should be affected by the revision limit.', 'advanced-settings'),
+                'options' => [
+                    'post' => ['label' => 'Posts only'],
+                    'page' => ['label' => 'Pages only'],
+                    'post_and_page' => ['label' => 'Posts and Pages'],
+                    'all' => ['label' => 'All post types (includes custom post types)'],
+                ],
+                'default' => 'post',
+                'visible' => ['enable' => true],
+            ],
+        ]
+    ],
+    'handler_cleanup' => function($settings) {
+        return empty($settings['enable']) ? null : $settings;
+    },
+    'execution_handler' => function($settings) {
+        if ($settings['type'] === 'all') {
+            add_filter('wp_revisions_to_keep', function($num) use($settings) {
+                return $settings['limit'];
+            });
+            return;
+        }
+        foreach (explode('_and_', $settings['type']) as $type) {
+            add_filter('wp_' . $type . '_revisions_to_keep', function($num) use($settings) {
+                return $settings['limit'];
+            });
+        }
+    },
+    'priority' => 50,
+]);
+
+
+
+advset_register_feature([
     'id' => 'editing.media.enable_svg',
     'category' => 'editing',
     'ui_config' => fn() => [
