@@ -26,18 +26,6 @@ add_action('advset_register_categories', function() {
     ]);
 
     advset_register_category([
-        'id' => 'advset',
-        'icon' => file_get_contents(ADVSET_DIR . '/admin-ui/images/admin-bar-icon.svg'),
-        'title' => __('About & Options', 'advanced-settings'),
-        'priority' => 100,
-    ]);
-
-    advset_register_category([
-        'id' => 'advset-separator',
-        'priority' => 99,
-    ]);
-
-    advset_register_category([
         'id' => 'frontend',
         'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>monitor</title><path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z" /></svg>',
         'title' => __('Frontend', 'advanced-settings'),
@@ -56,5 +44,17 @@ add_action('advset_register_categories', function() {
         'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>code-greater-than-or-equal</title><path d="M13,13H18V15H13M13,9H18V11H13M6.91,7.41L11.5,12L6.91,16.6L5.5,15.18L8.68,12L5.5,8.82M5,3C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5Z" /></svg>',
         'title' => __('Developer', 'advanced-settings'),
         'priority' => 50,
+    ]);
+
+    advset_register_category([
+        'id' => 'advset-separator',
+        'priority' => 99,
+    ]);
+
+    advset_register_category([
+        'id' => 'advset',
+        'icon' => file_get_contents(ADVSET_DIR . '/admin-ui/images/admin-bar-icon.svg'),
+        'title' => __('About & Options', 'advanced-settings'),
+        'priority' => 100,
     ]);
 });
