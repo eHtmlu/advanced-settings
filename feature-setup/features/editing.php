@@ -299,3 +299,65 @@ advset_register_feature([
 ]);
 
 
+
+advset_register_feature([
+    'id' => 'editing.thumbnails.enable_support',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Add thumbnail support', 'advanced-settings'),
+                'disabled' => !ADVSET_THUMBS,
+                'description' => ADVSET_THUMBS
+                    ? ''
+                    : __('Already supported by current theme', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_action('after_setup_theme', function (){
+            add_theme_support( 'post-thumbnails' );
+        });
+    },
+    'priority' => 60,
+]);
+define( 'ADVSET_THUMBS', !current_theme_supports('post-thumbnails') );
+
+
+
+advset_register_feature([
+    'id' => 'editing.thumbnails.auto_from_first_image',
+    'category' => 'editing',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Automatically generate the Post Thumbnail', 'advanced-settings'),
+                'description' => __('from the first image in post', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        require_once ADVSET_DIR . '/feature-setup/features/includes/frontend.auto_thumbs.php';
+        add_action('transition_post_status', 'advset__feature__auto_thumbs', 10, 3);
+    },
+    'priority' => 70,
+]);
+
+

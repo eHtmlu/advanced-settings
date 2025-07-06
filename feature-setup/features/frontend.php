@@ -429,68 +429,6 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'frontend.thumbnails.enable_support',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Editing', 'advanced-settings'),
-            __('Frontend', 'advanced-settings'),
-            __('Content', 'advanced-settings'),
-            __('Images', 'advanced-settings'),
-            __('Media', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Add thumbnail support', 'advanced-settings'),
-                'disabled' => !ADVSET_THUMBS,
-                'description' => ADVSET_THUMBS
-                    ? ''
-                    : __('Already supported by current theme', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        add_action('after_setup_theme', function (){
-            add_theme_support( 'post-thumbnails' );
-        });
-    },
-    'priority' => 130,
-]);
-define( 'ADVSET_THUMBS', !current_theme_supports('post-thumbnails') );
-
-
-
-advset_register_feature([
-    'id' => 'frontend.thumbnails.auto_from_first_image',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Editing', 'advanced-settings'),
-            __('Frontend', 'advanced-settings'),
-            __('Content', 'advanced-settings'),
-            __('Images', 'advanced-settings'),
-            __('Media', 'advanced-settings'),
-            __('Automations', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Automatically generate the Post Thumbnail', 'advanced-settings'),
-                'description' => __('from the first image in post', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        require_once ADVSET_DIR . '/feature-setup/features/includes/frontend.auto_thumbs.php';
-        add_action('transition_post_status', 'advset__feature__auto_thumbs', 10, 3);
-    },
-    'priority' => 140,
-]);
-
-
-
-advset_register_feature([
     'id' => 'frontend.excerpt.word_limit',
     'category' => 'frontend',
     'ui_config' => fn() => [
@@ -524,7 +462,7 @@ advset_register_feature([
             return $settings['limit'];
         });
     },
-    'priority' => 150,
+    'priority' => 130,
 ]);
 
 
@@ -563,7 +501,7 @@ advset_register_feature([
             return '<a class="excerpt-read-more" href="' . esc_url( get_permalink() ) . '">'.esc_html($settings['text']).'</a>';
         });
     },
-    'priority' => 160,
+    'priority' => 140,
 ]);
 
 
@@ -599,7 +537,7 @@ advset_register_feature([
             }
         }, 10);
     },
-    'priority' => 170,
+    'priority' => 150,
 ]);
 
 
@@ -639,7 +577,7 @@ advset_register_feature([
             </div>';
         });
     },
-    'priority' => 180,
+    'priority' => 160,
 ]);
 
 
@@ -664,7 +602,7 @@ advset_register_feature([
     'execution_handler' => function() {
         remove_filter('pre_user_description', 'wp_filter_kses');
     },
-    'priority' => 190,
+    'priority' => 170,
 ]);
 
 
@@ -783,7 +721,7 @@ advset_register_feature([
             });
         });
     },
-    'priority' => 200,
+    'priority' => 180,
 ]);
 
 
@@ -828,7 +766,7 @@ advset_register_feature([
     gtag('config', '$ga_code');</script>";
         });
     },
-    'priority' => 210,
+    'priority' => 190,
 ]);
 
 
@@ -873,7 +811,7 @@ advset_register_feature([
                 return esc_url( $settings['feedburner'] );
         }, 10, 2 );
     },
-    'priority' => 220,
+    'priority' => 200,
 ]);
 
 
@@ -902,7 +840,7 @@ advset_register_feature([
             return trim( preg_replace( '/\s+(?![^<>]*<\/pre>)/', ' ', $content ) );
         });
     },
-    'priority' => 230,
+    'priority' => 210,
 ]);
 
 
@@ -932,7 +870,7 @@ advset_register_feature([
             return trim( preg_replace( '/<!--[^\[\>\<](.|\s)*?-->/', '', $content ) );
         });
     },
-    'priority' => 240,
+    'priority' => 220,
 ]);
 
 
@@ -967,7 +905,7 @@ advset_register_feature([
         remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
         add_filter('emoji_svg_url', '__return_false');
     },
-    'priority' => 250,
+    'priority' => 230,
 ]);
 
 

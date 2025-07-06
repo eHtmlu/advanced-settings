@@ -171,6 +171,18 @@ return [
             unset($settings['system.posts.disable_autosave']);
         }
 
+        // Move old auto thumbs setting to editing category
+        if ( !empty($settings['frontend.thumbnails.auto_from_first_image']) ) {
+            $settings['editing.thumbnails.auto_from_first_image'] = $settings['frontend.thumbnails.auto_from_first_image'];
+            unset($settings['frontend.thumbnails.auto_from_first_image']);
+        }
+
+        // Move old thumbs setting to editing category
+        if ( !empty($settings['frontend.thumbnails.enable_support']) ) {
+            $settings['editing.thumbnails.enable_support'] = $settings['frontend.thumbnails.enable_support'];
+            unset($settings['frontend.thumbnails.enable_support']);
+        }
+
         // Rename dashboard features to adminarea features
         foreach ($settings as $feature_id => $feature_settings) {
             if ( strpos($feature_id, 'dashboard.') === 0 ) {
