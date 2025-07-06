@@ -11,155 +11,6 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'frontend.meta.facebook_og_metas',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Meta', 'advanced-settings'),
-            __('SEO', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Enable Facebook Open Graph Meta Tags', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        if ( advset_is_admin_area() ) return;
-
-        add_action('wp_head', function() {
-            global $post;
-            if (is_single() || is_page()) { ?>
-                <meta property="og:title" content="<?php single_post_title(''); ?>" />
-                <meta property="og:description" content="<?php echo strip_tags(get_the_excerpt($post->ID)); ?>" />
-                <meta property="og:type" content="article" />
-                <meta property="og:image" content="<?php if (function_exists('wp_get_attachment_thumb_url')) {echo wp_get_attachment_url(get_post_thumbnail_id($post->ID)); }?>" />
-            <?php }
-        });
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.favicon.auto_from_theme',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Meta', 'advanced-settings'),
-            __('Favicon', 'advanced-settings'),
-            __('SEO', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Automatically add a favicon from theme directory', 'advanced-settings'),
-                'description' => __('Whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme directory', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        add_action( 'wp_head', function() {
-            foreach ([
-                'ico' => '',
-                'png' => 'image/png',
-                'svg' => 'image/svg+xml',
-            ] as $suffix => $mime) {
-                if ( file_exists(TEMPLATEPATH.'/favicon.' . $suffix) ) {
-                    echo '<link rel="shortcut icon"' . ($mime ? ' type="'.$mime.'"' : '') . ' href="'.get_bloginfo('template_url').'/favicon.'.$suffix.'">'."\r\n";
-                    break;
-                }
-            }
-        });
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.meta.remove_shortlink',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Meta', 'advanced-settings'),
-            __('Cleanup', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Remove shortlink meta tag', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        if ( advset_is_admin_area() ) return;
-        remove_action( 'wp_head', 'wp_shortlink_wp_head');
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.meta.remove_rsd',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Meta', 'advanced-settings'),
-            __('Cleanup', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Remove RSD meta tag', 'advanced-settings'),
-                'description' => __('This meta tag is used by Windows Live Writer to edit posts. Use it only if you are using Windows Live Writer.', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        if ( advset_is_admin_area() ) return;
-        remove_action( 'wp_head', 'rsd_link');
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.meta.remove_generator',
-    'category' => 'frontend',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Meta', 'advanced-settings'),
-            __('Security', 'advanced-settings'),
-            __('Cleanup', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Remove generator meta tag', 'advanced-settings'),
-                'description' => __('Removes the WordPress version from the head section of the website', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        if ( advset_is_admin_area() ) return;
-        remove_action( 'wp_head', 'wp_generator');
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
     'id' => 'frontend.http_headers.remove_php_version',
     'category' => 'frontend',
     'ui_config' => fn() => [
@@ -221,7 +72,156 @@ advset_register_feature([
             header('Permissions-Policy: accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=(),interest-cohort=()');
         });
     },
+    'priority' => 20,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.favicon.auto_from_theme',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Favicon', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Automatically add a favicon from theme directory', 'advanced-settings'),
+                'description' => __('Whenever there is a favicon.ico, favicon.png or favicon.svg file in the theme directory', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_action( 'wp_head', function() {
+            foreach ([
+                'ico' => '',
+                'png' => 'image/png',
+                'svg' => 'image/svg+xml',
+            ] as $suffix => $mime) {
+                if ( file_exists(TEMPLATEPATH.'/favicon.' . $suffix) ) {
+                    echo '<link rel="shortcut icon"' . ($mime ? ' type="'.$mime.'"' : '') . ' href="'.get_bloginfo('template_url').'/favicon.'.$suffix.'">'."\r\n";
+                    break;
+                }
+            }
+        });
+    },
+    'priority' => 30,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.meta.facebook_og_metas',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Enable Facebook Open Graph Meta Tags', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if ( advset_is_admin_area() ) return;
+
+        add_action('wp_head', function() {
+            global $post;
+            if (is_single() || is_page()) { ?>
+                <meta property="og:title" content="<?php single_post_title(''); ?>" />
+                <meta property="og:description" content="<?php echo strip_tags(get_the_excerpt($post->ID)); ?>" />
+                <meta property="og:type" content="article" />
+                <meta property="og:image" content="<?php if (function_exists('wp_get_attachment_thumb_url')) {echo wp_get_attachment_url(get_post_thumbnail_id($post->ID)); }?>" />
+            <?php }
+        });
+    },
+    'priority' => 40,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.meta.remove_shortlink',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Remove shortlink meta tag', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if ( advset_is_admin_area() ) return;
+        remove_action( 'wp_head', 'wp_shortlink_wp_head');
+    },
     'priority' => 50,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.meta.remove_rsd',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Remove RSD meta tag', 'advanced-settings'),
+                'description' => __('This meta tag is used by Windows Live Writer to edit posts. Use it only if you are using Windows Live Writer.', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if ( advset_is_admin_area() ) return;
+        remove_action( 'wp_head', 'rsd_link');
+    },
+    'priority' => 60,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.meta.remove_generator',
+    'category' => 'frontend',
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Remove generator meta tag', 'advanced-settings'),
+                'description' => __('Removes the WordPress version from the head section of the website', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        if ( advset_is_admin_area() ) return;
+        remove_action( 'wp_head', 'wp_generator');
+    },
+    'priority' => 70,
 ]);
 
 
@@ -277,7 +277,7 @@ advset_register_feature([
             }
         });
     },
-    'priority' => 10,
+    'priority' => 80,
 ]);
 
 
@@ -315,7 +315,52 @@ advset_register_feature([
             return $provider;
         }, 10, 2 );
     },
-    'priority' => 20,
+    'priority' => 90,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.title.improve_format',
+    'category' => 'frontend',
+    'deprecated' => true,
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Adjust the wp_title function', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_filter('wp_title', function($title, $sep) {
+            global $paged, $page;
+    
+            if ( is_feed() )
+                return $title;
+    
+            // Add the site name.
+            $title .= get_bloginfo( 'name' );
+    
+            // Add the site description for the home/front page.
+            $site_description = get_bloginfo( 'description', 'display' );
+            if ( $site_description && ( is_home() || is_front_page() ) )
+                $title = "$title $sep $site_description";
+    
+            // Add a page number if necessary.
+            if ( $paged >= 2 || $page >= 2 )
+                $title = "$title $sep " . sprintf( __( 'Page %s', 'responsive' ), max( $paged, $page ) );
+    
+            return $title;
+        }, 10, 2);
+    },
+    'priority' => 100,
 ]);
 
 
@@ -342,7 +387,7 @@ advset_register_feature([
     'execution_handler' => function() {
         add_filter( 'run_wptexturize', '__return_false' );
     },
-    'priority' => 10,
+    'priority' => 110,
 ]);
 
 
@@ -378,7 +423,7 @@ advset_register_feature([
         remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
         add_filter('embed_oembed_discover', '__return_false');
     },
-    'priority' => 20,
+    'priority' => 120,
 ]);
 
 
@@ -410,7 +455,7 @@ advset_register_feature([
             add_theme_support( 'post-thumbnails' );
         });
     },
-    'priority' => 30,
+    'priority' => 130,
 ]);
 define( 'ADVSET_THUMBS', !current_theme_supports('post-thumbnails') );
 
@@ -440,6 +485,7 @@ advset_register_feature([
         require_once ADVSET_DIR . '/feature-setup/features/includes/frontend.auto_thumbs.php';
         add_action('transition_post_status', 'advset__feature__auto_thumbs', 10, 3);
     },
+    'priority' => 140,
 ]);
 
 
@@ -478,6 +524,7 @@ advset_register_feature([
             return $settings['limit'];
         });
     },
+    'priority' => 150,
 ]);
 
 
@@ -516,6 +563,7 @@ advset_register_feature([
             return '<a class="excerpt-read-more" href="' . esc_url( get_permalink() ) . '">'.esc_html($settings['text']).'</a>';
         });
     },
+    'priority' => 160,
 ]);
 
 
@@ -551,7 +599,72 @@ advset_register_feature([
             }
         }, 10);
     },
-    'priority' => 40,
+    'priority' => 170,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.post.show_author_bio',
+    'category' => 'frontend',
+    'deprecated' => true,
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Insert author bio in each post', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        add_filter('the_content', function($content='') {
+            return $content.' <div id="entry-author-info">
+                <div id="author-avatar">
+                    '. get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'author_bio_avatar_size', 100 ) ) .'
+                </div>
+                <div id="author-description">
+                    <h2>'. sprintf( __( 'About %s' ), get_the_author() ) .'</h2>
+                    '. get_the_author_meta( 'description' ) .'
+                    <div id="author-link">
+                        <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">
+                            '. sprintf( __( 'View all posts by %s <span class="meta-nav">&rarr;</span>' ), get_the_author() ) .'
+                        </a>
+                    </div>
+                </div>
+            </div>';
+        });
+    },
+    'priority' => 180,
+]);
+
+
+
+advset_register_feature([
+    'id' => 'frontend.user.allow_html_bio',
+    'category' => 'frontend',
+    'deprecated' => true,
+    'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+        ],
+        'fields' => [
+            'enable' => [
+                'type' => 'toggle',
+                'label' => __('Allow complex HTML in user profile description', 'advanced-settings'),
+            ],
+        ]
+    ],
+    'execution_handler' => function() {
+        remove_filter('pre_user_description', 'wp_filter_kses');
+    },
+    'priority' => 190,
 ]);
 
 
@@ -670,117 +783,7 @@ advset_register_feature([
             });
         });
     },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.title.improve_format',
-    'category' => 'frontend',
-    'deprecated' => true,
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Developer', 'advanced-settings'),
-            __('Frontend', 'advanced-settings'),
-            __('Content', 'advanced-settings'),
-            __('Automations', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Adjust the wp_title function', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        add_filter('wp_title', function($title, $sep) {
-            global $paged, $page;
-    
-            if ( is_feed() )
-                return $title;
-    
-            // Add the site name.
-            $title .= get_bloginfo( 'name' );
-    
-            // Add the site description for the home/front page.
-            $site_description = get_bloginfo( 'description', 'display' );
-            if ( $site_description && ( is_home() || is_front_page() ) )
-                $title = "$title $sep $site_description";
-    
-            // Add a page number if necessary.
-            if ( $paged >= 2 || $page >= 2 )
-                $title = "$title $sep " . sprintf( __( 'Page %s', 'responsive' ), max( $paged, $page ) );
-    
-            return $title;
-        }, 10, 2);
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.post.show_author_bio',
-    'category' => 'frontend',
-    'deprecated' => true,
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Frontend', 'advanced-settings'),
-            __('Content', 'advanced-settings'),
-            __('Automations', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Insert author bio in each post', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        add_filter('the_content', function($content='') {
-            return $content.' <div id="entry-author-info">
-                <div id="author-avatar">
-                    '. get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'author_bio_avatar_size', 100 ) ) .'
-                </div>
-                <div id="author-description">
-                    <h2>'. sprintf( __( 'About %s' ), get_the_author() ) .'</h2>
-                    '. get_the_author_meta( 'description' ) .'
-                    <div id="author-link">
-                        <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">
-                            '. sprintf( __( 'View all posts by %s <span class="meta-nav">&rarr;</span>' ), get_the_author() ) .'
-                        </a>
-                    </div>
-                </div>
-            </div>';
-        });
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
-    'id' => 'frontend.user.allow_html_bio',
-    'category' => 'frontend',
-    'deprecated' => true,
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Admin', 'advanced-settings'),
-            __('Frontend', 'advanced-settings'),
-            __('Content', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Allow complex HTML in user profile description', 'advanced-settings'),
-            ],
-        ]
-    ],
-    'execution_handler' => function() {
-        remove_filter('pre_user_description', 'wp_filter_kses');
-    },
-    'priority' => 10,
+    'priority' => 200,
 ]);
 
 
@@ -825,7 +828,7 @@ advset_register_feature([
     gtag('config', '$ga_code');</script>";
         });
     },
-    'priority' => 10,
+    'priority' => 210,
 ]);
 
 
@@ -870,7 +873,7 @@ advset_register_feature([
                 return esc_url( $settings['feedburner'] );
         }, 10, 2 );
     },
-    'priority' => 10,
+    'priority' => 220,
 ]);
 
 
@@ -899,7 +902,7 @@ advset_register_feature([
             return trim( preg_replace( '/\s+(?![^<>]*<\/pre>)/', ' ', $content ) );
         });
     },
-    'priority' => 10,
+    'priority' => 230,
 ]);
 
 
@@ -929,7 +932,7 @@ advset_register_feature([
             return trim( preg_replace( '/<!--[^\[\>\<](.|\s)*?-->/', '', $content ) );
         });
     },
-    'priority' => 10,
+    'priority' => 240,
 ]);
 
 
@@ -964,7 +967,7 @@ advset_register_feature([
         remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
         add_filter('emoji_svg_url', '__return_false');
     },
-    'priority' => 10,
+    'priority' => 250,
 ]);
 
 
