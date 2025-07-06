@@ -103,10 +103,10 @@ function advset_admin_ui_scripts() {
     $js_data = [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
-        'reactAppUrl' => plugins_url('react/app.js', __FILE__),
-        'reactAppCssUrl' => plugins_url('react/app.css', __FILE__),
-        'wpReactUrl' => includes_url('js/dist/vendor/react.min.js'),
-        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js'),
+        'reactAppUrl' => plugins_url('react/app.js', __FILE__) . '?v=' . ADVSET_VERSION,
+        'reactAppCssUrl' => plugins_url('react/app.css', __FILE__) . '?v=' . ADVSET_VERSION,
+        'wpReactUrl' => includes_url('js/dist/vendor/react.min.js') . '?v=' . $GLOBALS['wp_version'],
+        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js') . '?v=' . $GLOBALS['wp_version'],
         'showUserGuide' => get_option('advset_guide_shown') === false,
     ];
 
