@@ -16,7 +16,7 @@ ComponentRegistry.register('generic', SettingComponentGeneric);
  * Main App Component
  */
 function App(props) {
-    const { items, categories, onSettingChange, onCategoryClick, onTagClick, settings, searchQuery, parsedSearchQuery, activeCategory } = props;
+    const { items, categories, onSettingChange, onCategoryClick, onTagClick, onTabChange, settings, searchQuery, parsedSearchQuery, activeCategory, hiddenItems, activeTab } = props;
     
     // Group items by category
     const itemsByCategory = {};
@@ -36,42 +36,108 @@ function App(props) {
         !!category.title
     );
 
+    // Extract all unique tags from all items (both visible and hidden)
+    const allTags = new Set();
+    const visibleTagCounts = new Map();
+    const hiddenTagCounts = new Map();
+    
+    // Count tags from visible items
+    items.forEach(item => {
+        if (item.ui_config?.tags) {
+            item.ui_config.tags.forEach(tag => {
+                allTags.add(tag);
+                visibleTagCounts.set(tag, (visibleTagCounts.get(tag) || 0) + 1);
+            });
+        }
+    });
+    
+    // Count tags from hidden items
+    hiddenItems.forEach(item => {
+        if (item.ui_config?.tags) {
+            item.ui_config.tags.forEach(tag => {
+                allTags.add(tag);
+                hiddenTagCounts.set(tag, (hiddenTagCounts.get(tag) || 0) + 1);
+            });
+        }
+    });
+    
+    const sortedTags = Array.from(allTags).sort();
+
     
     return React.createElement('div', { className: 'advset-react-app' },
         // Notifications container
         React.createElement('div', { className: 'advset-notifications' }),
         
-        // Category sidebar
-        visibleCategories.length > 0 && React.createElement('div', { className: 'advset-category-sidebar' },
-            React.createElement('ul', { className: 'advset-category-menu' },
-                visibleCategoriesIncludingSeparator.map(category => 
-                    React.createElement('li', { 
-                        key: category.id,
-                        className: 'advset-category-menu-item'
-                    },
-                    category.title ?
-                        React.createElement('a', {
-                            href: `#category-${category.id}`,
-                            onClick: (e) => {
-                                e.preventDefault();
-                                onCategoryClick(category.id);
-                            },
-                            className: activeCategory === category.id ? 'is-active' : ''
-                        }, 
-                            React.createElement('span', {
-                                className: 'advset-category-icon',
-                                dangerouslySetInnerHTML: { __html: category.icon || '' }
-                            }),
-                            React.createElement('span', {
-                                className: 'advset-category-text'
-                            }, category.title || category.id)
-                        ) : React.createElement('div', {
-                            className: 'advset-category-separator',
-                            style: {
-                                borderTop: '1px solid #ccc',
-                            }
-                        })
+        // Sidebar with tab navigation
+        React.createElement('div', { className: 'advset-category-sidebar' },
+            // Tab navigation
+            React.createElement('div', { className: 'advset-tab-navigation' },
+                React.createElement('button', {
+                    className: `advset-tab-button ${activeTab === 'categories' ? 'is-active' : ''}`,
+                    onClick: () => onTabChange('categories'),
+                    disabled: visibleCategories.length === 0
+                }, 'Categories'),
+                React.createElement('button', {
+                    className: `advset-tab-button ${activeTab === 'tags' ? 'is-active' : ''}`,
+                    onClick: () => onTabChange('tags'),
+                    disabled: sortedTags.length === 0
+                }, 'Tags')
+            ),
+            
+            // Categories tab content
+            activeTab === 'categories' && visibleCategories.length > 0 && React.createElement('div', { className: 'advset-tab-content' },
+                React.createElement('ul', { className: 'advset-category-menu' },
+                    visibleCategoriesIncludingSeparator.map(category => 
+                        React.createElement('li', { 
+                            key: category.id,
+                            className: 'advset-category-menu-item'
+                        },
+                        category.title ?
+                            React.createElement('a', {
+                                href: `#category-${category.id}`,
+                                onClick: (e) => {
+                                    e.preventDefault();
+                                    onCategoryClick(category.id);
+                                },
+                                className: activeCategory === category.id ? 'is-active' : ''
+                            }, 
+                                React.createElement('span', {
+                                    className: 'advset-category-icon',
+                                    dangerouslySetInnerHTML: { __html: category.icon || '' }
+                                }),
+                                React.createElement('span', {
+                                    className: 'advset-category-text'
+                                }, category.title || category.id)
+                            ) : React.createElement('div', {
+                                className: 'advset-category-separator',
+                                style: {
+                                    borderTop: '1px solid #ccc',
+                                }
+                            })
+                        )
                     )
+                )
+            ),
+            
+            // Tags tab content
+            activeTab === 'tags' && sortedTags.length > 0 && React.createElement('div', { className: 'advset-tab-content' },
+                React.createElement('div', { className: 'advset-tags-list' },
+                    sortedTags.map(tag => {
+                        const isActive = parsedSearchQuery?.included?.tags?.includes(tag.toLowerCase());
+                        const hasVisibleItems = visibleTagCounts.has(tag);
+                        const hasHiddenItems = hiddenTagCounts.has(tag);
+                        
+                        let className = 'advset-tag';
+                        if (isActive) className += ' is-active';
+                        if (!hasVisibleItems && hasHiddenItems) className += ' is-disabled';
+                        
+                        return React.createElement('button', {
+                            key: tag,
+                            className: className,
+                            onClick: () => onTagClick(tag),
+                            disabled: !hasVisibleItems && hasHiddenItems
+                        }, tag);
+                    })
                 )
             )
         ),
@@ -225,11 +291,13 @@ const AdvSetModalApp = {
         searchQuery: '',
         items: [],
         allItems: [], // Cache for all items
+        hiddenItems: [], // Items that are hidden by current filter
         isLoading: false,
         categories: [],
         settings: {}, // Store for settings values
         activeCategory: null, // Track active category for scrolling
-        parsedSearchQuery: null // Cache for parsed search query
+        parsedSearchQuery: null, // Cache for parsed search query
+        activeTab: 'categories' // Track active tab: 'categories' or 'tags'
     },
 
     /**
@@ -317,11 +385,13 @@ const AdvSetModalApp = {
      */
     performLocalSearch(query) {
         const parsedSearchQuery = query ? parseSearchQuery(query) : null;
+        const { filteredItems, hiddenItems } = this.filterItems(this.state.allItems, parsedSearchQuery);
         
         this.setState({ 
             searchQuery: query,
             parsedSearchQuery,
-            items: this.filterItems(this.state.allItems, parsedSearchQuery)
+            items: filteredItems,
+            hiddenItems: hiddenItems
         });
     },
 
@@ -330,25 +400,33 @@ const AdvSetModalApp = {
      * 
      * @param {Array} items - The items to filter
      * @param {Object} parsedSearchQuery - The parsed search query
-     * @returns {Array} - Filtered items
+     * @returns {Object} - Object containing filtered and hidden items
      */
     filterItems(items, parsedSearchQuery) {
         const showDeprecated = this.state.settings['advset.features.show_deprecated']?.enable;
         const showExperimental = this.state.settings['advset.features.show_experimental']?.enable;
         
-        return items.filter(item => {
-            // Filter by feature flags
+        const filteredItems = [];
+        const hiddenItems = [];
+        
+        items.forEach(item => {
+            // Check feature flags first
+            let isHiddenByFlags = false;
             if (item.deprecated && !showDeprecated && typeof this.state.settings[item.id] === 'undefined') {
-                return false;
+                isHiddenByFlags = true;
             }
-
             if (item.experimental && !showExperimental && typeof this.state.settings[item.id] === 'undefined') {
-                return false;
+                isHiddenByFlags = true;
             }
 
-            // If no search query, include the item
+            // If no search query, include the item based on flags only
             if (!parsedSearchQuery) {
-                return true;
+                if (isHiddenByFlags) {
+                    hiddenItems.push(item);
+                } else {
+                    filteredItems.push(item);
+                }
+                return;
             }
 
             // Search in ui_config fields and tags
@@ -398,8 +476,16 @@ const AdvSetModalApp = {
             );
 
             // Item must match all terms, no exclusions, required tags, and no excluded tags
-            return matchesIncludedTerms && matchesExcludedTerms && matchesIncludedTags && matchesExcludedTags;
+            const matchesSearch = matchesIncludedTerms && matchesExcludedTerms && matchesIncludedTags && matchesExcludedTags;
+
+            if (isHiddenByFlags || !matchesSearch) {
+                hiddenItems.push(item);
+            } else {
+                filteredItems.push(item);
+            }
         });
+        
+        return { filteredItems, hiddenItems };
     },
 
     /**
@@ -430,8 +516,10 @@ const AdvSetModalApp = {
             });
 
             // Apply initial filtering
+            const { filteredItems, hiddenItems } = this.filterItems(data.features);
             this.setState({
-                items: this.filterItems(data.features),
+                items: filteredItems,
+                hiddenItems: hiddenItems
             });
             
             // Dispatch event to indicate data is loaded
@@ -465,6 +553,15 @@ const AdvSetModalApp = {
     },
 
 
+
+    /**
+     * Handle tab change
+     * 
+     * @param {string} tab - The tab to switch to
+     */
+    handleTabChange(tab) {
+        this.setState({ activeTab: tab });
+    },
 
     /**
      * Handle tag click
@@ -505,7 +602,7 @@ const AdvSetModalApp = {
      * Render the application
      */
     render() {
-        const { searchQuery, parsedSearchQuery, items, isLoading, categories } = this.state;
+        const { searchQuery, parsedSearchQuery, items, hiddenItems, isLoading, categories, activeTab } = this.state;
         
         // Render the React app
         if (window.React && window.ReactDOM) {
@@ -515,10 +612,13 @@ const AdvSetModalApp = {
                 onSettingChange: this.handleSettingChange.bind(this),
                 onCategoryClick: this.scrollToCategory.bind(this),
                 onTagClick: this.handleTagClick.bind(this),
+                onTabChange: this.handleTabChange.bind(this),
                 settings: this.state.settings,
                 searchQuery: searchQuery,
                 parsedSearchQuery: parsedSearchQuery,
-                activeCategory: this.state.activeCategory
+                activeCategory: this.state.activeCategory,
+                hiddenItems: hiddenItems,
+                activeTab: activeTab
             });
             
             ReactDOM.render(appElement, this.container, () => {
