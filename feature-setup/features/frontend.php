@@ -201,6 +201,12 @@ advset_register_feature([
                 /* translators: %s is a link to securityheaders.com */
                 'descriptionHtml' => sprintf(__('Adds various security headers to HTTP responses. You can check your website\'s security headers with %s.', 'advanced-settings'), '<a href="https://securityheaders.com/?q=' . rawurlencode(get_home_url()) . '&hide=on&followRedirects=on" target="_blank">securityheaders.com</a>'),
             ],
+            'info' => [
+                'type' => 'info',
+                'label' => __('Caution:', 'advanced-settings'),
+                'description' => __('If you integrate external services into your website or your website requires access to browser features like camera, microphone, geolocation, or other device sensors, the security headers may be set too strictly. In this case, simply disable this feature. You can implement customized headers via code if necessary.', 'advanced-settings'),
+                'visible' => ['enable' => true]
+            ],
         ]
     ],
     'execution_handler' => function() {
