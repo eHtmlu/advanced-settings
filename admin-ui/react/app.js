@@ -16,7 +16,7 @@ ComponentRegistry.register('generic', SettingComponentGeneric);
  * Main App Component
  */
 function App(props) {
-    const { items, categories, onSettingChange, onCategoryClick, settings, searchQuery, activeCategory } = props;
+    const { items, categories, onSettingChange, onCategoryClick, onTagClick, settings, searchQuery, parsedSearchQuery, activeCategory } = props;
     
     // Group items by category
     const itemsByCategory = {};
@@ -101,7 +101,9 @@ function App(props) {
                                 key: item.id,
                                 item: item,
                                 onSettingChange: onSettingChange,
-                                settingValue: settings[item.id] || {}
+                                onTagClick: onTagClick,
+                                settingValue: settings[item.id] || {},
+                                parsedSearchQuery: parsedSearchQuery
                             })
                         )
                     )
@@ -137,7 +139,7 @@ function App(props) {
  * Item Card Component
  */
 function ItemCard(props) {
-    const { item, onSettingChange, settingValue } = props;
+    const { item, onSettingChange, onTagClick, settingValue, parsedSearchQuery } = props;
     
     // Get the component from the registry
     const Component = ComponentRegistry.get(item.ui_component || 'generic');
@@ -196,6 +198,18 @@ function ItemCard(props) {
                 onChange: (value) => onSettingChange(item.id, value),
                 config: item.ui_config || {}
             })
+        ),
+        // Show tags if item has tags
+        item.ui_config?.tags && item.ui_config.tags.length > 0 && React.createElement('div', { 
+            className: 'advset-item-tags' 
+        },
+            item.ui_config.tags.map(tag => 
+                React.createElement('button', {
+                    key: tag,
+                    className: `advset-item-tag ${parsedSearchQuery?.included?.tags?.includes(tag.toLowerCase()) ? 'is-active' : ''}`,
+                    onClick: () => onTagClick(tag)
+                }, tag)
+            )
         )
     );
 }
@@ -337,7 +351,7 @@ const AdvSetModalApp = {
                 return true;
             }
 
-            // Search in ui_config fields
+            // Search in ui_config fields and tags
             const searchTexts = [];
             
             if (item.ui_config?.fields) {
@@ -353,20 +367,38 @@ const AdvSetModalApp = {
                 });
             }
             
-            const searchText = searchTexts.join(' ').toLowerCase();
+            // Add tags to searchable text
+            if (item.ui_config?.tags) {
+                searchTexts.push(...item.ui_config.tags);
+            }
+            
+            const searchText = searchTexts.join(Math.random()).toLowerCase();
 
             // Check if item matches all required terms
-            const matchesTerms = parsedSearchQuery.terms.every(term => 
+            const matchesIncludedTerms = parsedSearchQuery.included.terms.length === 0 || parsedSearchQuery.included.terms.every(term => 
                 searchText.includes(term)
             );
 
             // Check if item doesn't contain any excluded terms
-            const matchesExclusions = !parsedSearchQuery.exclusions.some(exclusion => 
+            const matchesExcludedTerms = !parsedSearchQuery.excluded.terms.some(exclusion => 
                 searchText.includes(exclusion)
             );
 
-            // Item must match all terms and no exclusions
-            return matchesTerms && matchesExclusions;
+            // Check tag requirements (now using labels)
+            const itemTags = (item.ui_config?.tags || []).map(tag => tag.toLowerCase());
+            
+            // Item must have ALL required tags
+            const matchesIncludedTags = parsedSearchQuery.included.tags.length === 0 || parsedSearchQuery.included.tags.every(tag => 
+                itemTags.includes(tag)
+            );
+            
+            // Item must NOT have ANY excluded tags
+            const matchesExcludedTags = !parsedSearchQuery.excluded.tags.some(tag => 
+                itemTags.includes(tag)
+            );
+
+            // Item must match all terms, no exclusions, required tags, and no excluded tags
+            return matchesIncludedTerms && matchesExcludedTerms && matchesIncludedTags && matchesExcludedTags;
         });
     },
 
@@ -432,11 +464,48 @@ const AdvSetModalApp = {
         }, 0);
     },
 
+
+
+    /**
+     * Handle tag click
+     * 
+     * @param {string} tag - The tag that was clicked
+     */
+    handleTagClick(tag) {
+        const searchInput = document.querySelector('.advset-modal-search input');
+        if (!searchInput) return;
+
+        let currentQuery = searchInput.value.trim();
+        
+        // Handle tags with spaces by adding quotes
+        const tagPrefix = tag.includes(' ') ? `tag:"${tag}"` : `tag:${tag}`;
+        
+        // Check if tag is already in query (handle both quoted and unquoted versions)
+        const tagRegex = new RegExp(`\\btag:("${tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"|${tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\b`, 'g');
+        const hasTag = tagRegex.test(currentQuery);
+        
+        if (hasTag) {
+            // Remove tag from query
+            currentQuery = currentQuery.replace(tagRegex, '').replace(/\s+/g, ' ').trim();
+        } else {
+            // Add tag to query
+            currentQuery = currentQuery ? `${currentQuery} ${tagPrefix}` : tagPrefix;
+        }
+        
+        // Update search input
+        searchInput.value = currentQuery;
+        
+        // Trigger search
+        document.dispatchEvent(new CustomEvent('advset-search', {
+            detail: { query: currentQuery }
+        }));
+    },
+
     /**
      * Render the application
      */
     render() {
-        const { searchQuery, items, isLoading, categories } = this.state;
+        const { searchQuery, parsedSearchQuery, items, isLoading, categories } = this.state;
         
         // Render the React app
         if (window.React && window.ReactDOM) {
@@ -445,8 +514,10 @@ const AdvSetModalApp = {
                 categories: categories,
                 onSettingChange: this.handleSettingChange.bind(this),
                 onCategoryClick: this.scrollToCategory.bind(this),
+                onTagClick: this.handleTagClick.bind(this),
                 settings: this.state.settings,
                 searchQuery: searchQuery,
+                parsedSearchQuery: parsedSearchQuery,
                 activeCategory: this.state.activeCategory
             });
             
@@ -587,34 +658,27 @@ const AdvSetModalApp = {
  */
 function parseSearchQuery(query) {
     const result = {
-        terms: [],
-        exclusions: []
+        excluded: {
+            tags: [],
+            terms: [],
+        },
+        included: {
+            tags: [],
+            terms: [],
+        },
     };
 
     // Remove extra spaces and normalize
     query = query.trim().replace(/\s+/g, ' ');
 
     // Extract terms and phrases (with optional minus)
-    const matches = query.match(/-?"[^"]+"|-[^\s]+|[^\s]+/g) || [];
-    
-    matches.forEach(match => {
-        if (match.startsWith('-')) {
-            // Handle exclusions
-            const exclusion = match.startsWith('-"') 
-                ? match.slice(2, -1) // Remove -" and "
-                : match.slice(1);    // Remove -
-            if (exclusion) {
-                result.exclusions.push(exclusion.toLowerCase());
-            }
-        } else {
-            // Handle regular terms
-            const term = match.startsWith('"') 
-                ? match.slice(1, -1) // Remove quotes
-                : match;
-            if (term) {
-                result.terms.push(term.toLowerCase());
-            }
-        }
+    query.matchAll(/(\-)?(tag:)?(?:("[^"]+")|([^"\s]+))/g).forEach(match => {
+        const isExclusion = match[1] === '-';
+        const isTag = match[2] === 'tag:';
+        const term = (match[3] ? match[3].slice(1, -1) : match[4]).toLowerCase();
+
+        const targetList = result[isExclusion ? 'excluded' : 'included'][isTag ? 'tags' : 'terms'];
+        targetList.push(term);
     });
 
     return result;

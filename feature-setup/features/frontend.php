@@ -14,6 +14,11 @@ advset_register_feature([
     'id' => 'frontend.meta.facebook_og_metas',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -43,6 +48,12 @@ advset_register_feature([
     'id' => 'frontend.favicon.auto_from_theme',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Favicon', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -74,6 +85,11 @@ advset_register_feature([
     'id' => 'frontend.meta.remove_shortlink',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -94,6 +110,11 @@ advset_register_feature([
     'id' => 'frontend.meta.remove_rsd',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -115,6 +136,12 @@ advset_register_feature([
     'id' => 'frontend.meta.remove_generator',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -136,6 +163,12 @@ advset_register_feature([
     'id' => 'frontend.http_headers.remove_php_version',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('HTTP', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -156,6 +189,11 @@ advset_register_feature([
     'id' => 'frontend.http_headers.add_security_headers',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('HTTP', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -186,6 +224,11 @@ advset_register_feature([
     'id' => 'frontend.meta.auto_description',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -237,6 +280,12 @@ advset_register_feature([
     'id' => 'frontend.author.disable_pages',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -269,6 +318,13 @@ advset_register_feature([
     'id' => 'frontend.content.disable_wptexturize',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -289,6 +345,14 @@ advset_register_feature([
     'id' => 'frontend.oembed.disable',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -315,6 +379,13 @@ advset_register_feature([
     'id' => 'frontend.thumbnails.enable_support',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -341,6 +412,14 @@ advset_register_feature([
     'id' => 'frontend.thumbnails.auto_from_first_image',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -361,6 +440,13 @@ advset_register_feature([
     'id' => 'frontend.excerpt.word_limit',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -392,6 +478,13 @@ advset_register_feature([
     'id' => 'frontend.excerpt.read_more',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('SEO', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -423,6 +516,13 @@ advset_register_feature([
     'id' => 'frontend.comments.exclude_pingbacks_from_count',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Comments', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -452,6 +552,12 @@ advset_register_feature([
     'id' => 'frontend.email.protect',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -566,6 +672,12 @@ advset_register_feature([
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -605,6 +717,11 @@ advset_register_feature([
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -640,6 +757,11 @@ advset_register_feature([
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -660,6 +782,11 @@ advset_register_feature([
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('GDPR', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -700,6 +827,10 @@ advset_register_feature([
     'category' => 'frontend',
     'deprecated' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -740,6 +871,12 @@ advset_register_feature([
     'id' => 'frontend.code.minify_html',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('HTML', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -763,6 +900,13 @@ advset_register_feature([
     'id' => 'frontend.code.remove_comments',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('HTML', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -786,6 +930,14 @@ advset_register_feature([
     'id' => 'frontend.emoji.remove_image_replacement',
     'category' => 'frontend',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Frontend', 'advanced-settings'),
+            __('Content', 'advanced-settings'),
+            __('Emojis', 'advanced-settings'),
+            __('Automations', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('GDPR', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',

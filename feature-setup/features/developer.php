@@ -14,6 +14,11 @@ advset_register_feature([
     'id' => 'developer.debug.show_queries',
     'category' => 'developer',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Debug', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -43,6 +48,11 @@ advset_register_feature([
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -82,6 +92,11 @@ advset_register_feature([
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -121,6 +136,11 @@ advset_register_feature([
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Admin', 'advanced-settings'),
+            __('Posts', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -220,6 +240,12 @@ advset_register_feature([
     'category' => 'developer',
     'experimental' => true,
     'ui_config' => fn() => [
+        'tags' => [
+            __('Developer', 'advanced-settings'),
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',

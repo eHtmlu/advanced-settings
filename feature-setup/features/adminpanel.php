@@ -14,6 +14,12 @@ advset_register_feature([
     'id' => 'adminpanel.adminbar.remove_from_frontend',
     'category' => 'adminpanel',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -33,6 +39,13 @@ advset_register_feature([
     'id' => 'adminpanel.notices.remove_update_nag',
     'category' => 'adminpanel',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Updates', 'advanced-settings'),
+            __('Notifications', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -54,6 +67,11 @@ advset_register_feature([
     'id' => 'adminpanel.welcome_panel.remove',
     'category' => 'adminpanel',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -75,6 +93,11 @@ advset_register_feature([
     'id' => 'adminpanel.widgets.remove_default',
     'category' => 'adminpanel',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -101,6 +124,11 @@ advset_register_feature([
     'id' => 'adminpanel.branding.customize',
     'category' => 'adminpanel',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',

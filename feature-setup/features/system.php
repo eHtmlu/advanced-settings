@@ -14,6 +14,14 @@ advset_register_feature([
     'id' => 'system.favicon.remove_default',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Meta', 'advanced-settings'),
+            __('Favicon', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Branding', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -39,6 +47,14 @@ advset_register_feature([
     'id' => 'system.comments.disable_system',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Admin', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Comments', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -68,6 +84,12 @@ advset_register_feature([
     'id' => 'system.xmlrpc.disable',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -88,6 +110,12 @@ advset_register_feature([
     'id' => 'system.rest.disable_public',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Security', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -116,6 +144,11 @@ advset_register_feature([
     'id' => 'system.updates.skip_bundled_themes',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Updates', 'advanced-settings'),
+            __('Cleanup', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -167,6 +200,12 @@ advset_register_feature([
     'id' => 'system.notifications.disable_core_updates',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Updates', 'advanced-settings'),
+            __('Notifications', 'advanced-settings'),
+            __('Emails', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -187,6 +226,12 @@ advset_register_feature([
     'id' => 'system.notifications.disable_plugin_updates',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Updates', 'advanced-settings'),
+            __('Notifications', 'advanced-settings'),
+            __('Emails', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -207,6 +252,12 @@ advset_register_feature([
     'id' => 'system.notifications.disable_theme_updates',
     'category' => 'system',
     'ui_config' => fn() => [
+        'tags' => [
+            __('System', 'advanced-settings'),
+            __('Updates', 'advanced-settings'),
+            __('Notifications', 'advanced-settings'),
+            __('Emails', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',

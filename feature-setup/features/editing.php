@@ -14,6 +14,13 @@ advset_register_feature([
     'id' => 'editing.posts.disable_autosave',
     'category' => 'editing',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Posts', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Database', 'advanced-settings'),
+            __('Admin', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -33,6 +40,13 @@ advset_register_feature([
     'id' => 'editing.posts.limit_revisions',
     'category' => 'editing',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Posts', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+            __('Database', 'advanced-settings'),
+            __('Admin', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -87,6 +101,13 @@ advset_register_feature([
     'id' => 'editing.media.enable_svg',
     'category' => 'editing',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -184,6 +205,13 @@ advset_register_feature([
     'id' => 'editing.image.downsize_on_upload',
     'category' => 'editing',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'enable' => [
                 'type' => 'toggle',
@@ -242,6 +270,13 @@ advset_register_feature([
     'id' => 'editing.image.jpeg_quality',
     'category' => 'editing',
     'ui_config' => fn() => [
+        'tags' => [
+            __('Editing', 'advanced-settings'),
+            __('Media', 'advanced-settings'),
+            __('Images', 'advanced-settings'),
+            __('Frontend', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
+        ],
         'fields' => [
             'jpeg_quality' => [
                 'type' => 'number',

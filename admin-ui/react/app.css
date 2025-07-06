@@ -259,3 +259,42 @@
     color: var(--advset-color-primary);
 }
 
+
+
+/* ===== Item Tags ===== */
+.advset-item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: .5em;
+    margin-top: 1em;
+}
+
+.advset-item-tag {
+    background: none;
+    border: 1px solid var(--advset-color-base-70);
+    border-radius: 1em;
+    padding: .25em .75em;
+    font-size: var(--advset-font-size-tiny);
+    color: var(--advset-color-base-70);
+    cursor: pointer;
+    transition: all .3s;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.advset-item-tag:hover,
+.advset-item-tag:focus-visible {
+    border-color: var(--advset-color-primary);
+    color: var(--advset-color-primary);
+    outline: var(--advset-color-primary) 1px solid;
+}
+
+.advset-item-tag.is-active {
+    background-color: var(--advset-color-primary);
+    border-color: var(--advset-color-primary);
+    color: var(--advset-color-background);
+}
+
+
+
