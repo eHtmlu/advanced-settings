@@ -36,48 +36,55 @@ Advanced Settings 3 has been independently reviewed for security vulnerabilities
 **🩷 FEATURE REQUESTS ARE WELCOME**
 Advanced Settings 3 was developed to help as many users as possible. If you'd like to see a feature added to this plugin, please let us know. Don't worry, we'll keep the plugin fast and lean; this is a high priority for us. We'll only implement features that don't conflict with this.
 
-= Dashboard =
+= Admin Area =
 
-* Customize dashboard logo
-* Hide WordPress update message in dashboard
 * Hide the top admin bar for all users in the frontend
+* Hide WordPress update message in dashboard
 * Hide the welcome panel in the dashboard
+* Hide the default widgets in the dashboard 💥 new
+* Customize the admin area branding 💥 new
+
+= Frontend =
+
+* Remove PHP version from HTTP headers 💥 new
+* Add security HTTP headers 💥 new
+* Automatically add FavIcon (when favicon.ico, favicon.png or favicon.svg exists in template folder)
+* Add Facebook Open Graph meta tags
+* Remove shortlink meta tag
+* Remove RSD (Weblog Client Link) meta tag
+* Remove WordPress generator meta tag
+* Automatically add description meta tag using blog description and post excerpt (SEO)
+* Disable author pages
+* Remove wptexturize filter
+* Disable auto embed of external content 💥 new
+* Limit excerpt length
+* Add "Read more" link after excerpt
+* Remove trackbacks and pingbacks from comment count
+* Protect email addresses from spam bots
+* Compress HTML code
+* Remove HTML comments (except conditional IE comments)
+* Disable emoji image replacement
+
+= Editing =
+
+* Disable posts auto saving
+* Limit post revisions 💥 new
+* Allow SVG uploads for admins 💥 new
+* Downsize images on upload to max size
+* Set JPEG quality
+* Add thumbnail support
+* Automatically generate post thumbnail (from first image in post)
 
 = System =
 
 * Hide default WordPress favicon
 * Disable comment system
-* Disable posts auto saving
+* Disable XML-RPC 💥 new
+* Disable public REST API 💥 new
 * Prevent installation of new default WordPress themes during core updates
 * Disable email notifications for core updates
 * Disable email notifications for plugin updates
 * Disable email notifications for theme updates
-
-= Frontend =
-
-* Disable author pages
-* Automatically add FavIcon (when favicon.ico, favicon.png or favicon.svg exists in template folder)
-* Automatically add description meta tag using blog description and post excerpt (SEO)
-* Remove WordPress generator meta tag
-* Remove RSD (Weblog Client Link) meta tag
-* Remove shortlink meta tag
-* Limit excerpt length
-* Add "Read more" link after excerpt
-* Remove wptexturize filter
-* Remove trackbacks and pingbacks from comment count
-* Compress HTML code
-* Remove HTML comments (except conditional IE comments)
-* Disable author pages
-* Add thumbnail support
-* Automatically generate post thumbnail (from first image in post)
-* Protect email addresses from spam bots
-* Add Facebook Open Graph meta tags
-* Disable emoji image replacement
-
-= Editing =
-
-* Set JPEG quality
-* Downsize images on upload to max size
 
 = Developer =
 
