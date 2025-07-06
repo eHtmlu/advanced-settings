@@ -357,6 +357,8 @@ advset_register_feature([
             __('Content', 'advanced-settings'),
             __('Security', 'advanced-settings'),
             __('Cleanup', 'advanced-settings'),
+            __('GDPR', 'advanced-settings'),
+            __('Performance', 'advanced-settings'),
             __('Automations', 'advanced-settings'),
         ],
         'fields' => [
