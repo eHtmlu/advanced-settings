@@ -171,10 +171,10 @@ return [
             unset($settings['system.posts.disable_autosave']);
         }
 
-        // Rename dashboard features to adminpanel features
+        // Rename dashboard features to adminarea features
         foreach ($settings as $feature_id => $feature_settings) {
             if ( strpos($feature_id, 'dashboard.') === 0 ) {
-                $settings['adminpanel.' . substr($feature_id, 10)] = $feature_settings;
+                $settings['adminarea.' . substr($feature_id, 10)] = $feature_settings;
                 unset($settings[$feature_id]);
             }
         }

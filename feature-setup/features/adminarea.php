@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin Panel Category
+ * Admin Area Category
  * 
- * Registers the adminpanel category and its features
+ * Registers the adminarea category and its features
  */
 
 // Exit if accessed directly
@@ -11,8 +11,8 @@ if (!defined('ABSPATH')) exit;
 
 
 advset_register_feature([
-    'id' => 'adminpanel.adminbar.remove_from_frontend',
-    'category' => 'adminpanel',
+    'id' => 'adminarea.adminbar.remove_from_frontend',
+    'category' => 'adminarea',
     'ui_config' => fn() => [
         'tags' => [
             __('Admin', 'advanced-settings'),
@@ -36,8 +36,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'adminpanel.notices.remove_update_nag',
-    'category' => 'adminpanel',
+    'id' => 'adminarea.notices.remove_update_nag',
+    'category' => 'adminarea',
     'ui_config' => fn() => [
         'tags' => [
             __('Admin', 'advanced-settings'),
@@ -64,8 +64,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'adminpanel.welcome_panel.remove',
-    'category' => 'adminpanel',
+    'id' => 'adminarea.welcome_panel.remove',
+    'category' => 'adminarea',
     'ui_config' => fn() => [
         'tags' => [
             __('Admin', 'advanced-settings'),
@@ -90,8 +90,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'adminpanel.widgets.remove_default',
-    'category' => 'adminpanel',
+    'id' => 'adminarea.widgets.remove_default',
+    'category' => 'adminarea',
     'ui_config' => fn() => [
         'tags' => [
             __('Admin', 'advanced-settings'),
@@ -121,8 +121,8 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'adminpanel.branding.customize',
-    'category' => 'adminpanel',
+    'id' => 'adminarea.branding.customize',
+    'category' => 'adminarea',
     'ui_config' => fn() => [
         'tags' => [
             __('Admin', 'advanced-settings'),
