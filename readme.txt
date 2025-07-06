@@ -25,8 +25,8 @@ Advanced Settings 3 is optimized for extreme performance. It even loads only nec
 Advanced Settings 3 has been independently reviewed for security vulnerabilities via Patchstack.
 [→ details in FAQ](https://wordpress.org/plugins/advanced-settings#how%20is%20the%20security%20of%20the%20plugin%20ensured%3F)
 
-**✳️ INFO ABOUT BAD REVIEWS**
-2 bad reviews occurred in 2017 because outdated PHP versions were used, but can't happen again.
+**✳️ INFO ABOUT THE 2 BAD RATINGS**
+2 bad ratings occurred in 2017 because outdated PHP versions were used, but can't happen again.
 [→ details in FAQ](https://wordpress.org/plugins/advanced-settings#what%20caused%20the%20two%20bad%20ratings%3F)
 
 --
@@ -137,11 +137,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 The bad ratings arose because a plugin update at the time no longer supported a very outdated PHP version, which unfortunately a few users were still using. However, due to a new WordPress feature, this cannot happen again.
 
 **Detailed answer:**
-The plugin developer at the time had decided in 2017 to use PHP features that were introduced with PHP 5.4. Support for the previous version, PHP 5.3, had already been officially discontinued by The PHP Group 3 years earlier. It was therefore natural to assume that all websites actually in use had already been converted to PHP 5.4 or newer. Unfortunately, this was not the case for a few of them.
+The plugin developer at the time had decided in 2017 to use PHP features that were introduced with PHP 5.4. Support for the previous version, PHP 5.3, had already been officially discontinued by The PHP Group 3 years earlier. It was therefore natural to assume that all websites actually in use had already been converted to PHP 5.4 or newer. Unfortunately, this was not the case for a few users.
 
-Nowadays, you can specify in the plugin metadata which PHP version is required as a minimum for the plugin, so that users can only update the plugin if they are using the correct PHP version. While this WordPress feature came too late to prevent the problems and the negative reviews, this problem can fortunately be prevented in the future.
+Nowadays, WordPress allowes to specify in the plugin metadata which PHP version is required as a minimum for the plugin, so that users can only update the plugin if they are using the correct PHP version. While this WordPress feature came too late to prevent the problems and the negative reviews, this problem can fortunately be prevented in the future.
 
-It would be great if you could contribute with your own review to ensure that the ratings reflect the current state of the plugin.
+It would be great if you could contribute with your own review to ensure that the ratings reflect the quality of the plugin.
 
 == Screenshots ==
 
