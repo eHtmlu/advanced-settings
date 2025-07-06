@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
 Tested up to: 6.8
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -150,6 +150,9 @@ It would be great if you could contribute with your own review to ensure that th
 3. Send a feature request if you are missing a feature
 
 == Changelog ==
+
+= 3.1.1 - 2025-07-06 =
+* Fixed minor cache problem
 
 = 3.1.0 - 2025-07-06 =
 * Added 9 new features (see feature list)
