@@ -1,145 +1,168 @@
 <?php
 
-if( !defined('ABSPATH') ) exit;
+if (!defined('ABSPATH')) exit;
 
 
-function advset__feature__auto_thumbs( $new_status, $old_status, $post ) {
-    if ('publish' == $new_status) {
-        advset__feature__auto_thumbs__publish_post($post);
+class Advset__Feature__Auto_Thumbs {
+
+    private static $instance = null;
+
+    private function __construct() {}
+    
+    public static function init() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
-}
+    
+    /**
+     * Transition the post status.
+     * 
+     * @param string $new_status The new status of the post.
+     * @param string $old_status The old status of the post.
+     * @param object $post The post object.
+     * @return bool True if the post thumbnail was generated, false otherwise.
+     */
+    public function transition_post_status( $new_status, $old_status, $post ) {
+        global $wpdb;
+        
+        // If the post is not published, return
+        if ($new_status !== 'publish') {
+            return false;
+        }
 
-//
-function advset__feature__auto_thumbs__publish_post( $post ) {
-    global $wpdb;
-
-    // First check whether Post Thumbnail is already set for this post.
-    if (get_post_meta($post->ID, '_thumbnail_id', true) || get_post_meta($post->ID, 'skip_post_thumb', true))
-        return;
-
-    // Initialize variable used to store list of matched images as per provided regular expression
-    $matches = array();
-
-    // Get all images from post's body
-    preg_match_all('/<\s*img [^\>]*src\s*=\s*[\""\']?([^\""\'>]*)[^\>]*/i', empty($post->post_content) ? '' : $post->post_content, $matches);
-
-    if (count($matches)) {
-        foreach ($matches[0] as $key => $image) {
-            /**
-             * If the image is from wordpress's own media gallery, then it appends the thumbmail id to a css class.
-             * Look for this id in the IMG tag.
-             */
-            preg_match('/wp-image-([\d]*)/i', $image, $thumb_id);
-            $thumb_id = empty($thumb_id[1]) ? null : $thumb_id[1];
-
+        // First check whether Post Thumbnail is already set for this post.
+        if (get_post_meta($post->ID, '_thumbnail_id', true) || get_post_meta($post->ID, 'skip_post_thumb', true))
+            return false;
+    
+        // Initialize variable used to store the thumbnail id
+        $thumb_id = null;
+    
+        // Initialize variable used to store list of matched images as per provided regular expression
+        $images = array();
+    
+        // Get all images from post's body
+        preg_match_all('/<\s*img [^\>]*src\s*=\s*[\""\']?([^\""\'>]*)[^\>]*/i', empty($post->post_content) ? '' : $post->post_content, $images, PREG_SET_ORDER);
+    
+        // If no images are found, return
+        if (empty($images)) {
+            return false;
+        }
+    
+        // Loop through all images
+        foreach ($images as $image) {
+            $img_html = $image[0];
+            $image_url = $image[1];
+    
+            // If the image is from wordpress's own media gallery, then it appends the thumbmail id to a css class.
+            preg_match('/\s+class\s*=\s*[\""\']?([^\""\'>]*)/i', $img_html, $matches_class);
+            preg_match('/wp-image-([\d]*)/i', empty($matches_class[1]) ? '' : $matches_class[1], $matches_thumb_id);
+            if (!empty($matches_thumb_id[1]) && $matches_thumb_id[1] > 0) {
+                $thumb_id = $matches_thumb_id[1];
+                break;
+            }
+    
+            // Get the image URL
+            if (!wp_http_validate_url($image_url)) {
+                continue;
+            }
+    
             // If thumb id is not found, try to look for the image in DB. Thanks to "Erwin Vrolijk" for providing this code.
-            if (!$thumb_id) {
-                $image = $matches[1][$key];
-                $result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE guid = %s", $image));
-                $thumb_id = empty($result[0]->ID) ? null : $result[0]->ID;
+            $attachment = $wpdb->get_results($wpdb->prepare("SELECT ID FROM {$wpdb->posts} WHERE guid = %s", $image_url));
+            if (!empty($attachment[0]->ID) && $attachment[0]->ID > 0) {
+                $thumb_id = $attachment[0]->ID;
+                break;
             }
-
+    
             // Ok. Still no id found. Some other way used to insert the image in post. Now we must fetch the image from URL and do the needful.
-            if (!$thumb_id) {
-                $thumb_id = advset__feature__auto_thumbs__generate_post_thumbnail($matches, $key, $post);
-            }
-
-            // If we succeed in generating thumg, let's update post meta
-            if ($thumb_id) {
-                update_post_meta( $post->ID, '_thumbnail_id', $thumb_id );
+            preg_match('/\s+alt\s*=\s*[\""\']?([^\""\'>]*)/i', $img_html, $matches_alt);
+            preg_match('/\s+title\s*=\s*[\""\']?([^\""\'>]*)/i', $img_html, $matches_title);
+            $imported_thumb_id = $this->import_image_from_url($image_url, $post->ID, [
+                'alt' => empty($matches_alt[1]) ? '' : $matches_alt[1],
+                //'desc' => $image_title,
+                'title' => empty($matches_title[1]) ? '' : $matches_title[1],
+            ]);
+            if (!is_wp_error($imported_thumb_id) && $imported_thumb_id > 0) {
+                $thumb_id = $imported_thumb_id;
                 break;
             }
         }
+    
+        // If we succeed in generating thumg, let's update post meta
+        if ($thumb_id) {
+            update_post_meta( $post->ID, '_thumbnail_id', $thumb_id );
+            return true;
+        }
+
+        return false;
     }
-}
+    
+    /**
+     * Imports an image from an external URL into the media library.
+     * 
+     * @param string $url The URL of the image to import.
+     * @param int $post_id The ID of the post to import the image to.
+     * @param array $opts Optional arguments for the import.
+     * @return int|\WP_Error Attachment-ID oder Fehler
+     */
+    private function import_image_from_url( string $url, int $post_id = 0, array $opts = [] ) {
+        // Validiere die URL
+        if (!wp_http_validate_url($url)) {
+            return new WP_Error('invalid_url', __('Invalid image URL.'));
+        }
 
+        $opts = wp_parse_args($opts, [
+            'alt'     => '',
+            'desc'    => '',
+            'title'   => '',
+            'author'  => get_current_user_id(),
+            'dedupe'  => true, // do not import the same source twice
+        ]);
 
-function advset__feature__auto_thumbs__generate_post_thumbnail( $matches, $key, $post ) {
-    // Make sure to assign correct title to the image. Extract it from img tag
-    $imageTitle = '';
-    preg_match_all('/<\s*img [^\>]*title\s*=\s*[\""\']?([^\""\'>]*)/i', empty($post->post_content) ? '' : $post->post_content, $matchesTitle);
+        if ( $opts['dedupe'] ) {
+            $existing = get_posts([
+                'post_type'      => 'attachment',
+                'post_status'    => 'inherit',
+                'meta_key'       => '_source_url',
+                'meta_value'     => esc_url_raw($url),
+                'posts_per_page' => 1,
+                'fields'         => 'ids',
+            ]);
+            if ($existing) return (int) $existing[0];
+        }
 
-    if (count($matchesTitle) && isset($matchesTitle[1])) {
-        $imageTitle = empty($matchesTitle[1][$key]) ? '' : $matchesTitle[1][$key];
+        require_once ABSPATH.'wp-admin/includes/file.php';
+        require_once ABSPATH.'wp-admin/includes/image.php';
+        require_once ABSPATH.'wp-admin/includes/media.php';
+
+        $tmp = download_url($url);
+        if ( is_wp_error($tmp) ) return $tmp;
+
+        $name = wp_basename(parse_url($url, PHP_URL_PATH) ?: 'image');
+        $mime = function_exists('wp_get_image_mime') ? wp_get_image_mime($tmp) : false;
+
+        $file = [
+            'name'     => $name,
+            'tmp_name' => $tmp,
+        ];
+        if ($mime) $file['type'] = $mime;
+
+        $attachment_id = media_handle_sideload($file, $post_id, $opts['desc'], [
+            'post_title'  => $opts['title'] ?: preg_replace('/\.[^.]+$/', '', $name),
+            'post_author' => (int) $opts['author'],
+        ]);
+
+        if ( is_wp_error($attachment_id) ) {
+            @unlink($tmp);
+            return $attachment_id;
+        }
+
+        if ($opts['alt'] !== '') {
+            update_post_meta($attachment_id, '_wp_attachment_image_alt', $opts['alt']);
+        }
+        update_post_meta($attachment_id, '_source_url', esc_url_raw($url));
+
+        return (int) $attachment_id;
     }
-
-    // Get the URL now for further processing
-    $imageUrl = $matches[1][$key];
-
-    // Get the file name
-    $filename = substr($imageUrl, (strrpos($imageUrl, '/'))+1);
-
-    if ( !(($uploads = wp_upload_dir(current_time('mysql')) ) && false === $uploads['error']) )
-        return null;
-
-    // Generate unique file name
-    $filename = wp_unique_filename( $uploads['path'], $filename );
-
-    // Move the file to the uploads dir
-    $new_file = $uploads['path'] . "/$filename";
-
-    if (!ini_get('allow_url_fopen'))
-        $file_data = advset__feature__auto_thumbs__curl_get_file_contents($imageUrl);
-    else
-        $file_data = @file_get_contents($imageUrl);
-
-    if (!$file_data) {
-        return null;
-    }
-
-    file_put_contents($new_file, $file_data);
-
-    // Set correct file permissions
-    $stat = stat( dirname( $new_file ));
-    $perms = $stat['mode'] & 0000666;
-    @ chmod( $new_file, $perms );
-
-    // Get the file type. Must to use it as a post thumbnail.
-    $wp_filetype = wp_check_filetype( $filename );
-
-    extract( $wp_filetype );
-
-    // No file type! No point to proceed further
-    if ( ( !$type || !$ext ) && !current_user_can( 'unfiltered_upload' ) ) {
-        return null;
-    }
-
-    // Compute the URL
-    $url = $uploads['url'] . "/$filename";
-
-    // Construct the attachment array
-    $attachment = array(
-        'post_mime_type' => $type,
-        'guid' => $url,
-        'post_parent' => null,
-        'post_title' => $imageTitle,
-        'post_content' => '',
-    );
-
-    $thumb_id = wp_insert_attachment($attachment, false, $post->ID);
-    if ( !is_wp_error($thumb_id) ) {
-        require_once(ABSPATH . '/wp-admin/includes/image.php');
-
-        // Added fix by misthero as suggested
-        wp_update_attachment_metadata( $thumb_id, wp_generate_attachment_metadata( $thumb_id, $new_file ) );
-        update_attached_file( $thumb_id, $new_file );
-
-        return $thumb_id;
-    }
-
-    return null;
-}
-
-function advset__feature__auto_thumbs__curl_get_file_contents($URL) {
-    $c = curl_init();
-    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($c, CURLOPT_URL, $URL);
-    $contents = curl_exec($c);
-    curl_close($c);
-
-    if ($contents) {
-        return $contents;
-    }
-
-    return FALSE;
 }

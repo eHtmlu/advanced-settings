@@ -354,8 +354,13 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        require_once ADVSET_DIR . '/feature-setup/features/includes/frontend.auto_thumbs.php';
-        add_action('transition_post_status', 'advset__feature__auto_thumbs', 10, 3);
+        add_action('transition_post_status', function($new_status, $old_status, $post) {
+            if ($new_status !== 'publish') {
+                return;
+            }
+            require_once ADVSET_DIR . '/feature-setup/features/includes/frontend.auto_thumbs.php';
+            Advset__Feature__Auto_Thumbs::init()->transition_post_status($new_status, $old_status, $post);
+        }, 10, 3);
     },
     'priority' => 70,
 ]);
