@@ -159,62 +159,87 @@ advset_register_feature([
 
         add_action('init', function() {
 
-            $post_types = (array) get_option( 'advset_post_types', array() );
+            $post_types = get_option('advset_post_types', []);
+
+            $nonce = $_REQUEST['advset_post_types_nonce'] ?? null;
+
+            if ($nonce && wp_verify_nonce($nonce, 'advset_action_posttype') && is_admin() && current_user_can('manage_options')) {
+
+                // Delete post type
+                if (isset($_GET['delete_posttype'])) {
+                    unset($post_types[$_GET['delete_posttype']]);
+                    update_option( 'advset_post_types', $post_types );
+                }
+
+                // Add post type
+                if (isset($_POST['advset_action_posttype'])) {
         
-            if( is_admin() && current_user_can('manage_options') && isset($_GET['delete_posttype']) ) {
-                unset($post_types[$_GET['delete_posttype']]);
-                update_option( 'advset_post_types', $post_types );
+                    $type = sanitize_key( $_POST['type'] ?? '' );
+
+                    $labels = [
+                        'name' => $_POST['label'] ?? '',
+                        #'singular_name' => @$singular_name,
+                        #'add_new' => @$add_new,
+                        #'add_new_item' => @$add_new_item,
+                        #'edit_item' => @$edit_item,
+                        #'new_item' => @$new_item,
+                        #'all_items' => @$all_items,
+                        #'view_item' => @$view_item,
+                        #'search_items' => @$search_items,
+                        #'not_found' =>  @$not_found,
+                        #'not_found_in_trash' => @$not_found_in_trash,
+                        #'parent_item_colon' => @$parent_item_colon,
+                        #'menu_name' => @$menu_name
+                    ];
+            
+                    // These supports are allowed to be added to the post type
+                    $supports_allowed = [
+                        'title',
+                        'editor',
+                        'author',
+                        'thumbnail',
+                        'excerpt',
+                        'trackbacks',
+                        'custom-fields',
+                        'comments',
+                        'revisions',
+                        'page-attributes',
+                    ];
+
+                    // These taxonomies are allowed to be added to the post type
+                    $taxonomies_allowed = [
+                        'category',
+                        'post_tag',
+                    ];
+
+                    $post_types[$type] = [
+                        'labels'              => $labels,
+                        'public'              => !empty($_POST['public']),
+                        'publicly_queryable'  => !empty($_POST['publicly_queryable']),
+                        'show_ui'             => !empty($_POST['show_ui']),
+                        'show_in_menu'        => !empty($_POST['show_in_menu']),
+                        'query_var'           => !empty($_POST['query_var']),
+                        #'rewrite'             => array( 'slug' => 'book' ),
+                        #'capability_type'     => 'post',
+                        'has_archive'         => !empty($_POST['has_archive']),
+                        'hierarchical'        => !empty($_POST['hierarchical']),
+                        #'menu_position'       => (int)@$menu_position,
+                        'supports'            => array_intersect($_POST['supports'] ?? [], $supports_allowed),
+                        'taxonomies'          => array_intersect($_POST['taxonomies'] ?? [], $taxonomies_allowed),
+                    ];
+            
+                    update_option( 'advset_post_types', $post_types );
+                }
             }
         
-            if( is_admin() && current_user_can('manage_options') && isset($_POST['advset_action_posttype']) ) {
-        
-                extract($_POST);
-        
-                $labels = array(
-                    'name' => $label,
-                    #'singular_name' => @$singular_name,
-                    #'add_new' => @$add_new,
-                    #'add_new_item' => @$add_new_item,
-                    #'edit_item' => @$edit_item,
-                    #'new_item' => @$new_item,
-                    #'all_items' => @$all_items,
-                    #'view_item' => @$view_item,
-                    #'search_items' => @$search_items,
-                    #'not_found' =>  @$not_found,
-                    #'not_found_in_trash' => @$not_found_in_trash,
-                    #'parent_item_colon' => @$parent_item_colon,
-                    #'menu_name' => @$menu_name
-                );
-        
-                $typename = sanitize_key( $type );
-        
-                $post_types[$type] = array(
-                    'labels'              => $labels,
-                    'public'              => (bool) (isset($public) ? $public : false),
-                    'publicly_queryable'  => (bool) (isset($publicly_queryable) ? $publicly_queryable : false),
-                    'show_ui'             => (bool) (isset($show_ui) ? $show_ui : false),
-                    'show_in_menu'        => (bool) (isset($show_in_menu) ? $show_in_menu : false),
-                    'query_var'           => (bool) (isset($query_var) ? $query_var : false),
-                    #'rewrite'             => array( 'slug' => 'book' ),
-                    #'capability_type'     => 'post',
-                    'has_archive'         => (bool) (isset($has_archive) ? $has_archive : false),
-                    'hierarchical'        => (bool) (isset($hierarchical) ? $hierarchical : false),
-                    #'menu_position'       => (int)@$menu_position,
-                    'supports'            => (array) (empty($supports) ? [] : $supports),
-                    'taxonomies'          => (array) (empty($taxonomies) ? [] : $taxonomies),
-                );
-        
-                update_option( 'advset_post_types', $post_types );
-        
-            }
-            #print_r($post_types);
-            if( sizeof($post_types)>0 )
-                foreach( $post_types as $post_type=>$args ) {
-                    register_post_type( $post_type, $args );
-                    if( in_array( 'thumbnail', $args['supports'] ) ) {
-                        add_theme_support( 'post-thumbnails', array( $post_type, 'post' ) );
+            if (!empty($post_types)) {
+                foreach ($post_types as $post_type => $args) {
+                    register_post_type($post_type, $args);
+                    if (in_array('thumbnail', $args['supports'])) {
+                        add_theme_support('post-thumbnails', [$post_type, 'post']);
                     }
                 }
+            }
         
         });
 

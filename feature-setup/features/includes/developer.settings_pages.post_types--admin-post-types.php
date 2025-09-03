@@ -8,6 +8,8 @@
 
     $advset_post_types = (array) get_option( 'advset_post_types', array() );
 
+    $advset_post_types_nonce = wp_create_nonce('advset_action_posttype');
+
     ?>
     <script>
     <?php echo 'posttype_data='.json_encode($post_types).';'; ?>
@@ -116,6 +118,8 @@
 
             <form id="posttype_form" action="" method="post">
                 <?php #settings_fields( 'advanced-settings-post-types' ); ?>
+
+                <input type="hidden" name="advset_post_types_nonce" value="<?php echo $advset_post_types_nonce; ?>" />
 
                 <input type="hidden" name="advset_action_posttype" value="1" />
 
@@ -237,7 +241,7 @@
                         <span class="edit">
                             <a href="#" onclick="show_form('<?php echo $post_type->name ?>');">Edit</a>
                         </span>
-                                | <a href="options-general.php?page=advanced-settings-post-types&delete_posttype=<?php echo $post_type->name ?>" title="default categories">delete</a>
+                                | <a href="options-general.php?page=advanced-settings-post-types&delete_posttype=<?php echo $post_type->name ?>&advset_post_types_nonce=<?php echo $advset_post_types_nonce ?>" title="default categories">delete</a>
                             <?php } else echo '&nbsp;'; ?>
 
                         </div>
