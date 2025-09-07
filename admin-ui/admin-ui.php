@@ -206,6 +206,13 @@ function advset_admin_modal_html() {
                 </div>
             </div>
         </div>
+        <div class="advset-modal-madeby">
+            <img src="<?php echo plugins_url('', ADVSET_FILE); ?>/admin-ui/images/wppeak.com-logo-vectorized-white.svg" alt="Advanced Settings">
+            <p>
+                Advanced Settings is made by <a href="https://www.wppeak.com/" target="_blank" rel="noopener noreferrer">wppeak.com</a>.<br />
+                We make plugins and other useful WordPress tools.
+            </p>
+        </div>
     </dialog>
     <?php
 }
