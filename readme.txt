@@ -93,6 +93,7 @@ Advanced Settings 3 was developed to help as many users as possible. If you'd li
 = Developer =
 
 * Display SQL queries and page load time
+* Create custom post types 💥 renewed
 
 = Configuration =
 
