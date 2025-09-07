@@ -21,12 +21,16 @@ Advanced Settings is a powerful WordPress plugin that provides settings you woul
 Advanced Settings 3 is optimized for extreme performance. It even loads only necessary PHP.
 [→ details in FAQ](https://wordpress.org/plugins/advanced-settings#will%20the%20plugin%20become%20slower%20with%20more%20features%3F)
 
+**🪶 LIGHTWEIGHT**
+Advanced Settings 3 is lightweight (only about 0.5 MB) and discreet (no dashboard hijacking).
+[→ details in FAQ](https://wordpress.org/plugins/advanced-settings#how%20can%20the%20plugin%20be%20lightweight%20despite%20so%20many%20features%3F)
+
 **🔒 SECURITY**
 Advanced Settings 3 has been independently reviewed for security vulnerabilities via Patchstack.
 [→ details in FAQ](https://wordpress.org/plugins/advanced-settings#how%20is%20the%20security%20of%20the%20plugin%20ensured%3F)
 
 **✳️ INFO ABOUT THE 2 BAD RATINGS**
-2 bad ratings occurred in 2017 because outdated PHP versions were used, but can't happen again.
+Bad ratings occurred in 2017 because users used outdated PHP versions, but can't happen again.
 [→ details in FAQ](https://wordpress.org/plugins/advanced-settings#what%20caused%20the%20two%20bad%20ratings%3F)
 
 --
@@ -116,6 +120,16 @@ No, due to the way the plugin is designed, it would still be just as fast even w
 
 **Detailed answer:**
 Advanced Settings 3 works as follows: Only when you open the plugin's settings window does the plugin recognise which settings are actually available. When saving, only the activated settings are written to a separate cache file. Only this cache file is then taken into account during operation. This means that slowdowns can only occur due to **active** features. However, as some features deactivate WordPress functions, the plugin can actually make WordPress even faster than in the standard configuration.
+
+= How can the plugin be lightweight despite so many features? =
+
+**Short answer:**
+Typically, graphical user interfaces represent the largest chunk of data. Since we have largely standardized the user interface for all features, additional features are of little importance.
+
+**Detailed answer:**
+The plugin is currently only 0.5 MB in size. Only about a third of that is used for the actual functionality of the features. The rest is used for the graphical user interface, backward compatibility, performance optimization, and the like. So if we doubled the number of features, the plugin would still be smaller than 0.7 MB. Theoretically, we could quadruple the number of features and still stay under 1 MB. So the number of features isn't crucial. The trick is to standardize everything around the features so that each additional feature has minimal impact.
+
+We are passionate about lightweight plugins that remain politely in the background while you work, so we can assure you that this will continue to be the case.
 
 = How is the security of the plugin ensured? =
 
