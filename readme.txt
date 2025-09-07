@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
 Tested up to: 6.8
-Stable tag: 3.1.1
+Stable tag: 3.2.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -166,6 +166,12 @@ It would be great if you could contribute with your own review to ensure that th
 
 == Changelog ==
 
+= 3.2.0 - 2025-09-07 =
+* Fixed a medium priority security issue which appeared on activated feature "Automatically generate the Post Thumbnail"
+* Thoroughly revised feature "Automatically generate the Post Thumbnail"
+* Fixed a low priority security issue which appeared on activated experimental feature "Post types settings" (now "Custom post types")
+* Thoroughly revised feature "Post types settings", renamed it to "Custom post types" and removed the "experimental" flag
+
 = 3.1.1 - 2025-07-06 =
 * Fixed minor cache problem
 
@@ -175,7 +181,7 @@ It would be great if you could contribute with your own review to ensure that th
 
 = 3.0.2 - 2025-06-04 =
 * Fixed order of features
-* Fixed a minor security issue in old code (rated as low priority by [Patchstack](https://patchstack.com/))
+* Fixed a low priority security issue which appeared on activated experimental feature "Filters and actions settings"
 
 = 3.0.1 - 2025-05-03 =
 * Fixed a critical bug that occurred with WordPress versions prior to 8.6
