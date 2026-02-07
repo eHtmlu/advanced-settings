@@ -89,11 +89,11 @@ Advanced Settings 3 was developed to help as many users as possible. If you'd li
 * Disable email notifications for core updates
 * Disable email notifications for plugin updates
 * Disable email notifications for theme updates
+* Create custom post types 💥 renewed
 
 = Developer =
 
 * Display SQL queries and page load time
-* Create custom post types 💥 renewed
 
 = Configuration =
 
