@@ -7,7 +7,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
 Tested up to: 6.9
-Stable tag: 3.2.0
+Stable tag: 3.3.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -165,6 +165,13 @@ It would be great if you could contribute with your own review to ensure that th
 3. Send a feature request if you are missing a feature
 
 == Changelog ==
+
+= 3.3.0 - 2026-02-07 =
+* Several changes for "Custom post types" feature:
+  * Optimized edit interface
+  * Added new options in the sections "support" and "settings"
+  * Moved "Custom post types" feature to system category
+  * Fix: Flush rewrite rules added to ensure rewrite rules are always up to date
 
 = 3.2.0 - 2025-09-07 =
 * Fixed a medium priority security issue which appeared on activated feature "Automatically generate the Post Thumbnail"
