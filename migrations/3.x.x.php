@@ -195,4 +195,16 @@ return [
         update_option('advanced_settings_settings', $settings);
     },
 
+    '3.3.0' => function() {
+        $settings = get_option('advanced_settings_settings', []);
+
+        // Move old custom post types setting to system category
+        if ( !empty($settings['developer.settings_pages.post_types']) ) {
+            $settings['system.post_types.custom'] = $settings['developer.settings_pages.post_types'];
+            unset($settings['developer.settings_pages.post_types']);
+        }
+
+        update_option('advanced_settings_settings', $settings);
+    },
+
 ];

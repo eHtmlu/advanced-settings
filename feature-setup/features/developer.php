@@ -132,38 +132,6 @@ advset_register_feature([
 
 
 advset_register_feature([
-    'id' => 'developer.settings_pages.post_types',
-    'category' => 'developer',
-    'ui_config' => fn() => [
-        'tags' => [
-            __('Developer', 'advanced-settings'),
-            __('Admin', 'advanced-settings'),
-            __('Posts', 'advanced-settings'),
-        ],
-        'fields' => [
-            'enable' => [
-                'type' => 'toggle',
-                'label' => __('Custom post types', 'advanced-settings'),
-            ],
-            'info' => [
-                'type' => 'info',
-                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the post types settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-post-types')),
-                'visible' => ['enable' => true]
-            ],
-        ],
-    ],
-    'execution_handler' => function() {
-        require_once ADVSET_DIR.'/admin-ui/classic-ui-elements/tristate-checkbox/tristate-checkbox.php';
-        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
-        require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.post_types--init.php';
-        Advset__Feature__Post_Types::init();
-    },
-    'priority' => 10,
-]);
-
-
-
-advset_register_feature([
     'id' => 'developer.settings_pages.hooks',
     'category' => 'developer',
     'experimental' => true,
