@@ -7,11 +7,24 @@ class Advset__Feature__Post_Types {
 
     private static $instance = null;
 
+    private $flush_rewrite_rules = false;
+
     private function __construct() {
         add_action('init', [$this, 'handle_init']);
         add_action('rest_api_init', [$this, 'rest_api_init']);
         add_action('admin_menu', [$this, 'admin_menu']);
         add_action('admin_enqueue_scripts', ['Advset_Tristate_Checkbox', 'enqueue_assets']);
+
+        register_activation_hook(ADVSET_FILE, [$this, 'handle_activation']);
+        register_deactivation_hook(ADVSET_FILE, [$this, 'handle_deactivation']);
+    }
+
+    public function handle_activation() {
+        $this->flush_rewrite_rules = true; // set flag to flush rewrite rules on next init
+    }
+
+    public function handle_deactivation() {
+        flush_rewrite_rules(); // flush immediately
     }
 
     public static function init() {
@@ -25,7 +38,7 @@ class Advset__Feature__Post_Types {
         $post_types = get_option('advset_post_types', []);
 
         $nonce = $_POST['_advset_posttype_nonce'] ?? null;
-    
+
         if ($nonce && wp_verify_nonce($nonce, 'advset_posttype_nonce') && is_admin() && current_user_can('manage_options')) {
     
             // Delete post type via POST only
@@ -34,6 +47,7 @@ class Advset__Feature__Post_Types {
                 if (isset($post_types[$delete_slug])) {
                     unset($post_types[$delete_slug]);
                     update_option('advset_post_types', $post_types);
+                    $this->flush_rewrite_rules = true;
                 }
             }
     
@@ -143,6 +157,7 @@ class Advset__Feature__Post_Types {
                 });
 
                 update_option( 'advset_post_types', $post_types );
+                $this->flush_rewrite_rules = true;
             }
         }
     
@@ -153,6 +168,11 @@ class Advset__Feature__Post_Types {
                     add_theme_support('post-thumbnails', [$post_type, 'post']);
                 }
             }
+        }
+
+        if ($this->flush_rewrite_rules) {
+            flush_rewrite_rules();
+            $this->flush_rewrite_rules = false;
         }
     }
 
