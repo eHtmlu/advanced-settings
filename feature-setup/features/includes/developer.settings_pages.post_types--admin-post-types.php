@@ -7,32 +7,14 @@ $advset_posttype_nonce = wp_create_nonce('advset_posttype_nonce');
 
 $advset_posttypes_data = get_option('advset_post_types', []);
 
-$advset_posttypes_data_default = [
-    'supports' => [
-        'title',
-        'editor',
-    ],
-    'public' => true,
-    'publicly_queryable' => true,
-    'show_ui' => true,
-    'show_in_menu' => true,
-    'query_var' => true,
-    'has_archive' => false,
-    'hierarchical' => false,
-    'taxonomies' => [
-        'category',
-        'post_tag',
-    ],
-];
-
-
-
 
 ?>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
     const formContainerElement = document.getElementById('advset_posttype_form_container');
+    const formTitleAddElement = document.getElementById('advset_posttype_form_title_add');
+    const formTitleEditElement = document.getElementById('advset_posttype_form_title_edit');
     const listContainerElement = document.getElementById('advset_posttype_list_container');
     const formElement = formContainerElement?.querySelector('#advset_posttype_form');
     const labelInputElement = formContainerElement?.querySelector('[name="label"]');
@@ -42,7 +24,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButtonElement = formContainerElement?.querySelector('[type="submit"]');
 
     const posttypes_data = <?php echo json_encode($advset_posttypes_data); ?>;
-    const posttypes_data_default = <?php echo json_encode($advset_posttypes_data_default); ?>;
+
+    const tristateElements = Array.from(formElement?.querySelectorAll('.advset-tristate-fieldset')).reduce((acc, fieldsetElement) => {
+        const inputNullElement = fieldsetElement.querySelector('input[value="null"]');
+        const inputTrueElement = fieldsetElement.querySelector('input[value="true"]');
+        const inputFalseElement = fieldsetElement.querySelector('input[value="false"]');
+        const name = inputNullElement.name;
+        if (!inputNullElement && !inputTrueElement && !inputFalseElement) {
+            return acc;
+        }
+        acc[name] = {
+            name,
+            fieldsetElement,
+            getValue: () => inputTrueElement?.checked ? true : (inputFalseElement?.checked ? false : null),
+            getResultingValue: () => inputTrueElement?.checked ? true : (inputFalseElement?.checked ? false : fieldsetElement.dataset.advsetDefault === 'true' ? true : false),
+            setDefaultValue: (value) => {
+                fieldsetElement.dataset.advsetDefault = value ? 'true' : 'false';
+            },
+        };
+        return acc;
+    }, {});
 
     document.addEventListener('click', function(event) {
         if (event.target.closest('.advset-posttype-edit-link')) {
@@ -69,6 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     typeInputElement.addEventListener('input', function() {
         checkType();
+    });
+
+
+    document.addEventListener('change', function(event) {
+        updateFormFieldStates();
     });
 
     function checkType(generate_from_label = false) {
@@ -128,9 +134,24 @@ document.addEventListener('DOMContentLoaded', function() {
         typeAvailableIndicatorElement.style.color = color;
     }
 
+    function updateFormFieldStates() {
+        tristateElements['exclude_from_search'].setDefaultValue(!tristateElements['public'].getResultingValue());
+        tristateElements['publicly_queryable'].setDefaultValue(tristateElements['public'].getResultingValue());
+        tristateElements['show_ui'].setDefaultValue(tristateElements['public'].getResultingValue());
+        tristateElements['show_in_menu'].setDefaultValue(tristateElements['show_ui'].getResultingValue());
+        tristateElements['show_in_nav_menus'].setDefaultValue(tristateElements['public'].getResultingValue());
+        tristateElements['show_in_admin_bar'].setDefaultValue(tristateElements['show_in_menu'].getResultingValue());
+
+        const supportsElements = Object.values(tristateElements).filter(element => element.name.startsWith('supports['));
+        const supportsChecked = supportsElements.filter(element => element.getValue() !== null).length > 0;
+        tristateElements['supports[title]']?.setDefaultValue(!supportsChecked);
+        tristateElements['supports[editor]']?.setDefaultValue(!supportsChecked);
+    }
+
     function showForm(type) {
 
-        const data = type ? posttypes_data[type] : posttypes_data_default;
+        const isNew = !type;
+        const data = type ? posttypes_data[type] : {};
         data.label = data?.labels?.name ?? type;
         data.type = type ?? '';
         data.type_stored = type ?? '';
@@ -139,21 +160,37 @@ document.addEventListener('DOMContentLoaded', function() {
             if (element.name.slice(0, 1) === '_') {
                 return;
             }
-            
+
+            if (element.type === 'radio' && element.dataset.type === 'tristate') {
+                const keys = element.name.split(/\[(\w+)\]/).filter(Boolean);
+                const val = keys.length === 1 ? data[element.name] : (data[keys[0]]?.includes(keys[1]) ? true : null);
+                element.checked = element.value === (val === true ? 'true' : (val === false ? 'false' : 'null'));
+                return;
+            }
+
             if (element.type === 'checkbox') {
                 if (element.name.slice(-2) === '[]') {
                     element.checked = data[element.name.slice(0, -2)]?.includes(element.value) ?? element.defaultChecked;
                 } else {
                     element.checked = data[element.name] ?? element.defaultChecked;
                 }
-            } else if (['text', 'hidden', 'textarea'].includes(element.type)) {
+                return;
+            }
+            
+            if (['text', 'hidden', 'textarea'].includes(element.type)) {
                 element.value = data[element.name] ?? element.defaultValue;
+                return;
             }
         });
 
         submitButtonElement.value = type ? submitButtonElement.dataset.saveChanges : submitButtonElement.dataset.create;
 
         setTypeValidity(null);
+
+        updateFormFieldStates();
+
+        formTitleAddElement.style.display = isNew ? '' : 'none';
+        formTitleEditElement.style.display = isNew ? 'none' : '';
 
         listContainerElement.style.display = 'none';
         formContainerElement.style.display = '';
@@ -196,7 +233,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div id="advset_posttype_form_container" style="display:none">
 
-        <h3><?php _e('Add') ?></h3>
+        <h3 id="advset_posttype_form_title_add" style="display:none"><?php _e('Add') ?></h3>
+        <h3 id="advset_posttype_form_title_edit" style="display:none"><?php _e('Edit') ?></h3>
 
         <form id="advset_posttype_form" action="" method="post">
             <?php #settings_fields( 'advanced-settings-post-types' ); ?>
@@ -237,62 +275,81 @@ document.addEventListener('DOMContentLoaded', function() {
                 <tr valign="top">
                     <th scope="row"><?php _e('Supports'); ?></th>
                     <td>
-                        <input name="supports[]" id="posttype-support-title" value="title" type="checkbox">
-                        <label for="posttype-support-title">title</label><br />
-                        <input name="supports[]" id="posttype-support-editor" value="editor" type="checkbox">
-                        <label for="posttype-support-editor">editor</label><br />
-                        <input name="supports[]" id="posttype-support-author" value="author" type="checkbox">
-                        <label for="posttype-support-author">author</label><br />
-                        <input name="supports[]" id="posttype-support-thumbnail" value="thumbnail" type="checkbox">
-                        <label for="posttype-support-thumbnail">thumbnail</label><br />
-                        <input name="supports[]" id="posttype-support-excerpt" value="excerpt" type="checkbox">
-                        <label for="posttype-support-excerpt">excerpt</label><br />
-                        <input name="supports[]" id="posttype-support-trackbacks" value="trackbacks" type="checkbox">
-                        <label for="posttype-support-trackbacks">trackbacks</label><br />
-                        <input name="supports[]" id="posttype-support-custom-fields" value="custom-fields" type="checkbox">
-                        <label for="posttype-support-custom-fields">custom fields</label><br />
-                        <input name="supports[]" id="posttype-support-comments" value="comments" type="checkbox">
-                        <label for="posttype-support-comments">comments</label><br />
-                        <input name="supports[]" id="posttype-support-revisions" value="revisions" type="checkbox">
-                        <label for="posttype-support-revisions">revisions</label> <br />
-                        <input name="supports[]" id="posttype-support-page-attributes" value="page-attributes" type="checkbox">
-                        <label for="posttype-support-page-attributes">page attributes</label>
+                        <?php
+                        foreach ([
+                            'title' => true,
+                            'editor' => true,
+                            'comments' => false,
+                            'revisions' => false,
+                            'trackbacks' => false,
+                            'author' => false,
+                            'excerpt' => false,
+                            'page-attributes' => false,
+                            'thumbnail' => false,
+                            'custom-fields' => false,
+                            'post-formats' => false,
+                        ] as $support => $default) {
+                            Advset_Tristate_Checkbox::render('supports[' . $support . ']', [
+                                'label' => $support,
+                                'default' => $default,
+                                'trueOnly' => true,
+                                'aboutURL' => 'https://developer.wordpress.org/reference/functions/register_post_type/#supports',
+                            ]);
+                        }
+                        ?>
                     </td>
                 </tr>
 
                 <tr valign="top">
                     <th scope="row"><?php _e('Settings'); ?></th>
                     <td>
-                        <label><input name="public" value="1" type="checkbox">
-                            public</label><br />
-                        <label><input name="publicly_queryable" value="1" type="checkbox">
-                            publicly_queryable</label><br />
-                        <label><input name="show_ui" value="1" type="checkbox">
-                            show_ui</label><br />
-                        <label><input name="show_in_menu" value="1" type="checkbox">
-                            show_in_menu</label><br />
-                        <label><input name="query_var" value="1" type="checkbox">
-                            query_var</label><br />
-                        <!--label><input name="rewrite" value="1" type="checkbox">
-                            rewrite</label><br /-->
-                        <!--label><input name="capability_type" value="1" type="checkbox">
-                            capability_type</label><br /-->
-                        <label><input name="has_archive" value="1" type="checkbox">
-                            has_archive</label><br />
-                        <label><input name="hierarchical" value="1" type="checkbox">
-                            hierarchical</label> <br />
-                        <!--label><input name="menu_position" value="1" type="checkbox">
-                            menu_position</label-->
+                        <?php
+                        foreach ([
+                            'public' => false,
+                            'hierarchical' => false,
+                            'exclude_from_search' => true, // Dynamic defaults are set via JS - see updateFormFieldStates()
+                            'publicly_queryable' => false, // Dynamic defaults are set via JS - see updateFormFieldStates()
+                            'show_ui' => false, // Dynamic defaults are set via JS - see updateFormFieldStates()
+                            'show_in_menu' => false, // Dynamic defaults are set via JS - see updateFormFieldStates()
+                            'show_in_nav_menus' => false, // Dynamic defaults are set via JS - see updateFormFieldStates()
+                            'show_in_admin_bar' => false,
+                            'show_in_rest' => false,
+                            'late_route_registration' => false,
+                            'map_meta_cap' => false,
+                            'has_archive' => false,
+                            'query_var' => true,
+                            'can_export' => true,
+                        ] as $setting => $default) {
+                            if (in_array($setting, ['late_route_registration'])) {
+                                $aboutURL = null;
+                            } else {
+                                $aboutURL = 'https://developer.wordpress.org/reference/functions/register_post_type/#' . $setting;
+                            }
+                            Advset_Tristate_Checkbox::render($setting, [
+                                'default' => $default,
+                                'aboutURL' => $aboutURL,
+                            ]);
+                        }
+                        ?>
                     </td>
                 </tr>
 
                 <tr valign="top">
                     <th scope="row"><?php _e('Taxonomies'); ?></th>
                     <td>
-                        <label><input name="taxonomies[]" value="category" type="checkbox">
-                            category</label><br />
-                        <label><input name="taxonomies[]" value="post_tag" type="checkbox">
-                            post_tag</label>
+                        <?php
+                        foreach ([
+                            'category' => false,
+                            'post_tag' => false,
+                        ] as $taxonomy => $default) {
+                            Advset_Tristate_Checkbox::render('taxonomies[' . $taxonomy . ']', [
+                                'label' => $taxonomy,
+                                'default' => $default,
+                                'trueOnly' => true,
+                                'aboutURL' => 'https://developer.wordpress.org/reference/functions/register_post_type/#taxonomies-2',
+                            ]);
+                        }
+                        ?>
                     </td>
                 </tr>
 

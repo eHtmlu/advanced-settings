@@ -11,6 +11,7 @@ class Advset__Feature__Post_Types {
         add_action('init', [$this, 'handle_init']);
         add_action('rest_api_init', [$this, 'rest_api_init']);
         add_action('admin_menu', [$this, 'admin_menu']);
+        add_action('admin_enqueue_scripts', ['Advset_Tristate_Checkbox', 'enqueue_assets']);
     }
 
     public static function init() {
@@ -76,14 +77,15 @@ class Advset__Feature__Post_Types {
                 $supports_allowed = [
                     'title',
                     'editor',
-                    'author',
-                    'thumbnail',
-                    'excerpt',
-                    'trackbacks',
-                    'custom-fields',
                     'comments',
                     'revisions',
+                    'trackbacks',
+                    'author',
+                    'excerpt',
                     'page-attributes',
+                    'thumbnail',
+                    'custom-fields',
+                    'post-formats',
                 ];
     
                 // These taxonomies are allowed to be added to the post type
@@ -91,24 +93,55 @@ class Advset__Feature__Post_Types {
                     'category',
                     'post_tag',
                 ];
+
+                // Get supports that are explicitly set to true
+                // @TODO: Add support for FALSE value for $supports (to allow disabling all supports)
+                $supports = array_intersect(array_keys(array_filter($_POST['supports'] ?? [], function($v) {
+                    return Advset_Tristate_Checkbox::post_to_tristate($v) === true;
+                })), $supports_allowed) ?: null;
+
+                // Get taxonomies that are explicitly set to true
+                $taxonomies = array_intersect(array_keys(array_filter($_POST['taxonomies'] ?? [], function($v) {
+                    return Advset_Tristate_Checkbox::post_to_tristate($v) === true;
+                })), $taxonomies_allowed) ?: null;
     
-                $post_types[$type] = [
+                $post_types[$type] = array_filter([
                     'labels'              => $labels,
-                    'description'         => $_POST['description'] ?? '',
-                    'public'              => !empty($_POST['public']),
-                    'publicly_queryable'  => !empty($_POST['publicly_queryable']),
-                    'show_ui'             => !empty($_POST['show_ui']),
-                    'show_in_menu'        => !empty($_POST['show_in_menu']),
-                    'query_var'           => !empty($_POST['query_var']),
-                    #'rewrite'             => array( 'slug' => 'book' ),
-                    #'capability_type'     => 'post',
-                    'has_archive'         => !empty($_POST['has_archive']),
-                    'hierarchical'        => !empty($_POST['hierarchical']),
-                    #'menu_position'       => (int)@$menu_position,
-                    'supports'            => array_intersect($_POST['supports'] ?? [], $supports_allowed),
-                    'taxonomies'          => array_intersect($_POST['taxonomies'] ?? [], $taxonomies_allowed),
-                ];
-        
+                    'description'         => $_POST['description'] ?? null,
+                    'public'              => Advset_Tristate_Checkbox::post_to_tristate($_POST['public']),
+                    'hierarchical'        => Advset_Tristate_Checkbox::post_to_tristate($_POST['hierarchical']),
+                    'exclude_from_search' => Advset_Tristate_Checkbox::post_to_tristate($_POST['exclude_from_search']),
+                    'publicly_queryable'  => Advset_Tristate_Checkbox::post_to_tristate($_POST['publicly_queryable']),
+                    'show_ui'             => Advset_Tristate_Checkbox::post_to_tristate($_POST['show_ui']),
+                    'show_in_menu'        => Advset_Tristate_Checkbox::post_to_tristate($_POST['show_in_menu']),
+                    'show_in_nav_menus'   => Advset_Tristate_Checkbox::post_to_tristate($_POST['show_in_nav_menus']),
+                    'show_in_admin_bar'   => Advset_Tristate_Checkbox::post_to_tristate($_POST['show_in_admin_bar']),
+                    'show_in_rest'        => Advset_Tristate_Checkbox::post_to_tristate($_POST['show_in_rest']),
+                    //'rest_base'           => $_POST['rest_base'] ?? null,
+                    //'rest_namespace'      => $_POST['rest_namespace'] ?? null,
+                    //'rest_controller_class' => $_POST['rest_controller_class'] ?? null,
+                    //'autosave_rest_controller_class' => $_POST['autosave_rest_controller_class'] ?? null,
+                    //'revisions_rest_controller_class' => $_POST['revisions_rest_controller_class'] ?? null,
+                    'late_route_registration' => Advset_Tristate_Checkbox::post_to_tristate($_POST['late_route_registration']),
+                    //'menu_position'       => !empty($_POST['menu_position']) ? (int)$_POST['menu_position'] : null,
+                    //'menu_icon'           => $_POST['menu_icon'] ?? null,
+                    //'capability_type'     => $_POST['capability_type'] ?? null,
+                    //'capabilities'        => $_POST['capabilities'] ?? null,
+                    'map_meta_cap'        => Advset_Tristate_Checkbox::post_to_tristate($_POST['map_meta_cap']),
+                    'supports'            => $supports,
+                    //'register_meta_box_cb' => $_POST['register_meta_box_cb'] ?? null,
+                    'taxonomies'          => $taxonomies,
+                    'has_archive'         => Advset_Tristate_Checkbox::post_to_tristate($_POST['has_archive']),
+                    //'rewrite'             => $_POST['rewrite'] ?? [],
+                    'query_var'           => Advset_Tristate_Checkbox::post_to_tristate($_POST['query_var']),
+                    'can_export'          => Advset_Tristate_Checkbox::post_to_tristate($_POST['can_export']),
+                    //'delete_with_user'    => Advset_Tristate_Checkbox::post_to_tristate($_POST['delete_with_user']),
+                    //'template'            => $_POST['template'] ?? null,
+                    //'template_lock'       => $_POST['template_lock'] ?? null,
+                ], function($v) {
+                    return $v !== null;
+                });
+
                 update_option( 'advset_post_types', $post_types );
             }
         }
@@ -116,7 +149,7 @@ class Advset__Feature__Post_Types {
         if (!empty($post_types)) {
             foreach ($post_types as $post_type => $args) {
                 register_post_type($post_type, $args);
-                if (in_array('thumbnail', $args['supports'])) {
+                if (in_array('thumbnail', $args['supports'] ?? [])) {
                     add_theme_support('post-thumbnails', [$post_type, 'post']);
                 }
             }

@@ -153,6 +153,7 @@ advset_register_feature([
         ],
     ],
     'execution_handler' => function() {
+        require_once ADVSET_DIR.'/admin-ui/classic-ui-elements/tristate-checkbox/tristate-checkbox.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.php';
         require_once ADVSET_DIR.'/feature-setup/features/includes/developer.settings_pages.post_types--init.php';
         Advset__Feature__Post_Types::init();
