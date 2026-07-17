@@ -176,7 +176,7 @@ add_action('plugins_loaded', function() {
 
 // Check if we are in the admin area or on the login page
 function advset_is_admin_area() {
-    return is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) );
+    return is_admin() || ( $GLOBALS['pagenow'] ?? '' ) === 'wp-login.php';
 }
 
 // Get settings
