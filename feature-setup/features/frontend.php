@@ -420,6 +420,8 @@ advset_register_feature([
         remove_action('wp_head', 'rest_output_link_wp_head');
         remove_action('rest_api_init', 'wp_oembed_register_route');
         remove_filter('the_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
+        remove_filter('widget_text_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
+        remove_filter('widget_block_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
         remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
         add_filter('embed_oembed_discover', '__return_false');
     },
