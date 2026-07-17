@@ -249,8 +249,9 @@ advset_register_feature([
         
             list($width, $height, $type) = $image_info;
         
-            $max_width  = ((int) $settings['max_width']) ?? null;
-            $max_height = ((int) $settings['max_height']) ?? null;
+            // Empty or 0 means no limit
+            $max_width  = (int) ($settings['max_width'] ?? 0) ?: null;
+            $max_height = (int) ($settings['max_height'] ?? 0) ?: null;
         
             if (($max_width === null || $width <= $max_width) && ($max_height === null || $height <= $max_height)) {
                 return $upload; // nothig to do
