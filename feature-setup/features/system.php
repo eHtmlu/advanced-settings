@@ -290,7 +290,7 @@ advset_register_feature([
             ],
             'info' => [
                 'type' => 'info',
-                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the post types settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('admin.php?page=advanced-settings-post-types')),
+                'descriptionHtml' => sprintf(__('<strong>Note:</strong> You can find the post types settings page <a href="%s">here</a>.', 'advanced-settings'), admin_url('options-general.php?page=advanced-settings-post-types')),
                 'visible' => ['enable' => true]
             ],
         ],
