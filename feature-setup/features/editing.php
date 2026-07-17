@@ -145,7 +145,9 @@ advset_register_feature([
             $clean_content = preg_replace('/<!DOCTYPE[^>[]*(\[[^]]*\])?[^>]*>\s*/is', '', $clean_content);
             
             // 3. XXE-Protection (critical!)
-            $entity_loader_state = libxml_disable_entity_loader(true);
+            // libxml_disable_entity_loader() is deprecated since PHP 8.0 and unnecessary there,
+            // because external entity loading is disabled by default since libxml2 2.9.
+            $entity_loader_state = PHP_VERSION_ID < 80000 ? libxml_disable_entity_loader(true) : null;
             libxml_use_internal_errors(true);
             libxml_clear_errors();
             
@@ -190,7 +192,9 @@ advset_register_feature([
             }
 
             // Reset libxml state
-            libxml_disable_entity_loader($entity_loader_state);
+            if (PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader($entity_loader_state);
+            }
             libxml_clear_errors();
 
             return $file;
