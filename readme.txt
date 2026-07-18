@@ -6,8 +6,8 @@ Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.0.0
-Tested up to: 6.9
-Stable tag: 3.3.0
+Tested up to: 7.0
+Stable tag: 3.3.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -165,6 +165,13 @@ It would be great if you could contribute with your own review to ensure that th
 3. Send a feature request if you are missing a feature
 
 == Changelog ==
+
+= 3.3.1 - 2026-07-18 =
+* Fixed WordPress 7 compatibility of the feature "Remove image replacement for emojis" (it stopped working in the admin area)
+* The feature "Disable auto-embed of external content" now also disables auto-embeds inside widgets
+* The feature "Allow SVG upload for admins" no longer causes a PHP warning during SVG uploads (PHP 8 and newer)
+* Fixed the feature "Downsize images on upload": images within the size limits are no longer unnecessarily re-compressed
+* Minor code cleanups
 
 = 3.3.0 - 2026-02-07 =
 * Several changes for "Custom post types" feature:
