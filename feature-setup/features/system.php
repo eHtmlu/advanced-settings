@@ -64,8 +64,23 @@ advset_register_feature([
     ],
     'execution_handler' => function() {
         add_filter( 'comments_open', '__return_false' );
-        add_filter( 'comments_array', function() { return []; }, 10 );
-    
+
+        // Hides existing comments in the frontend wherever they are queried: comments_template() in classic themes,
+        // the comment blocks in block themes, widgets and the REST API. Queries explicitly asking for other
+        // comment types (e.g. editor notes or WooCommerce order notes) are left untouched.
+        if ( ! advset_is_admin_area() ) {
+            add_filter( 'comments_pre_query', function( $comment_data, $query ) {
+                $types = array_filter( array_merge( (array) $query->query_vars['type'], (array) $query->query_vars['type__in'] ) );
+                if ( array_diff( $types, ['comment', 'pings', 'pingback', 'trackback'] ) ) {
+                    return $comment_data;
+                }
+                return $query->query_vars['count'] ? 0 : [];
+            }, 10, 2 );
+
+            // Block themes render the comments section as soon as the post has comments
+            add_filter( 'get_comments_number', '__return_zero' );
+        }
+
         // Removes from admin menu
         add_action( 'admin_menu', function() { remove_menu_page( 'edit-comments.php' ); } );
         
