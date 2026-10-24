@@ -35,7 +35,8 @@ if (!defined('ADVSET_VERSION')) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 
-    $plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__);
+    // Without markup and translation, as translating here would load the text domain too early (before init).
+    $plugin_data = $plugin_data_loaded ? $plugin_data : get_plugin_data(__FILE__, false, false);
     define('ADVSET_VERSION', $plugin_data['Version']);
 }
 
