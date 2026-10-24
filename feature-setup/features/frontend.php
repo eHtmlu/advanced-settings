@@ -419,11 +419,16 @@ advset_register_feature([
         remove_action('wp_head', 'wp_oembed_add_host_js');
         remove_action('wp_head', 'rest_output_link_wp_head');
         remove_action('rest_api_init', 'wp_oembed_register_route');
-        remove_filter('the_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
-        remove_filter('widget_text_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
-        remove_filter('widget_block_content', [$GLOBALS['wp_embed'], 'autoembed'], 8);
-        remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-        add_filter('embed_oembed_discover', '__return_false');
+
+        // Every auto-embed (post content, widgets, template parts, patterns, [embed] shortcode, ...) runs through
+        // WP_Embed, which asks its handlers first – before any cache lookup or remote request. This handler takes
+        // every URL and returns it the way WordPress shows URLs without an embed.
+        wp_embed_register_handler('advset_disable_oembed', '#.*#', function($matches, $attr, $url) {
+            return $GLOBALS['wp_embed']->maybe_make_link($url);
+        }, 0);
+
+        // Blocks oEmbed requests that bypass WP_Embed, e.g. the video background of the cover block
+        add_filter('pre_oembed_result', '__return_false');
     },
     'priority' => 120,
 ]);
