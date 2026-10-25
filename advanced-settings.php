@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Description: Offers settings that you might expect to find in the WordPress core.
 Author: Helmut Wandl
 Author URI: https://ehtmlu.com/
-Version: 3.3.1
+Version: 3.3.2
 Requires at least: 5.3
 Requires PHP: 7.4
 Text Domain: advanced-settings

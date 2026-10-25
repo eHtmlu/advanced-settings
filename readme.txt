@@ -6,8 +6,8 @@ Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
 Requires at least: 5.3
-Tested up to: 7.0
-Stable tag: 3.3.1
+Tested up to: 7.1
+Stable tag: 3.3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -165,6 +165,16 @@ It would be great if you could contribute with your own review to ensure that th
 3. Send a feature request if you are missing a feature
 
 == Changelog ==
+
+= 3.3.2 - 2026-10-25 =
+* The feature "Disable auto-embed of external content" now also prevents embeds outside of the post content, e.g. in template parts, patterns, the video background of the cover block, the latest posts block (since WordPress 7.1) and via the [embed] shortcode
+* The feature "Disable comment system" now also hides existing comments in block themes, widgets and the REST API
+* Fixed the feature "Remove pingbacks and trackbacks from comment count", which showed wrong numbers for posts other than the current one
+* Fixed a PHP error in the experimental "Styles settings" and "Script settings" when a removed style or script is not registered on the current page
+* Prepared the settings dialog for future WordPress versions with React 19
+* Fixed the notice "Translation loading for the advanced-settings domain was triggered too early" (only visible with WP_DEBUG enabled)
+* Raised the minimum required WordPress version to 5.3, as the plugin hasn't worked with older versions since version 3.0.0
+* Minor code cleanups
 
 = 3.3.1 - 2026-07-18 =
 * Fixed WordPress 7 compatibility of the feature "Remove image replacement for emojis" (it stopped working in the admin area)
