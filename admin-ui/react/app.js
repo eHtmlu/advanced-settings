@@ -603,31 +603,36 @@ const AdvSetModalApp = {
      */
     render() {
         const { searchQuery, parsedSearchQuery, items, hiddenItems, isLoading, categories, activeTab } = this.state;
-        
+        const { createRoot, flushSync } = wp.element;
+
         // Render the React app
-        if (window.React && window.ReactDOM) {
-            const appElement = React.createElement(App, {
-                items: items,
-                categories: categories,
-                onSettingChange: this.handleSettingChange.bind(this),
-                onCategoryClick: this.scrollToCategory.bind(this),
-                onTagClick: this.handleTagClick.bind(this),
-                onTabChange: this.handleTabChange.bind(this),
-                settings: this.state.settings,
-                searchQuery: searchQuery,
-                parsedSearchQuery: parsedSearchQuery,
-                activeCategory: this.state.activeCategory,
-                hiddenItems: hiddenItems,
-                activeTab: activeTab
-            });
-            
-            ReactDOM.render(appElement, this.container, () => {
-                // Setup scroll listener after React has rendered
-                this.setupScrollListener();
-            });
+        const appElement = React.createElement(App, {
+            items: items,
+            categories: categories,
+            onSettingChange: this.handleSettingChange.bind(this),
+            onCategoryClick: this.scrollToCategory.bind(this),
+            onTagClick: this.handleTagClick.bind(this),
+            onTabChange: this.handleTabChange.bind(this),
+            settings: this.state.settings,
+            searchQuery: searchQuery,
+            parsedSearchQuery: parsedSearchQuery,
+            activeCategory: this.state.activeCategory,
+            hiddenItems: hiddenItems,
+            activeTab: activeTab
+        });
+
+        // createRoot() exists since WordPress 6.2 (React 18), while render() is removed in React 19
+        if (createRoot) {
+            this.root = this.root || createRoot(this.container);
+
+            // Commit synchronously like render() does, as the code below relies on the rendered DOM
+            flushSync(() => this.root.render(appElement));
         } else {
-            console.error('React or ReactDOM not loaded');
+            wp.element.render(appElement, this.container);
         }
+
+        // Setup scroll listener after React has rendered
+        this.setupScrollListener();
     },
     
     /**

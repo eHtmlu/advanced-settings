@@ -17,8 +17,6 @@
     
     // State
     let reactAppInitialized = false;
-    let reactLoaded = false;
-    let reactDomLoaded = false;
     let dataLoaded = false;
     
     // Initialize
@@ -126,50 +124,32 @@
     }
     
     /**
-     * Load React and ReactDOM dynamically
+     * Load wp.element (and with it React) dynamically
      */
     function loadReact() {
-        return new Promise((resolve) => {
-            // Check if React is already loaded
-            if (window.React && window.ReactDOM) {
-                reactLoaded = true;
-                reactDomLoaded = true;
-                resolve();
+        // Already loaded on this page (possibly concatenated by WordPress, so without script IDs)
+        if (window.wp && window.wp.element) {
+            return Promise.resolve();
+        }
+
+        // Load the scripts one after another, as each one may depend on the previous ones
+        return Object.entries(advsetAdminUI.wpElementScripts).reduce((previous, [handle, src]) => previous.then(() => {
+            // Skip scripts that WordPress already printed on this page
+            if (document.getElementById(handle + '-js')) {
                 return;
             }
-            
-            // Load React first, then ReactDOM
-            const reactScript = document.createElement('script');
-            reactScript.src = advsetAdminUI.wpReactUrl;
-            
-            reactScript.onload = function() {
-                reactLoaded = true;
-                
-                // Only load ReactDOM after React is fully loaded
-                const reactDomScript = document.createElement('script');
-                reactDomScript.src = advsetAdminUI.wpReactDomUrl;
-                
-                reactDomScript.onload = function() {
-                    reactDomLoaded = true;
-                    checkReactLoaded(resolve);
-                };
-                
-                document.head.appendChild(reactDomScript);
-            };
-            
-            document.head.appendChild(reactScript);
-        });
+
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.id = handle + '-js';
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error('Failed to load script: ' + src));
+                document.head.appendChild(script);
+            });
+        }), Promise.resolve());
     }
-    
-    /**
-     * Check if both React and ReactDOM are loaded
-     */
-    function checkReactLoaded(resolve) {
-        if (reactLoaded && reactDomLoaded) {
-            resolve();
-        }
-    }
-    
+
     /**
      * Initialize React app
      */
@@ -185,29 +165,27 @@
         cssLink.href = advsetAdminUI.reactAppCssUrl;
         document.head.appendChild(cssLink);
         
-        // Load React and ReactDOM
-        loadReact().then(() => {
-            // Import the React app module directly
-            import(advsetAdminUI.reactAppUrl)
-                .then(module => {
-                    // Initialize the React app using the imported module
-                    if (module.AdvSetModalApp) {
-                        document.addEventListener('advset-data-loaded', function() {
-                            if (searchInput?.value) {
-                                document.dispatchEvent(new CustomEvent('advset-search', {
-                                    detail: { query: searchInput.value }
-                                }));
-                            }
-                        });
-                        module.AdvSetModalApp.init(modalContent);
-                        reactAppInitialized = true;
-                    } else {
-                        console.error('React app not loaded properly');
-                    }
-                })
-                .catch(error => {
-                    console.error('Failed to load React app module:', error);
-                });
-        });
+        // Load React, then import the React app module directly
+        loadReact()
+            .then(() => import(advsetAdminUI.reactAppUrl))
+            .then(module => {
+                // Initialize the React app using the imported module
+                if (module.AdvSetModalApp) {
+                    document.addEventListener('advset-data-loaded', function() {
+                        if (searchInput?.value) {
+                            document.dispatchEvent(new CustomEvent('advset-search', {
+                                detail: { query: searchInput.value }
+                            }));
+                        }
+                    });
+                    module.AdvSetModalApp.init(modalContent);
+                    reactAppInitialized = true;
+                } else {
+                    console.error('React app not loaded properly');
+                }
+            })
+            .catch(error => {
+                console.error('Failed to load React app:', error);
+            });
     }
 })(); 

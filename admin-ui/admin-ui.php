@@ -73,6 +73,37 @@ if (is_admin()) {
 
 
 /**
+ * Get the URLs of a registered script and all its dependencies in loading order
+ *
+ * Allows loading the script on demand in the browser with whatever files the current WordPress version registers for it.
+ */
+function advset_get_script_urls($handle, $urls = []) {
+    $wp_scripts = wp_scripts();
+    $script = $wp_scripts->query($handle);
+    if (!$script || isset($urls[$handle])) {
+        return $urls;
+    }
+
+    foreach ($script->deps as $dependency) {
+        $urls = advset_get_script_urls($dependency, $urls);
+    }
+
+    // Scripts without source are just aliases for their dependencies
+    if ($script->src) {
+        $src = preg_match('|^(https?:)?//|', $script->src) ? $script->src : $wp_scripts->base_url . $script->src;
+        $urls[$handle] = add_query_arg('ver', $script->ver ?: $wp_scripts->default_version, $src);
+    }
+
+    return $urls;
+}
+
+
+
+
+
+
+
+/**
  * Enqueue admin UI scripts and styles
  */
 function advset_admin_ui_scripts() {
@@ -105,8 +136,8 @@ function advset_admin_ui_scripts() {
         'nonce' => wp_create_nonce('advset-admin-ui-nonce'),
         'reactAppUrl' => plugins_url('react/app.js', __FILE__) . '?v=' . ADVSET_VERSION,
         'reactAppCssUrl' => plugins_url('react/app.css', __FILE__) . '?v=' . ADVSET_VERSION,
-        'wpReactUrl' => includes_url('js/dist/vendor/react.min.js') . '?v=' . $GLOBALS['wp_version'],
-        'wpReactDomUrl' => includes_url('js/dist/vendor/react-dom.min.js') . '?v=' . $GLOBALS['wp_version'],
+        // wp.element is WordPress' stable API on top of React, regardless of the React version WordPress ships
+        'wpElementScripts' => advset_get_script_urls('wp-element'),
         'showUserGuide' => get_option('advset_guide_shown') === false,
     ];
 
