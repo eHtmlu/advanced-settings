@@ -102,8 +102,8 @@ advset_register_feature([
                 'png' => 'image/png',
                 'svg' => 'image/svg+xml',
             ] as $suffix => $mime) {
-                if ( file_exists(TEMPLATEPATH.'/favicon.' . $suffix) ) {
-                    echo '<link rel="shortcut icon"' . ($mime ? ' type="'.$mime.'"' : '') . ' href="'.get_bloginfo('template_url').'/favicon.'.$suffix.'">'."\r\n";
+                if ( file_exists(get_template_directory().'/favicon.' . $suffix) ) {
+                    echo '<link rel="shortcut icon"' . ($mime ? ' type="'.$mime.'"' : '') . ' href="'.get_template_directory_uri().'/favicon.'.$suffix.'">'."\r\n";
                     break;
                 }
             }
