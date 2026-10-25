@@ -6,7 +6,7 @@ Description: Offers settings that you might expect to find in the WordPress core
 Author: Helmut Wandl
 Author URI: https://ehtmlu.com/
 Version: 3.3.1
-Requires at least: 5.0.0
+Requires at least: 5.3
 Requires PHP: 7.4
 Text Domain: advanced-settings
 Domain Path: /languages

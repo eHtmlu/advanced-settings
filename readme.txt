@@ -5,7 +5,7 @@ Contributors: eHtmlu, webarthur
 Author URI: https://ehtmlu.com/
 Plugin URI: https://wordpress.org/plugins/advanced-settings/
 Tags: settings, admin, dashboard, frontend, editing
-Requires at least: 5.0.0
+Requires at least: 5.3
 Tested up to: 7.0
 Stable tag: 3.3.1
 License: GPLv3 or later
