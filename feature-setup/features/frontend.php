@@ -532,17 +532,16 @@ advset_register_feature([
         ]
     ],
     'execution_handler' => function() {
-        add_filter('get_comments_number', function($count) {
-            if ( ! advset_is_admin_area() ) {
-                global $id;
-                $comments = get_comments('status=approve&post_id=' . $id);
+        add_filter('get_comments_number', function($count, $post_id) {
+            if ( ! advset_is_admin_area() && $post_id ) {
+                $comments = get_comments('status=approve&post_id=' . $post_id);
                 $comments_by_type = separate_comments($comments);
                 return count($comments_by_type['comment']);
             }
             else {
                 return $count;
             }
-        }, 10);
+        }, 10, 2);
     },
     'priority' => 150,
 ]);
