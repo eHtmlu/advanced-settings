@@ -34,7 +34,8 @@ if( !advset_is_admin_area() ):
         // remove styles
         if ($removed_styles = get_option('advset_styles')) {
             foreach ($removed_styles as $key => $handle) {
-                if (strpos($key, 'remove_enqueued_style_')===0) {
+                // The style may not be registered on every page
+                if (strpos($key, 'remove_enqueued_style_')===0 && isset($wp_styles->registered[$handle])) {
                     // unset($styles[array_search($item, $styles)]);
                     $wp_styles->registered[$handle]->src = '';
                 }

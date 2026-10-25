@@ -58,7 +58,8 @@ if( !advset_is_admin_area() ) :
         $wp_scripts = wp_scripts();
         if ($removed_scripts = get_option('advset_scripts')) {
             foreach ($removed_scripts as $key => $handle) {
-                if (strpos($key, 'remove_enqueued_script_')===0) {
+                // The script may not be registered on every page
+                if (strpos($key, 'remove_enqueued_script_')===0 && isset($wp_scripts->registered[$handle])) {
                     $src = $wp_scripts->registered[$handle]->src;
                     if (strpos($src, '/')===0) {
                         $src = get_site_url().$src;
